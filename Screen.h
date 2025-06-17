@@ -11,19 +11,29 @@ private:
 
     void construct(int height, int width) {
         int xMax, yMax;
-        getmaxyx(stdscr, yMax, xMax); // obtiene el máximo de la pantalla
+        getmaxyx(stdscr, yMax, xMax); // obtiene el tamaño total del terminal
 
-        // el desmadre de abajo es para que el rectángulo siempre esté en el centro de la pantalla
-        win = newwin(height, width, (yMax / 2) - (height / 2), (xMax / 2) - (width / 2));
-        keypad(win, true); // permite usar las teclas
+        // Si height o width son 0, usa el tamaño completo del terminal
+        if (height == 0 || width == 0) {
+            height = yMax;
+            width = xMax;
+        }
+
+        // Calcula coordenadas para centrar la ventana
+        int startY = (yMax - height) / 2;
+        int startX = (xMax - width) / 2;
+
+        // Crea la ventana centrada
+        win = newwin(height, width, startY, startX);
+        keypad(win, true); // habilita teclas especiales
     }
-    
+
 public:
     Screen() {
         construct(0, 0);
     }
 
-    Screen(int height, int width) {
+    Screen(int height = 0, int width = 0) {
         construct(height, width);
     }
 

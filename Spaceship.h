@@ -1,8 +1,7 @@
 #pragma once
 #include "Entity.h"
 #include "DataStructures/DLinkedList.h"
-
-#define SCREEN_COLS 40
+#include "Macro/macro.h"
 
 enum Direction {
     up,
