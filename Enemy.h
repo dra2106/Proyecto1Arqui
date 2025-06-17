@@ -1,18 +1,29 @@
-// clase abstracta (idea)
-
 #pragma once
 
-class Enemy {
-private:
+#include "Entity.h"
+
+class Enemy : public Entity {
+protected:
+    int patternIndex;     // Índice del patrón actual de movimiento o ataque
+    bool isAttacking;     // Indica si el enemigo está actualmente atacando
+	
 	Enemy(const Enemy& other) {}
 	void operator=(const Enemy&) {}
 
 public:
-	Enemy() {}
-	// virtual ~Enemy() {}
-	// virtual void move() = 0;
-	// virtual void draw() = 0;
-	// virtual void shoot() = 0;
-	// virtual void update() = 0;
-	// virtual void kill() = 0;
+    Enemy(int x = 0, int y = 0, int width = 1, int height = 1)
+        : Entity(x, y, width, height), patternIndex(0), isAttacking(false) {}
+    virtual ~Enemy() = default;
+
+    // Getters y setters comunes a todos los enemigos
+    int getPatternIndex() const { return patternIndex; }
+    void setPatternIndex(int index) { patternIndex = index; }
+
+    bool getIsAttacking() const { return isAttacking; }
+    void setIsAttacking(bool attacking) { isAttacking = attacking; }
+
+    virtual void update() = 0;
+    virtual void attack() = 0;
+    virtual void reset() = 0;
+    virtual string getType() const = 0;
 };

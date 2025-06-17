@@ -16,18 +16,19 @@ int main() {
     initscr();
     cbreak();
     noecho();
+    curs_set(0);
+    nodelay(stdscr, TRUE); // <-- clave para que el juego corra solo
     refresh();
 
     MainLoop game(SCREEN_ROWS, SCREEN_COLS);
     
     while (!game.isOver()) {
         game.processInput();
-
         game.updateState();
-
         game.redraw();
+        napms(50); // ~20 FPS
     }
-    
+
     getch();
     endwin();
     cout << "Perdio, mamon" << endl;

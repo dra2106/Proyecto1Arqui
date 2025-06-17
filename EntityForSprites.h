@@ -7,15 +7,18 @@ using std::string;
 
 class EntityX {
 protected:
-    int x, y; // Posición en pantalla
-    int width, height; // Tamaño del objeto
-    DLinkedList<string> sprite; // Representación visual (opcional)
-    bool isActive; // ¿Está activa esta entidad en el juego?
+    int x, y;
+    int width, height; 
+    DLinkedList<string> sprite; 
+    bool isActive; 
 
 public:
     EntityX(int x = 0, int y = 0, int width = 1, int height = 1)
         : x(x), y(y), width(width), height(height), isActive(true) {}
 
+    // Virtual destructor para herencia
+    virtual ~EntityX() = default;
+        
     // Getters
     int getX() const { return x; }
     int getY() const { return y; }
@@ -34,7 +37,4 @@ public:
         width = sprite.isEmpty() ? 0 : sprite.getElement().length();
     }
     void setActive(bool active) { isActive = active; }
-
-    // Virtual destructor para herencia
-    virtual ~EntityX() = default;
 };

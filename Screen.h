@@ -1,7 +1,9 @@
 #pragma once
 
 #include <ncurses.h>
+#include <string>
 #include "Entity.h"
+#include "DataStructures/DLinkedList.h"
 
 class Screen {
 private:
@@ -38,12 +40,23 @@ public:
 
     // añade una entidad en las coordenadas dadas
     void add(Entity entity) {
-        addAt(entity.getY(), entity.getX(), entity.getIcon());
+        addAt(entity.getY(), entity.getX(), entity.getSprite());
     }
 
     // añade un caracter en las coordenadas dadas
-    void addAt(int y, int x, char c) {
-        mvwaddch(win, y, x, c);
+    void addAt(int y, int x, DLinkedList<string> sprite) {
+        int offsetY = sprite.getSize() / 2;
+        int offsetX = sprite.getElement().size() / 2;
+
+        int i = 0;
+        for (sprite.goToStart(); !sprite.atEnd(); sprite.next()) {
+            string line = sprite.getElement();
+            for (int j = 0; j < line.size(); ++j) {
+                char c = line[j];
+                mvwaddch(win, y + i - offsetY, x + j - offsetX, c);
+            }
+            i++;
+        }
     }
 
     // obtiene un input del usuario

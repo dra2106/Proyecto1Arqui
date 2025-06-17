@@ -1,148 +1,68 @@
 #pragma once
 #include "Entity.h"
+#include "DataStructures/DLinkedList.h"
 
 #define SCREEN_COLS 40
 
 enum Direction {
-	up,
-	left,
-	right,
-	stand
+    up,
+    left,
+    right,
+    stand
 };
 
 class Spaceship : public Entity {
 private:
-	Direction currentDirection;
-	//int hearts;
-	//bool inmune;
-	//int cooldown;
-	//std::list <std::string> sprite;
+    Direction currentDirection;
+
+	void loadSprite() {
+        DLinkedList<string> sprite;
+        sprite.append("|\\A/|");
+        sprite.append("|!H!|");
+        sprite.append("|/V\\|");
+        setSprite(sprite);
+    }
+
 public:
-	Spaceship() {
-		this->y = this->x = 0;
-	}
-	Spaceship(int y, int x) {
-		this->y = y;
-		this->x = x;
-		this->icon = '^';
-		// x_ = 0;
-		// y_ = 0;
-		// hearts = 3;
-		// inmune = false;
-		// cooldown = 0;
-		// sprite = { "" };
-	}
-	~Spaceship() {
-		//sprite.clear();
-	}
+    Spaceship() {
+        this->x = 0;
+        this->y = 0;
+        currentDirection = stand;
+        loadSprite();
+    }
 
-	void setDirection(Direction d) {
-		currentDirection = d;
-	}
+    Spaceship(int y, int x) {
+        this->x = x;
+        this->y = y;
+        currentDirection = stand;
+        loadSprite();
+    }
 
-	Direction getDirection() {
-		return currentDirection;
-	}
+    void setDirection(Direction d) {
+        currentDirection = d;
+    }
 
-	void move() {
-		switch (currentDirection) {
-		case left:
-			x--;
-			break;
-		case right:
-			x++;
-			break;
-		default:
-			break;
-		}
-		// lo siguiente es para evitar que la nave se salga de la pantalla
-		if (x < 1) 
-			x = 1; 				 // si la posición es menor a 0 (el borde izquierdo), se regresa
-		if (x > SCREEN_COLS - 2) 
-			x = SCREEN_COLS - 2; // lo mismo pero con el borde derecho
-	}
+    Direction getDirection() const {
+        return currentDirection;
+    }
 
-	int getY() {
-		return y;
-	}
+    void move() {
+        switch (currentDirection) {
+            case left:
+                x--;
+                break;
+            case right:
+                x++;
+                break;
+            default:
+                break;
+        }
 
-	int getX() {
-		return x;
-	}
+        // Limita los bordes de la pantalla
+        if (x < 1)
+            x = 1;
+        if (x > SCREEN_COLS - width)
+            x = SCREEN_COLS - width;
+    }
+
 };
-	// void moveLeft() {
-	// 	x--;
-
-	// }
-
-	// void moveRight() {
-	// 	x++;
-	// 	// esta parte es para que no se salga de la caja
-
-	// }
-
-	// int getMove() {
-	// 	int choice = wgetch(currentWindow);
-	// 	switch(choice) {
-	// 		case KEY_UP: // por ahora, arriba no hace nada
-	// 			break;
-	// 		case KEY_DOWN: // abajo no hace nada
-	// 			break;
-	// 		case KEY_LEFT:
-	// 			moveLeft();
-	// 			break;
-	// 		case KEY_RIGHT:
-	// 			moveRight();
-	// 			break;
-	// 		default:
-	// 			break;
-	// 	}
-	// 	return choice;
-	// }
-
-	// void display() {
-	// 	mvwaddch(currentWindow, yLoc, xLoc, character);
-	// }
-
-	// void setX(int x) {
-	// 	x_ = x;
-	// }
-	// void setY(int y) {
-	// 	y_ = y;
-	// }
-	// int getX(){
-	// 	return x_;
-	// }
-	// int getY() {
-	// 	return y_;
-	// }
-	// void setInmune(bool inm) {
-	// 	inmune = inm;
-	// }
-	// void setCooldown(int cooldown) {
-	// 	this->cooldown = cooldown;
-	// }
-	// void setHearts(int hearts) {
-	// 	this->hearts = hearts;
-	// }
-	// bool isInmune() {
-	// 	return inmune;
-	// }
-	// int getCooldown(){
-	// 	return cooldown;
-	// }
-	// int getHearts() {
-	// return hearts;
-	// }
-	// void move(char side) {
-	// }
-	// void receivedDamage() {
-
-	// }
-	// void update() {
-
-	// }
-	/*draw() {
-
-	}*/
-
