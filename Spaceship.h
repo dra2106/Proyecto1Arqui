@@ -1,23 +1,29 @@
 #pragma once
-#include <list>
-#include <vector>
-class Spaceship {
+#include "Entity.h"
+
+#define SCREEN_COLS 30
+
+enum Direction {
+	left,
+	right
+};
+
+class Spaceship : public Entity {
 private:
-	int xLoc, yLoc, xMax, yMax; // Loc es location
-	char character;
-	WINDOW* currentWindow; // la ventana donde se muestra la nave
+	Direction currentDirection;
 	//int hearts;
 	//bool inmune;
 	//int cooldown;
 	//std::list <std::string> sprite;
 public:
-	Spaceship(WINDOW* win, int y, int x, char c) {
-		currentWindow = win;
-		yLoc = y;
-		xLoc = x;
-		getmaxyx(currentWindow, yMax, xMax);
-		keypad(currentWindow, true); // esto es para activar el uso de las flechas
-		character = c;
+	Spaceship() {
+		this->y = this->x = 0;
+	}
+	Spaceship(int y, int x) {
+		// currentDirection = up;
+		this->y = y;
+		this->x = x;
+		this->icon = '^';
 		// x_ = 0;
 		// y_ = 0;
 		// hearts = 3;
@@ -29,44 +35,63 @@ public:
 		//sprite.clear();
 	}
 
-	void moveLeft() {
-		mvwaddch(currentWindow, yLoc, xLoc, ' '); // esto es para no dejar caracteres por donde se mueva
-		xLoc--;
-		// esta parte es para que no se salga de la caja
-		if (xLoc < 1)
-			xLoc = 1;
+	void setDirection(Direction d) {
+		currentDirection = d;
 	}
 
-	void moveRight() {
-		mvwaddch(currentWindow, yLoc, xLoc, ' ');
-		xLoc++;
-		// esta parte es para que no se salga de la caja
-		if (xLoc > xMax-2)
-			xLoc = xMax-2;
+	Direction getDirection() {
+		return currentDirection;
 	}
 
-	int getMove() {
-		int choice = wgetch(currentWindow);
-		switch(choice) {
-			case KEY_UP: // por ahora, arriba no hace nada
-				break;
-			case KEY_DOWN: // abajo no hace nada
-				break;
-			case KEY_LEFT:
-				moveLeft();
-				break;
-			case KEY_RIGHT:
-				moveRight();
-				break;
-			default:
-				break;
+	void move() {
+		switch (currentDirection) {
+		case left:
+			x--;
+			break;
+		case right:
+			x++;
+			break;
 		}
-		return choice;
+		// lo siguiente es para evitar que la nave se salga de la pantalla
+		if (x < 1) 
+			x = 1; 				 // si la posición es menor a 0 (el borde izquierdo), se regresa
+		if (x > SCREEN_COLS - 2) 
+			x = SCREEN_COLS - 2; // lo mismo pero con el borde derecho
 	}
+};
+	// void moveLeft() {
+	// 	x--;
 
-	void display() {
-		mvwaddch(currentWindow, yLoc, xLoc, character);
-	}
+	// }
+
+	// void moveRight() {
+	// 	x++;
+	// 	// esta parte es para que no se salga de la caja
+
+	// }
+
+	// int getMove() {
+	// 	int choice = wgetch(currentWindow);
+	// 	switch(choice) {
+	// 		case KEY_UP: // por ahora, arriba no hace nada
+	// 			break;
+	// 		case KEY_DOWN: // abajo no hace nada
+	// 			break;
+	// 		case KEY_LEFT:
+	// 			moveLeft();
+	// 			break;
+	// 		case KEY_RIGHT:
+	// 			moveRight();
+	// 			break;
+	// 		default:
+	// 			break;
+	// 	}
+	// 	return choice;
+	// }
+
+	// void display() {
+	// 	mvwaddch(currentWindow, yLoc, xLoc, character);
+	// }
 
 	// void setX(int x) {
 	// 	x_ = x;
@@ -109,4 +134,4 @@ public:
 	/*draw() {
 
 	}*/
-};
+

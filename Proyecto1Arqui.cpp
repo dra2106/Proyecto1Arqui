@@ -18,20 +18,13 @@ int main() {
     MainLoop game(SCREEN_ROWS, SCREEN_COLS);
     
     while (!game.isOver()) {
-        // game.processInput();
+        game.processInput();
 
         game.updateState();
 
         game.redraw();
     }
-
-    // a height se le resta 2 para que salga arriba de la caja, y width se divide
-    // entre 2 para que salga en el centro
-    // Spaceship* p = new Spaceship(screen, -2, width/2, '@');
-    // do {
-    //     p->display();
-    //     wrefresh(win);
-    // } while (p->getMove() != 'x'); // escribir x para salir
+    
     getch();
     endwin();
     return 0;

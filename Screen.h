@@ -13,7 +13,7 @@ private:
 
         // el desmadre de abajo es para que el rectángulo siempre esté en el centro de la pantalla
         win = newwin(height, width, (yMax / 2) - (height / 2), (xMax / 2) - (width / 2));
-        addBorder();
+        keypad(win, true); // permite usar las teclas
     }
     
 public:
@@ -47,7 +47,7 @@ public:
     }
 
     // obtiene un input del usuario
-    char getInput() {
+    chtype getInput() {
         return wgetch(win);
     }
 
@@ -61,5 +61,4 @@ public:
     void refresh() {
         wrefresh(win);
     }
-    
 };
