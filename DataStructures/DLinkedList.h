@@ -2,13 +2,13 @@
  *
  * Nombre de Archivo: DLinkedList.h
  * 
- * Descripci�n General:
+ * Descripci�n General:
  *
  * Clase hija de List que implementa una lista doblemente enlazada. Esta funciona
  * con un nodo que tiene un puntero al siguiente nodo y otro al nodo anterior.
  * De manera que podemos recorrer la lista en ambas direcciones.
  *
- * Autor: Mauricio Avil�s 
+ * Autor: Mauricio Avil�s 
  *
  */
 
@@ -44,6 +44,35 @@ public:
 		delete tail;
 	}
 
+	// Constructor de copia
+	DLinkedList(const DLinkedList<E>& other) {
+		current = head = new DNode<E>(nullptr, nullptr);
+		head->next = tail = new DNode<E>(nullptr, head);
+		size = 0;
+
+		DNode<E>* temp = other.head->next;
+		while (temp != other.tail) {
+			append(temp->element); // Reutiliza tu método append
+			temp = temp->next;
+		}
+		current = head; // Ubica el current al inicio
+	}
+
+	// Operador de asignación
+	DLinkedList<E>& operator=(const DLinkedList<E>& other) {
+		if (this == &other) return *this; // Verificación de autoasignación
+
+		clear(); // Borra el contenido actual
+
+		DNode<E>* temp = other.head->next;
+		while (temp != other.tail) {
+			append(temp->element);
+			temp = temp->next;
+		}
+		current = head;
+		return *this;
+	}
+
 	void insert(E element) {
 		current->next = current->next->previous 
 			= new DNode<E>(element, current->next, current);
@@ -75,6 +104,10 @@ public:
 		if (current->next == tail)
 			throw runtime_error("No current element.");
 		return current->next->element;
+	}
+
+	bool isEmpty(){
+		return size == 0;
 	}
 
 	void clear() {
