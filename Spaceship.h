@@ -1,7 +1,7 @@
 #pragma once
 #include "Entity.h"
 
-#define SCREEN_COLS 30
+#define SCREEN_COLS 40
 
 enum Direction {
 	up,

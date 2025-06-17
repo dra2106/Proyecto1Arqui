@@ -12,6 +12,10 @@ public:
         this->icon = 'W';
     }
 
+    // ~SmallBird() {
+    //     icon = ' ';
+    // }
+
     // Operador de asignación
     SmallBird& operator=(const SmallBird& other) {
         if (this != &other) {  // Evitar auto-asignación
@@ -22,9 +26,4 @@ public:
         }
         return *this;
     }
-
-    // Destructor si deseas liberar recursos, aunque en este caso no parece necesario
-    // ~SmallBird() {
-    //     icon = ' ';
-    // }
 };

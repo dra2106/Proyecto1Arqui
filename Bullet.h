@@ -6,12 +6,6 @@
 class Bullet : public Entity{
 private:
 	Direction currentDirection;
-	// int x_;
-	// int y_;
-	// int dx;
-	// int dy;
-	// char sprite;
-	// bool outrange;
 public:
 	Bullet() {
 		this->x = 0;
@@ -24,6 +18,7 @@ public:
 		icon = '|';
 	}
 
+	// mueve la bala hacia arriba 
 	void move() {
 		if (currentDirection == up)
 			y--;
@@ -31,6 +26,13 @@ public:
 
 	void setDirection(Direction d) {
 		currentDirection = d;
+	}
+
+	int getX() const {
+		return x;
+	}
+	int getY() const {
+		return y;
 	}
 	// ~Bullet() {
 	// 	sprite.clear();

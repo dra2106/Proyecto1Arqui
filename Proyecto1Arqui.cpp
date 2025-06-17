@@ -6,14 +6,16 @@
 #include "MainLoop.h"
 #include "Entity.h"
 
-#define SCREEN_ROWS 28
-#define SCREEN_COLS 30
+#define SCREEN_ROWS 40
+#define SCREEN_COLS 40
+
+using std::cout;
+using std::endl;
 
 int main() {
     initscr();
     cbreak();
     noecho();
-    curs_set(0);
     refresh();
 
     MainLoop game(SCREEN_ROWS, SCREEN_COLS);
@@ -28,5 +30,6 @@ int main() {
     
     getch();
     endwin();
+    cout << "Perdio, mamon" << endl;
     return 0;
 }
