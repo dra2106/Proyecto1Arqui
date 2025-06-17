@@ -8,9 +8,9 @@
 #include <iomanip>
 #include <stdexcept>
 
-#include "MaxHeap.h"   
-#include "KVPair.h"       // Clave: nombre, Valor: puntaje
-#include "DLinkedList.h"  
+#include "DataStructures/KVPair.h"       // Clave: nombre, Valor: puntaje
+#include "DataStructures/DLinkedList.h"  
+#include "DataStructures/MaxHeap.h"   
 
 using std::fstream;
 using std::string;
@@ -30,7 +30,7 @@ private:
             throw runtime_error("El archivo no se pudo abrir, intente con otro nombre.");
         string line;
         while (getline(file, line)) {
-            stringstream ss(line);
+            std::stringstream ss(line);
             string scoreStr, name;
             if (getline(ss, scoreStr, ',') && getline(ss, name)) {
                 int score = stoi(scoreStr);
@@ -53,7 +53,7 @@ private:
         
         for (sortedScores.goToStart(); !sortedScores.atEnd(); sortedScores.next()) {
             KVPair<string, int> pair = sortedScores.getElement();
-            file << pair.value() << ", " << pair.key() << "\n";
+            file << pair.value << ", " << pair.key << "\n";
         }
 
         file.close();
@@ -82,19 +82,13 @@ public:
     }
 
     // Devuelve los puntajes como lista de pares (línea, texto)
-    DLinkedList<KVPair<int, string>> getScores() {
-        DLinkedList<KVPair<int, string>> result;
+    void getScores(DLinkedList<KVPair<string, int>>& result) {
         MaxHeap<KVPair<string, int>> temp = highScores;
 
-        int line = 1;
         while (!temp.isEmpty()) {
-            auto pair = temp.removeFirst();
-            std::ostringstream oss;
-            oss << pair.value() << ", " << pair.key();
-            result.append(KVPair<int, string>(line, oss.str()));
-            line++;
+            KVPair<string, int> pair = temp.removeFirst();
+            result.append(pair);
         }
-        return result;
     }
 
     // Setters
