@@ -4,6 +4,7 @@
 #include "Screen.h"
 #include "Spaceship.h"
 #include "MainLoop.h"
+#include "Entity.h"
 
 #define SCREEN_ROWS 28
 #define SCREEN_COLS 30
@@ -11,13 +12,13 @@
 int main() {
     initscr();
     cbreak();
-    // noecho();
+    noecho();
     refresh();
 
     MainLoop game(SCREEN_ROWS, SCREEN_COLS);
     
     while (!game.isOver()) {
-        game.processInput();
+        // game.processInput();
 
         game.updateState();
 
