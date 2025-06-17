@@ -1,42 +1,59 @@
 #pragma once
-#include <list>
-#include <vector>
-class Bullet {
+
+#include "Entity.h"
+#include "Spaceship.h"
+
+class Bullet : public Entity{
 private:
-	int x_;
-	int y_;
-	int dx;
-	int dy;
-	char sprite;
-	bool outrange;
+	Direction currentDirection;
+	// int x_;
+	// int y_;
+	// int dx;
+	// int dy;
+	// char sprite;
+	// bool outrange;
 public:
 	Bullet() {
-		x_ = 0;
-		y_ = 0;
-		sprite = { "" };
+		this->x = 0;
+		this->y = 0;
 	}
-	~Bullet() {
-		sprite.clear();
+
+	Bullet(int y, int x) {
+		this->x = x;
+		this->y = y;
+		icon = '|';
 	}
-	setOutrange(bool valor) {
-		outrange = valor;
-	}
-	void setX(int x) {
-		x_ = x;
-	}
-	void setY(int y) {
-		y_ = y;
-	}
-	int getX() {
-		return x_;
-	}
-	int getY() {
-		return y_;
-	}
-	getOutrange() {
-		return outrange;
-	}
+
 	void move() {
+		if (currentDirection == up)
+			y--;
 	}
+
+	void setDirection(Direction d) {
+		currentDirection = d;
+	}
+	// ~Bullet() {
+	// 	sprite.clear();
+	// }
+	// setOutrange(bool valor) {
+	// 	outrange = valor;
+	// }
+	// void setX(int x) {
+	// 	x_ = x;
+	// }
+	// void setY(int y) {
+	// 	y_ = y;
+	// }
+	// int getX() {
+	// 	return x_;
+	// }
+	// int getY() {
+	// 	return y_;
+	// }
+	// getOutrange() {
+	// 	return outrange;
+	// }
+	// void move() {
+	// }
 };
 

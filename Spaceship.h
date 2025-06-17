@@ -4,6 +4,7 @@
 #define SCREEN_COLS 30
 
 enum Direction {
+	up,
 	left,
 	right,
 	stand
@@ -21,7 +22,6 @@ public:
 		this->y = this->x = 0;
 	}
 	Spaceship(int y, int x) {
-		// currentDirection = up;
 		this->y = y;
 		this->x = x;
 		this->icon = '^';
@@ -60,6 +60,14 @@ public:
 			x = 1; 				 // si la posición es menor a 0 (el borde izquierdo), se regresa
 		if (x > SCREEN_COLS - 2) 
 			x = SCREEN_COLS - 2; // lo mismo pero con el borde derecho
+	}
+
+	int getY() {
+		return y;
+	}
+
+	int getX() {
+		return x;
 	}
 };
 	// void moveLeft() {

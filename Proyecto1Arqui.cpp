@@ -13,6 +13,7 @@ int main() {
     initscr();
     cbreak();
     noecho();
+    curs_set(0);
     refresh();
 
     MainLoop game(SCREEN_ROWS, SCREEN_COLS);

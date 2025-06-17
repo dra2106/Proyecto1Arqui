@@ -6,6 +6,7 @@
 #include "Entity.h"
 #include "SmallBird.h"
 #include "Spaceship.h"
+#include "Bullet.h"
 
 #include "CollisionController.h"
 
@@ -18,6 +19,7 @@ private:
     Spaceship spaceship;
     CollisionController collision;
     SmallBird bird;
+    Bullet bullet;
 
 public:
     MainLoop(int height, int width)
@@ -35,7 +37,9 @@ public:
         chtype input = screen.getInput();
         switch (input) {
             case KEY_UP: // por ahora no hace nada, IMPLEMENTAR ESCUDO
-                spaceship.setDirection(stand);
+                bullet = Bullet(spaceship.getY() - 1, spaceship.getX());
+                screen.add(bullet);
+                bullet.setDirection(up);
                 break;
             case KEY_DOWN:
                 spaceship.setDirection(stand);
@@ -61,7 +65,10 @@ public:
 
         spaceship.move(); // mueve la nave
         screen.add(bird);
+        bullet.move();
+        screen.add(SmallBird(5, 15));
         screen.add(spaceship); // muestra la nave en pantalla
+        screen.add(bullet);
     }
 
     // refresca la pantalla
