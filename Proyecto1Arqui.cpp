@@ -1,34 +1,37 @@
 #include <iostream>
 #include <string>
 #include <ncurses.h>
+#include "Screen.h"
 #include "Spaceship.h"
+#include "MainLoop.h"
+
+#define SCREEN_ROWS 28
+#define SCREEN_COLS 30
+
 int main() {
     initscr();
     cbreak();
-    noecho();
-
-    int height, width, start_y, start_x;
-    height = 30;
-    width = 50;
-    start_y = 0;
-    start_x = 30;
-
-    WINDOW* win = newwin(height, width, start_y, start_x);
-
-    box(win, 0, 0); // el primero es izq y der, el segundo arriba y abajo
+    // noecho();
     refresh();
-    wrefresh(win); // refresca solo la ventana creada
+
+    MainLoop game(SCREEN_ROWS, SCREEN_COLS);
+    
+    while (!game.isOver()) {
+        game.processInput();
+
+        game.updateState();
+
+        game.redraw();
+    }
 
     // a height se le resta 2 para que salga arriba de la caja, y width se divide
     // entre 2 para que salga en el centro
-    Spaceship* p = new Spaceship(win, height-2, width/2, '@');
-    do {
-        p->display();
-        wrefresh(win);
-    } while (p->getMove() != 'x'); // escribir x para salir
-
+    // Spaceship* p = new Spaceship(screen, -2, width/2, '@');
+    // do {
+    //     p->display();
+    //     wrefresh(win);
+    // } while (p->getMove() != 'x'); // escribir x para salir
+    getch();
     endwin();
     return 0;
 }
-
-
