@@ -9,10 +9,10 @@ private:
 
 public:
 	Enemy() {}
-	virtual ~Enemy() {}
-	virtual void move() = 0;
-	virtual void draw() = 0;
-	virtual void shoot() = 0;
-	virtual void update() = 0;
-	virtual void kill() = 0;
+	// virtual ~Enemy() {}
+	// virtual void move() = 0;
+	// virtual void draw() = 0;
+	// virtual void shoot() = 0;
+	// virtual void update() = 0;
+	// virtual void kill() = 0;
 };
