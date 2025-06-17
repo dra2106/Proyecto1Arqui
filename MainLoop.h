@@ -1,22 +1,33 @@
 #pragma once
 #include <ncurses.h>
+#include <stdexcept>
+
 #include "Screen.h"
 #include "Entity.h"
 #include "SmallBird.h"
 #include "Spaceship.h"
+
+#include "CollisionController.h"
+
+using std::runtime_error;
 
 class MainLoop {
 private:
     Screen screen;
     bool gameOver;
     Spaceship spaceship;
+    CollisionController collision;
+    SmallBird bird;
 
 public:
-    MainLoop(int height, int width) {
-        screen = Screen(height, width);
+    MainLoop(int height, int width)
+        : screen(height, width),
+          gameOver(false),
+          spaceship(25, 16),
+          bird(25, 20)
+    {
         screen.initialize();
-        gameOver = false;
-        spaceship = Spaceship(26, 15);
+        curs_set(0);           // Oculta cursor
     }
 
     // procesa el input del usuario
@@ -24,8 +35,10 @@ public:
         chtype input = screen.getInput();
         switch (input) {
             case KEY_UP: // por ahora no hace nada, IMPLEMENTAR ESCUDO
+                spaceship.setDirection(stand);
                 break;
             case KEY_DOWN:
+                spaceship.setDirection(stand);
                 break;  // no hace nada
             case KEY_LEFT:
                 spaceship.setDirection(left);
@@ -33,7 +46,13 @@ public:
             case KEY_RIGHT:
                 spaceship.setDirection(right);
                 break;
+            default:
+                spaceship.setDirection(stand);
+                break;
         }
+
+        if (collision.checkCollision(spaceship, bird))
+            throw runtime_error("SE MATO!!!!!!");
     }
 
     // actualiza el estado de la pantalla
@@ -41,7 +60,7 @@ public:
         screen.clear(); // limpia la pantalla para evitar residuos
 
         spaceship.move(); // mueve la nave
-        screen.add(SmallBird(5, 15));
+        screen.add(bird);
         screen.add(spaceship); // muestra la nave en pantalla
     }
 

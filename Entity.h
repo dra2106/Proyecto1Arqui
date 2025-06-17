@@ -27,6 +27,14 @@ public:
         return y;
     }
 
+    int getWidth() {
+        return 1;
+    }
+
+    int getHeight() {
+        return 1;
+    }
+
     chtype getIcon() {
         return icon;
     }

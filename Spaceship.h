@@ -5,7 +5,8 @@
 
 enum Direction {
 	left,
-	right
+	right,
+	stand
 };
 
 class Spaceship : public Entity {
@@ -50,6 +51,8 @@ public:
 			break;
 		case right:
 			x++;
+			break;
+		default:
 			break;
 		}
 		// lo siguiente es para evitar que la nave se salga de la pantalla
