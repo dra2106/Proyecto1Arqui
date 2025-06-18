@@ -7,25 +7,67 @@
 class Mothership : public Enemy {
 private:
     int health;
-    
+    int alienIndex = 0;
+    const std::vector<std::string> mothershipBase = {
+    "                 _______                 ",
+    "            T HHH{0}HHH T            ",
+    "           T HHHH{1}HHHH T           ",
+    "          T HHHHH{2}HHHHH T          ",
+    "<HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH>",
+    " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ",
+    "  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  ",
+    "   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   ",
+    "     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!     ",
+    "        !!!!!!!!!!!!!!!!!!!!!!!!!        ",
+    "           !!!!!!!!!!!!!!!!!!!           ",
+    "               !!!!!!!!!!!               "
+    };
+    const std::vector<std::vector<std::string>> aliens = {
+    { "  /_\\  ", " <o o> ", "  \\-/  " },
+    { "  /_\\  ", " <O O> ", "  \\o/  " },
+    { "  v_v  ", " <X X> ", "  \\Q/  " },
+    { "  /_\\  ", " <o o> ", " .\\=/. " }
+    };
 
     // Función auxiliar para construir el sprite
     static DLinkedList<string> buildSprite() {
-        DLinkedList<std::string> s;
-        s.append("                 _______                 ");
-        s.append("            T HHHH     HHHH T            ");
-        s.append("           T HHHHH     HHHHH T           ");
-        s.append("          T HHHHHH     HHHHHH T          ");
+            DLinkedList<std::string> s;
+            s.append("                 _______                 ");
+            s.append("            T HHH  /_\\  HHH T            ");
+            s.append("           T HHHH <o o> HHHH T           ");
+            s.append("          T HHHHH  \\-/  HHHHH T          ");
+            s.append("<HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH>");
+            s.append(" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ");
+            s.append("  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  ");
+            s.append("   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   ");
+            s.append("     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!     ");
+            s.append("        !!!!!!!!!!!!!!!!!!!!!!!!!        ");
+            s.append("           !!!!!!!!!!!!!!!!!!!           ");
+            s.append("               !!!!!!!!!!!               ");
         return s;
+    }
+
+    DLinkedList<std::string> buildMothershipSprite(int alienIndex) {
+    DLinkedList<std::string> s;
+    for (size_t i = 0; i < mothershipBase.size(); ++i) {
+        std::string line = mothershipBase[i];
+        if (i == 1) line.replace(line.find("{0}"), 3, aliens[alienIndex][0]);
+        else if (i == 2) line.replace(line.find("{1}"), 3, aliens[alienIndex][1]);
+        else if (i == 3) line.replace(line.find("{2}"), 3, aliens[alienIndex][2]);
+        s.append(line);
+    }
+    return s;
     }
 
 public:
     Mothership(int y = 0,int x = 0)
-        : Enemy(x, y, buildSprite()), health(1) {
+        : Enemy(x, y, buildSprite()), health(10) {
             setPattern({{0,1}, {0,0}, {0,1}, {0,0}, {0,-1}, {0,0}}); // Patrón de movimiento
         }
 
     void update() override {
+        alienIndex = (alienIndex + 1) % aliens.size();
+        setSprite(buildMothershipSprite(alienIndex));
         Enemy::update();
     }
 
@@ -48,5 +90,10 @@ public:
     }
 
     int gethealth() const { return health; }
+    
+    void damage() { this->health -= 1; }
+
+    bool isDead() const { return health <= 0; }
+
     void sethealth(int v) { health = v; }
 };
