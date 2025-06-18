@@ -44,6 +44,8 @@ public:
     Direction getDirection() const { return currentDirection; }
 
     void move(int screenWidth, int screenHeight) {
+        const int margenX = 1;
+
         switch (currentDirection) {
             case LEFT:  x--; break;
             case RIGHT: x++; break;
@@ -51,11 +53,18 @@ public:
             case DOWN:  y++; break;
             default:    break;
         }
-        int offsetX = getSprite().getElement().size() / 2;
-        int offsetY = getSprite().getSize() / 2;
-        if (x < offsetX) x = offsetX;
-        if (x > screenWidth - offsetX - 1) x = screenWidth - offsetX - 1;
-        if (y < offsetY) y = offsetY;
-        if (y > screenHeight - offsetY - 1) y = screenHeight - offsetY - 1;
+
+        // Calcula el ancho real del sprite (la línea más larga)
+        int spriteWidth = 0;
+        DLinkedList<std::string> spr = getSprite();
+        for (spr.goToStart(); !spr.atEnd(); spr.next()) {
+            int lineWidth = spr.getElement().size();
+            if (lineWidth > spriteWidth) spriteWidth = lineWidth;
+        }
+
+        if (x < margenX) x = margenX;
+        if (x < margenX + spriteWidth / 2) x = margenX + spriteWidth / 2;
+        if (x > screenWidth - spriteWidth - margenX)
+            x = screenWidth - spriteWidth - margenX;
     }
 };

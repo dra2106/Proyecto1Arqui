@@ -24,7 +24,7 @@ private:
         int startX = (xMax - width) / 2;
 
         // Crea la ventana centrada
-        win = newwin(height, width, startY, startX);
+        win = newwin(height, width - 2, startY, startX);
         keypad(win, true); // habilita teclas especiales
     }
 
