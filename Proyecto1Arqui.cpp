@@ -24,7 +24,7 @@ int main() {
         game.processInput();
         game.updateState();
         game.redraw();
-        napms(16); // ~60 FPS
+        napms(32); // ~30 FPS
     }
     getch();
     endwin();

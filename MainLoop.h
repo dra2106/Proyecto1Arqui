@@ -23,13 +23,13 @@ private:
     CollisionController collision;
     SmallBird enemyBird;
     vector<Bullet> bullets;
-    int timer = 0; 
+    int timer = 0; // contador de frames
 
 public:
     MainLoop(int height, int width)
         : screen(height, width),
         gameOver(false),
-        spaceship(0, 0)// valores temporales
+        spaceship(0, 0) // valores temporales
     {
         screen.initialize();
 
@@ -37,10 +37,10 @@ public:
         int birdX = screen.getWidth() / 2;
         enemyBird = SmallBird(birdY, birdX);
 
-        int naveY = screen.getHeight() - 3; // 2 bloques arriba del borde inferior
-        int naveX = screen.getWidth() / 2;  // centrada horizontalmente
-        spaceship = Spaceship(naveY, naveX); // ahora sí, la nave queda bien posicionada
-        curs_set(0); // Oculta cursor
+        int naveY = screen.getHeight() - 3;     // 2 bloques arriba del borde inferior
+        int naveX = screen.getWidth() / 2;      // centrada horizontalmente
+        spaceship = Spaceship(naveY, naveX);    // ahora sí, la nave queda bien posicionada
+        curs_set(0);                            // Oculta cursor
     }
 
     // procesa el input del usuario
@@ -61,10 +61,10 @@ public:
                 break;
             case ' ':                   // espacio es la tecla para disparar
                 spaceship.setDirection(STAND);    
-                if (bullets.size() < 5) {// límite de 5 balas en pantalla
+                if (bullets.size() < 5) {       // límite de 5 balas en pantalla
                     bullets.emplace_back(spaceship.getY() - 1, spaceship.getX());
                     for (Bullet& b : bullets) {
-                        b.setDirection(UP); // todas las balas van hacia arriba
+                        b.setDirection(UP);     // todas las balas van hacia arriba
                     }
                 }
                 break;
@@ -83,17 +83,24 @@ public:
         }
     }
 
-
     void updateState() {
-        screen.clear(); // limpia la pantalla para evitar residuos
+        screen.clear();         // limpia la pantalla para evitar residuos
         spaceship.move(screen.getWidth(), screen.getHeight()); // mueve la nave usando el ancho de la pantalla
-        if (timer % 30 == 0) { // cada 30 frames, el pájaro ataca
-            enemyBird.attack();
+        if (timer % 30 == 0) {  // cada 60 frames, el pájaro se mueve
             enemyBird.update();
+            if (timer % 180 == 0) { // cada 120 frames, el pájaro ataca
+                enemyBird.attack();
+                enemyBird.update();
+            }
         }
         timer++;
         // Mueve y dibuja las balas activas
         for (Bullet& b : bullets) {
+            b.move();
+            screen.add(b);
+        }
+
+        for (Bullet& b : enemyBird.getBullets()) {
             b.move();
             screen.add(b);
         }
@@ -106,9 +113,8 @@ public:
         );
 
         screen.add(enemyBird);
-        screen.add(spaceship); // muestra la nave en pantalla
+        screen.add(spaceship);  // muestra la nave en pantalla
     }
-
 
     // refresca la pantalla
     void redraw() {

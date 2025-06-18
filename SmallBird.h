@@ -35,12 +35,10 @@ public:
             bullets.emplace_back(getY() + 1, getX());
             for (Bullet& b : bullets) {
                 b.setDirection(DOWN); // Las balas van hacia abajo
+                b.move(); // Mueve la bala
             }
-        } else {
-            // Reset position if not attacking
-            reset();
         }
-        // reset();
+        isAttacking = false;
     }
 
 
@@ -65,6 +63,10 @@ public:
         patternIndex = 0;
         // Regresa a una posición original, por ejemplo:
         x = 0;
+    }
+
+    vector<Bullet>& getBullets() {
+        return bullets;
     }
 
     // string getType() const override {
