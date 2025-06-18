@@ -1,4 +1,5 @@
 #pragma once
+
 #include <ncurses.h>
 #include <stdexcept>
 #include <vector>
@@ -28,10 +29,10 @@ public:
     MainLoop(int height, int width)
         : screen(height, width),
           gameOver(false),
-          spaceship(25, 16),
           bird(5, 15)
     {
         screen.initialize();
+        spaceship = Spaceship(screen, 7, 15);
         curs_set(0);           // Oculta cursor
     }
 
@@ -42,13 +43,13 @@ public:
             case KEY_UP:                // por ahora no hace nada, IMPLEMENTAR ESCUDO
                 break;
             case KEY_DOWN:
-                spaceship.setDirection(stand);
+                spaceship.setDirection(STAND);
                 break;                  // no hace nada
             case KEY_LEFT:
-                spaceship.setDirection(left);
+                spaceship.setDirection(LEFT);
                 break;
             case KEY_RIGHT:
-                spaceship.setDirection(right);
+                spaceship.setDirection(RIGHT);
                 break;
             case ' ':                   // espacio es la tecla para disparar
                 if (bullets.size() < 5) // límite de 5 balas en pantalla
@@ -58,13 +59,13 @@ public:
                 // bullets.push_back(bullet);
                 break;
             default:
-                spaceship.setDirection(stand);
+                spaceship.setDirection(STAND);
                 break;
         }
 
         // si hubo una colisión, termina el juego
-        if (collision.checkCollision(spaceship, bird))
-            gameOver = true;
+        //if (collision.checkCollision(spaceship, bird))
+          //  gameOver = true;
 
         // idea para eliminar aves cuando se les dispara
         // for (Bullet& b : bullets){

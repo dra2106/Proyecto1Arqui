@@ -1,25 +1,25 @@
 #pragma once
+
 #include "Entity.h"
 #include "DataStructures/DLinkedList.h"
-#include "Macro/macro.h"
 
 class Spaceship : public Entity {
 private:
+    Screen screen;
     Direction currentDirection;
 
 	void loadSprite() {
         DLinkedList<string> sprite;
         sprite.append("|\\A/|");
-        sprite.append("|!H!|");
-        sprite.append("|/V\\|");
         setSprite(sprite);
     }
 
 public:
-    Spaceship(int y = 0, int x = 0) {
-        this->x = x;
+    Spaceship(Screen screen, int y = 0, int x = 0) {
+        this->screen = screen;
         this->y = y;
-        currentDirection = stand;
+        this->x = x;
+        currentDirection = Direction::STAND;
         loadSprite();
     }
 
@@ -33,10 +33,10 @@ public:
 
     void move() {
         switch (currentDirection) {
-            case left:
+            case LEFT:
                 x--;
                 break;
-            case right:
+            case RIGHT:
                 x++;
                 break;
             default:
@@ -46,8 +46,8 @@ public:
         // Limita los bordes de la pantalla
         if (x < 1)
             x = 1;
-        if (x > SCREEN_COLS - width)
-            x = SCREEN_COLS - width;
+        if (x > screen.getWidth() - width)
+            x = screen.getWidth() - width;
     }
 
 };

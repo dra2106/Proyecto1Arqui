@@ -80,6 +80,10 @@ public:
         addBorder();
     }
 
+    int getWidth() const {
+        return width;
+    }
+
     // refresca la ventana
     void refresh() {
         wrefresh(win);

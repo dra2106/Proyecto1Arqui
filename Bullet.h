@@ -12,19 +12,19 @@ public:
     Bullet() {
         this->x = 0;
         this->y = 0;
-        currentDirection = up;
+        currentDirection = UP;
         loadSprite();
     }
 
     Bullet(int y, int x) {
         this->x = x;
         this->y = y;
-        currentDirection = up;
+        currentDirection = UP;
         loadSprite();
     }
 
     void move() {
-        if (currentDirection == up) {
+        if (currentDirection == UP) {
             y--;
         }
         // Podés extender con más direcciones si después hacés balas enemigas.

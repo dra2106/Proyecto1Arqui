@@ -5,7 +5,6 @@
 #include "Spaceship.h"
 #include "MainLoop.h"
 #include "Entity.h"
-#include "Macro/macro.h"
 
 using std::cout;
 using std::endl;

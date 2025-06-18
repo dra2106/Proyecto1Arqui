@@ -2,6 +2,7 @@
 #include <string>
 
 #include "DataStructures/DLinkedList.h"
+#include "Direction.h"
 
 using std::string;
 
@@ -13,10 +14,6 @@ protected:
     bool isActive; 
     Direction direction;
     int speed;
-
-    void loadSprite() {
-
-    }
 
 public:
     Entity(int x = 0, int y = 0, const DLinkedList<string>& sprite = DLinkedList<string>())
@@ -49,20 +46,22 @@ public:
 
     void move() {
         switch (direction) {
+            case UP:
+                y--;
+                break;
+            case DOWN:
+                y++;
+                break;
             case LEFT:
                 x--;
                 break;
-            case UP:
+            case RIGHT:
                 x++;
+                break;
+            case STAND:
                 break;
             default:
                 break;
         }
-
-        // Limita los bordes de la pantalla
-        if (x < 1)
-            x = 1;
-        if (x > SCREEN_COLS - width)
-            x = SCREEN_COLS - width;
     }
 };
