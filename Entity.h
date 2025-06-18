@@ -25,6 +25,9 @@ public:
     // Virtual destructor para herencia
     virtual ~Entity() = default;
         
+    Entity(const Entity&) = default;  // Permite copias
+    Entity& operator=(const Entity&) = default;  // Permite asignación
+    
     // Getters
     int getX() const { return x; }
     int getY() const { return y; }

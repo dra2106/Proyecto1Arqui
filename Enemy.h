@@ -4,26 +4,55 @@
 
 #include "Entity.h"
 #include <vector>
+#include <time.h>
 
 using std::vector;
+using std::pair;
 
 class Enemy : public Entity {
 protected:
     int patternIndex;     // Índice del patrón actual de movimiento o ataque
     bool isAttacking;     // Indica si el enemigo está actualmente atacando
-    vector<std::pair<int, int>> pattern;
-
-    Enemy(const Enemy& other) = delete;
-    void operator=(const Enemy&) = delete;
+    vector<pair<int, int>> pattern;
 
 public:
     Enemy(int x = 0, int y = 0, const DLinkedList<string>& sprite = DLinkedList<string>())
-        : Entity(x, y, sprite), patternIndex(0), isAttacking(false) {}
+        : Entity(x, y, sprite), patternIndex(0), isAttacking(false) {
+            srand(time(0)); // Inicializa la semilla para números aleatorios
+        }
 
     virtual ~Enemy() = default;
 
+    // Constructor de copia
+    Enemy(const Enemy& other) 
+    : Entity(other), 
+      patternIndex(other.patternIndex),
+      isAttacking(other.isAttacking),
+      pattern(other.pattern) {}
+
+// Operador de asignación
+Enemy& operator=(const Enemy& other) {
+    if (this != &other) {
+        Entity::operator=(other);
+        patternIndex = other.patternIndex;
+        isAttacking = other.isAttacking;
+        pattern = other.pattern;
+        // No copiamos rng (generador aleatorio)
+    }
+    return *this;
+}
+
     void setPattern(const vector<std::pair<int, int>>& patt) {
         pattern = patt;
+    }
+
+    void setRandomPattern(const vector<vector<std::pair<int, int>>>& patterns) {
+        if (!patterns.empty()) {
+            int randomIndex = rand() % patterns.size();
+            pattern = patterns[randomIndex];
+            patternIndex = 0; // Reinicia el índice del patrón
+        }
+
     }
 
     virtual void update() {

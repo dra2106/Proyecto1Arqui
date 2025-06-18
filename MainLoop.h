@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <vector>
 #include <algorithm>
+#include <time.h>
 #include "Screen.h"
 #include "Entity.h"
 #include "SmallBird.h"
@@ -21,9 +22,9 @@ private:
     bool gameOver;
     Spaceship spaceship;
     CollisionController collision;
-    SmallBird enemyBird;
     vector<Bullet> bullets;
-    int timer = 0; // contador de frames
+    vector<SmallBird> smallBirds;
+    int timer = 0; // contador de frames para manejar las acciones de los enemigos
 
 public:
     MainLoop(int height, int width)
@@ -32,10 +33,14 @@ public:
         spaceship(0, 0) // valores temporales
     {
         screen.initialize();
-
-        int birdY = 2;
-        int birdX = screen.getWidth() / 2;
-        enemyBird = SmallBird(birdY, birdX);
+        srand(time(0)); // Inicializa la semilla para números aleatorios
+        int i = 0;
+        for (int i = 0; i < 4; i++) {
+            int birdY = rand() % (screen.getHeight() / 3) + 1; // altura aleatoria, evitando el borde superior
+            int birdX = rand() % (screen.getWidth() - 2) + 1; // posición horizontal aleatoria, evitando el borde izquierdo
+            smallBirds.push_back(SmallBird(birdY, birdX));
+        }
+        
 
         int naveY = screen.getHeight() - 3;     // 2 bloques arriba del borde inferior
         int naveX = screen.getWidth() / 2;      // centrada horizontalmente
@@ -72,26 +77,32 @@ public:
                 spaceship.setDirection(STAND);
                 break;
         }
-
-        if (collision.checkCollision(spaceship, enemyBird))
-            gameOver = true;
-
         // idea para eliminar aves cuando se les dispara
-        for (Bullet& b : bullets){
-            if (collision.checkCollision(b, enemyBird))
-                gameOver = true;
-        }
+        // for (Bullet& b : bullets){
+        //     if (collision.checkCollision(b, enemyBird))
+        //         gameOver = true;
+        // }
     }
 
     void updateState() {
         screen.clear();         // limpia la pantalla para evitar residuos
         spaceship.move(screen.getWidth(), screen.getHeight()); // mueve la nave usando el ancho de la pantalla
-        if (timer % 30 == 0) {  // cada 60 frames, el pájaro se mueve
-            enemyBird.update();
-            if (timer % 180 == 0) { // cada 120 frames, el pájaro ataca
-                enemyBird.attack();
+        
+        for (SmallBird& enemyBird : smallBirds) {
+            if (collision.checkCollision(spaceship, enemyBird))
+                gameOver = true;
+            if (timer % 30 == 0) {
                 enemyBird.update();
             }
+            if (timer % 90 == 0) { // cada 120 frames, el pájaro ataca
+                enemyBird.attack();
+                
+            }
+            for (Bullet& b : enemyBird.getBullets()) {
+                b.move();
+                screen.add(b);
+            }
+            screen.add(enemyBird);
         }
         timer++;
         // Mueve y dibuja las balas activas
@@ -99,20 +110,12 @@ public:
             b.move();
             screen.add(b);
         }
-
-        for (Bullet& b : enemyBird.getBullets()) {
-            b.move();
-            screen.add(b);
-        }
-
         // Elimina balas que se salen de la pantalla (por arriba)
         bullets.erase(
             std::remove_if(bullets.begin(), bullets.end(),
                 [](const Bullet& b) { return b.getY() < 1; }),
             bullets.end()
         );
-
-        screen.add(enemyBird);
         screen.add(spaceship);  // muestra la nave en pantalla
     }
 

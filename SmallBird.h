@@ -2,6 +2,7 @@
 
 #include "Enemy.h"
 #include "Bullet.h"
+#include "EnemyPatterns.h"
 #include <vector>
 
 using std::vector;
@@ -23,7 +24,7 @@ private:
 public:
     SmallBird(int y = 0,int x = 0)
         : Enemy(x, y, buildSprite()), health(1) {
-            setPattern({{1,0}, {1,0}, {-1,0}, {0,1}, {0,1}, {0,1}}); // Patrón de movimiento
+            setRandomPattern(EnemyPatterns::SMALL_BIRD_PATTERNS); // Patrón de movimiento
         }
 
     // Implementación del método update
@@ -41,13 +42,18 @@ public:
         isAttacking = false;
     }
 
+    SmallBird(const SmallBird& other) 
+        : Enemy(other),  // Llama al constructor de copia de la clase base
+          health(other.health),
+          bullets(other.bullets) {
+    }
 
     // Operador de asignación
     SmallBird& operator=(const SmallBird& other) {
         if (this != &other) {
-            Entity::operator=(other); // Asigna la parte base
+            Enemy::operator=(other); // Asigna la parte base
             health = other.health;
-            // Copia cualquier otro atributo propio de SmallBird aquí si es necesario
+            bullets = other.bullets; // Copia las balas
         }
         return *this;
     }
