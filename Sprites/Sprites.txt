@@ -58,6 +58,11 @@ Phoenix 1 (de huevo a mutant bird):
  "\/ V \/ "
  "  Y Y   "
 
+ "  /\ /\ "
+ " /  A  \"
+ " \/ V \/"
+ "   Y Y  "
+
 " /\   /\ "
 "/   A   \"
 "\/  V  \/"
@@ -120,6 +125,18 @@ Alienígena Supremo:
 "  /_\  "
 " <o o> "
 "  \-/  "
+
+"  /_\  "
+" <O O> "
+"  \o/  "
+
+"  v_v  "
+" <X X> "
+"  \Q/  "
+
+"  /_\  "
+" <o o> "
+" .\=/. "
 
 Nave Nodriza:
 
