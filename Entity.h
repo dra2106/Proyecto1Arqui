@@ -38,12 +38,16 @@ public:
 
     // Setters
     void setPosition(int newX, int newY) { x = newX; y = newY; }
-    void setSize(int w, int h) { width = w; height = h; }
+        void setSize(int w, int h) { width = w; height = h; }
     void setSprite(const DLinkedList<string>& newSprite) {
         sprite = newSprite;
         height = sprite.getSize();
-        sprite.goToStart();
-        width = sprite.isEmpty() ? 0 : sprite.getElement().length();
+        int maxWidth = 0;
+        for (sprite.goToStart(); !sprite.atEnd(); sprite.next()) {
+            int len = sprite.getElement().length();
+            if (len > maxWidth) maxWidth = len;
+        }
+        width = maxWidth;
     }
     void setActive(bool active) { isActive = active; }
 
