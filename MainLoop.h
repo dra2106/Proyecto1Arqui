@@ -23,6 +23,7 @@ private:
     CollisionController collision;
     SmallBird enemyBird;
     vector<Bullet> bullets;
+    int timer = 0; 
 
 public:
     MainLoop(int height, int width)
@@ -60,33 +61,37 @@ public:
                 break;
             case ' ':                   // espacio es la tecla para disparar
                 spaceship.setDirection(STAND);    
-                if (bullets.size() < 5) // límite de 5 balas en pantalla
+                if (bullets.size() < 5) {// límite de 5 balas en pantalla
                     bullets.emplace_back(spaceship.getY() - 1, spaceship.getX());
-                // bullet = Bullet(spaceship.getY() - 1, spaceship.getX());
-                // bullet.setDirection(up);
-                // bullets.push_back(bullet);
+                    for (Bullet& b : bullets) {
+                        b.setDirection(UP); // todas las balas van hacia arriba
+                    }
+                }
                 break;
             default:
                 spaceship.setDirection(STAND);
                 break;
         }
 
-        // si hubo una colisión, termina el juego
-        //if (collision.checkCollision(spaceship, bird))
-          //  gameOver = true;
+        if (collision.checkCollision(spaceship, enemyBird))
+            gameOver = true;
 
         // idea para eliminar aves cuando se les dispara
-        // for (Bullet& b : bullets){
-        //     if (collision.checkCollision(b, bird))
-        //         bird.~SmallBird();
-        // }
+        for (Bullet& b : bullets){
+            if (collision.checkCollision(b, enemyBird))
+                gameOver = true;
+        }
     }
 
 
     void updateState() {
         screen.clear(); // limpia la pantalla para evitar residuos
         spaceship.move(screen.getWidth(), screen.getHeight()); // mueve la nave usando el ancho de la pantalla
-
+        if (timer % 30 == 0) { // cada 30 frames, el pájaro ataca
+            enemyBird.attack();
+            enemyBird.update();
+        }
+        timer++;
         // Mueve y dibuja las balas activas
         for (Bullet& b : bullets) {
             b.move();

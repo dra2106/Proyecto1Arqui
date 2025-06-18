@@ -24,10 +24,10 @@ public:
     }
 
     void move() {
-        if (currentDirection == UP) {
+        if (currentDirection == UP)
             y--;
-        }
-        // Podés extender con más direcciones si después hacés balas enemigas.
+        if (currentDirection == DOWN)
+            y++;
     }
 
     void setDirection(Direction d) {
