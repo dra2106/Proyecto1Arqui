@@ -16,7 +16,7 @@ private:
     }
 
 public:
-    SmallBird(int x = 0, int y = 0)
+    SmallBird(int y = 0,int x = 0)
         : Enemy(x, y, buildSprite()), velocity(1) {}
 
     // Implementación del método update
@@ -24,6 +24,17 @@ public:
         if (isAttacking) {
             y += velocity;
         }
+    }
+
+
+    // Operador de asignación
+    SmallBird& operator=(const SmallBird& other) {
+        if (this != &other) {
+            Entity::operator=(other); // Asigna la parte base
+            velocity = other.velocity;
+            // Copia cualquier otro atributo propio de SmallBird aquí si es necesario
+        }
+        return *this;
     }
 
     void attack() override {

@@ -11,7 +11,6 @@ private:
     int height, width;
 
     void construct(int height, int width) {
-        
         int xMax, yMax;
         getmaxyx(stdscr, yMax, xMax); // obtiene el tamaño total del terminal
 
@@ -20,7 +19,6 @@ private:
             height = yMax;
             width = xMax;
         }
-
         // Calcula coordenadas para centrar la ventana
         int startY = (yMax - height) / 2;
         int startX = (xMax - width) / 2;
@@ -34,6 +32,9 @@ private:
     void addAt(int y, int x, DLinkedList<string> sprite) {
         int offsetY = sprite.getSize() / 2;
         int offsetX = sprite.getElement().size() / 2;
+
+        // Debug: imprime coordenadas de dibujo
+        //mvwprintw(win, 2, 1, "addAt: y=%d x=%d offsetY=%d offsetX=%d", y, x, offsetY, offsetX);
 
         int i = 0;
         for (sprite.goToStart(); !sprite.atEnd(); sprite.next()) {
@@ -82,6 +83,10 @@ public:
 
     int getWidth() const {
         return width;
+    }
+
+    int getHeight() const {
+        return height;
     }
 
     // refresca la ventana

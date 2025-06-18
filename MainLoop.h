@@ -21,19 +21,25 @@ private:
     bool gameOver;
     Spaceship spaceship;
     CollisionController collision;
-    SmallBird bird;
-    Bullet bullet;
+    SmallBird enemyBird;
     vector<Bullet> bullets;
 
 public:
     MainLoop(int height, int width)
         : screen(height, width),
-          gameOver(false),
-          bird(5, 15)
+        gameOver(false),
+        spaceship(0, 0)// valores temporales
     {
         screen.initialize();
-        spaceship = Spaceship(screen, 7, 15);
-        curs_set(0);           // Oculta cursor
+
+        int birdY = 2;
+        int birdX = screen.getWidth() / 2;
+        enemyBird = SmallBird(birdY, birdX);
+
+        int naveY = screen.getHeight() - 3; // 2 bloques arriba del borde inferior
+        int naveX = screen.getWidth() / 2;  // centrada horizontalmente
+        spaceship = Spaceship(naveY, naveX); // ahora sí, la nave queda bien posicionada
+        curs_set(0); // Oculta cursor
     }
 
     // procesa el input del usuario
@@ -41,6 +47,7 @@ public:
         chtype input = screen.getInput();
         switch (input) {
             case KEY_UP:                // por ahora no hace nada, IMPLEMENTAR ESCUDO
+                spaceship.setDirection(STAND);    
                 break;
             case KEY_DOWN:
                 spaceship.setDirection(STAND);
@@ -52,8 +59,9 @@ public:
                 spaceship.setDirection(RIGHT);
                 break;
             case ' ':                   // espacio es la tecla para disparar
+                spaceship.setDirection(STAND);    
                 if (bullets.size() < 5) // límite de 5 balas en pantalla
-                bullets.emplace_back(spaceship.getY() - 1, spaceship.getX());
+                    bullets.emplace_back(spaceship.getY() - 1, spaceship.getX());
                 // bullet = Bullet(spaceship.getY() - 1, spaceship.getX());
                 // bullet.setDirection(up);
                 // bullets.push_back(bullet);
@@ -74,28 +82,28 @@ public:
         // }
     }
 
-    // actualiza el estado de la pantalla
+
     void updateState() {
         screen.clear(); // limpia la pantalla para evitar residuos
-        spaceship.move(); // mueve la nave
-        screen.add(bird);
+        spaceship.move(screen.getWidth(), screen.getHeight()); // mueve la nave usando el ancho de la pantalla
 
-        // for para mover y actualizar el movimiento de las balas
-        for (Bullet& b : bullets){
-            screen.add(b);
+        // Mueve y dibuja las balas activas
+        for (Bullet& b : bullets) {
             b.move();
+            screen.add(b);
         }
 
-        // este desmadre elimina balas si se salen de la pantalla
+        // Elimina balas que se salen de la pantalla (por arriba)
         bullets.erase(
-            std::remove_if(bullets.begin(), bullets.end(), 
+            std::remove_if(bullets.begin(), bullets.end(),
                 [](const Bullet& b) { return b.getY() < 1; }),
             bullets.end()
         );
-        
-        screen.add(bird);
+
+        screen.add(enemyBird);
         screen.add(spaceship); // muestra la nave en pantalla
     }
+
 
     // refresca la pantalla
     void redraw() {

@@ -5,49 +5,57 @@
 
 class Spaceship : public Entity {
 private:
-    Screen screen;
     Direction currentDirection;
 
-	void loadSprite() {
+    void loadSprite() {
         DLinkedList<string> sprite;
-        sprite.append("|\\A/|");
+        switch (currentDirection) {
+            case LEFT:
+                sprite.append("(\\A/|");
+                sprite.append("(!H!|");
+                sprite.append("(/V\\|");
+                break;
+            case RIGHT:
+                sprite.append("|\\A/)");
+                sprite.append("|!H!)");
+                sprite.append("|/V\\)");
+                break;
+            case STAND:
+            default:
+                sprite.append("|\\A/|");
+                sprite.append("|!H!|");
+                sprite.append("|/V\\|");
+                break;
+        }
         setSprite(sprite);
     }
 
 public:
-    Spaceship(Screen screen, int y = 0, int x = 0) {
-        this->screen = screen;
-        this->y = y;
-        this->x = x;
+    Spaceship(int y, int x) : Entity(x, y) {
         currentDirection = Direction::STAND;
         loadSprite();
     }
 
     void setDirection(Direction d) {
         currentDirection = d;
+        loadSprite(); // Actualiza el sprite al cambiar la dirección
     }
 
-    Direction getDirection() const {
-        return currentDirection;
-    }
+    Direction getDirection() const { return currentDirection; }
 
-    void move() {
+    void move(int screenWidth, int screenHeight) {
         switch (currentDirection) {
-            case LEFT:
-                x--;
-                break;
-            case RIGHT:
-                x++;
-                break;
-            default:
-                break;
+            case LEFT:  x--; break;
+            case RIGHT: x++; break;
+            case UP:    y--; break;
+            case DOWN:  y++; break;
+            default:    break;
         }
-
-        // Limita los bordes de la pantalla
-        if (x < 1)
-            x = 1;
-        if (x > screen.getWidth() - width)
-            x = screen.getWidth() - width;
+        int offsetX = getSprite().getElement().size() / 2;
+        int offsetY = getSprite().getSize() / 2;
+        if (x < offsetX) x = offsetX;
+        if (x > screenWidth - offsetX - 1) x = screenWidth - offsetX - 1;
+        if (y < offsetY) y = offsetY;
+        if (y > screenHeight - offsetY - 1) y = screenHeight - offsetY - 1;
     }
-
 };
