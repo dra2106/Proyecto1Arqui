@@ -2,6 +2,7 @@
 
 #include "Entity.h"
 #include "Spaceship.h"
+#include "Direction.h"
 
 class Bullet : public Entity {
 private:

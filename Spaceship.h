@@ -3,13 +3,6 @@
 #include "DataStructures/DLinkedList.h"
 #include "Macro/macro.h"
 
-enum Direction {
-    up,
-    left,
-    right,
-    stand
-};
-
 class Spaceship : public Entity {
 private:
     Direction currentDirection;
@@ -23,14 +16,7 @@ private:
     }
 
 public:
-    Spaceship() {
-        this->x = 0;
-        this->y = 0;
-        currentDirection = stand;
-        loadSprite();
-    }
-
-    Spaceship(int y, int x) {
+    Spaceship(int y = 0, int x = 0) {
         this->x = x;
         this->y = y;
         currentDirection = stand;

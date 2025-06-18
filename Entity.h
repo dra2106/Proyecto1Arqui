@@ -11,10 +11,19 @@ protected:
     int width, height; 
     DLinkedList<string> sprite; 
     bool isActive; 
+    Direction direction;
+    int speed;
+
+    void loadSprite() {
+
+    }
 
 public:
-    Entity(int x = 0, int y = 0, int width = 1, int height = 1)
-        : x(x), y(y), width(width), height(height), isActive(true) {}
+    Entity(int x = 0, int y = 0, const DLinkedList<string>& sprite = DLinkedList<string>())
+        : x(x), y(y), isActive(true), direction(Direction::STAND), speed(1) {
+        setSprite(sprite);
+        setPosition(x, y);
+    }
 
     // Virtual destructor para herencia
     virtual ~Entity() = default;
@@ -37,4 +46,23 @@ public:
         width = sprite.isEmpty() ? 0 : sprite.getElement().length();
     }
     void setActive(bool active) { isActive = active; }
+
+    void move() {
+        switch (direction) {
+            case LEFT:
+                x--;
+                break;
+            case UP:
+                x++;
+                break;
+            default:
+                break;
+        }
+
+        // Limita los bordes de la pantalla
+        if (x < 1)
+            x = 1;
+        if (x > SCREEN_COLS - width)
+            x = SCREEN_COLS - width;
+    }
 };

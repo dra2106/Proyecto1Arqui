@@ -8,8 +8,10 @@
 class Screen {
 private:
     WINDOW* win;
+    int height, width;
 
     void construct(int height, int width) {
+        
         int xMax, yMax;
         getmaxyx(stdscr, yMax, xMax); // obtiene el tamaño total del terminal
 
@@ -28,12 +30,26 @@ private:
         keypad(win, true); // habilita teclas especiales
     }
 
-public:
-    Screen() {
-        construct(0, 0);
+    // añade un caracter en las coordenadas dadas
+    void addAt(int y, int x, DLinkedList<string> sprite) {
+        int offsetY = sprite.getSize() / 2;
+        int offsetX = sprite.getElement().size() / 2;
+
+        int i = 0;
+        for (sprite.goToStart(); !sprite.atEnd(); sprite.next()) {
+            string line = sprite.getElement();
+            for (int j = 0; j < line.size(); ++j) {
+                char c = line[j];
+                mvwaddch(win, y + i - offsetY, x + j - offsetX, c);
+            }
+            i++;
+        }
     }
 
+public:
     Screen(int height = 0, int width = 0) {
+        this->height = height;
+        this->width = width;
         construct(height, width);
     }
 
@@ -51,22 +67,6 @@ public:
     // añade una entidad en las coordenadas dadas
     void add(Entity entity) {
         addAt(entity.getY(), entity.getX(), entity.getSprite());
-    }
-
-    // añade un caracter en las coordenadas dadas
-    void addAt(int y, int x, DLinkedList<string> sprite) {
-        int offsetY = sprite.getSize() / 2;
-        int offsetX = sprite.getElement().size() / 2;
-
-        int i = 0;
-        for (sprite.goToStart(); !sprite.atEnd(); sprite.next()) {
-            string line = sprite.getElement();
-            for (int j = 0; j < line.size(); ++j) {
-                char c = line[j];
-                mvwaddch(win, y + i - offsetY, x + j - offsetX, c);
-            }
-            i++;
-        }
     }
 
     // obtiene un input del usuario
