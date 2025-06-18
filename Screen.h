@@ -26,6 +26,7 @@ private:
         // Crea la ventana centrada
         win = newwin(height, width - 2, startY, startX);
         keypad(win, true); // habilita teclas especiales
+        nodelay(win, TRUE); // <-- clave para que el juego corra solo
     }
 
     // añade un caracter en las coordenadas dadas
