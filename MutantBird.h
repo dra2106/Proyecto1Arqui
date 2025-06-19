@@ -1,0 +1,119 @@
+#include <vector>
+#include "DataStructures/DLinkedList.h"
+#include "Enemy.h"
+#include "Bullet.h"
+
+class MutantBird : public Enemy {
+private:
+    int health;
+    int animationIndex = 0;
+    int counter = 0;
+
+    std::vector<DLinkedList<std::string>> animationSprites;
+    std::vector<Bullet> bullets;
+
+    void loadSprites() {
+        // Sprite 1
+        DLinkedList<std::string> s1;
+        s1.append("  o  ");
+        animationSprites.push_back(s1);
+
+        // Sprite 2
+        DLinkedList<std::string> s2;
+        s2.append(" / \\ ");
+        s2.append(" \\ / ");
+        animationSprites.push_back(s2);
+
+        // Sprite 3
+        DLinkedList<std::string> s3;
+        s3.append("  /\\ /\\  ");
+        s3.append(" /  A  \\ ");
+        s3.append(" \\/ V \\/ ");
+        s3.append("  Y Y   ");
+        animationSprites.push_back(s3);
+
+        // Sprite 4
+        DLinkedList<std::string> s4;
+        s4.append(" /\\   /\\ ");
+        s4.append("/   A   \\");
+        s4.append("\\/  V  \\/");
+        s4.append("  Y   Y  ");
+        animationSprites.push_back(s4);
+
+        // Sprite 5
+        DLinkedList<std::string> s5;
+        s5.append(" /\\   /\\ ");
+        s5.append("/  \\A/  \\");
+        s5.append("\\/\\ V /\\/");
+        s5.append("   Y Y   ");
+        animationSprites.push_back(s5);
+    }
+
+    void updateSprite() {
+        setSprite(animationSprites[animationIndex]);
+    }
+
+public:
+    MutantBird(int y = 0, int x = 0)
+        : Enemy(x, y), health(2)
+    {
+        loadSprites();
+        updateSprite();
+        setPattern({{1,0}, {1,0}, {-1,0}, {0,1}, {0,1}, {0,1}});
+    }
+
+    void update() override {
+        counter = (counter + 1) % 4;
+        if (counter % 2 == 0)
+            animationIndex = (animationIndex + 1) % animationSprites.size();
+        updateSprite();
+        Enemy::update();
+        if (isAttacking) {
+            bullets.emplace_back(getY() + 1, getX());
+            for (Bullet& b : bullets) {
+                b.setDirection(DOWN); // Las balas van hacia abajo
+            }
+        } else {
+            reset();
+        }
+    }
+
+    void setSprite(const DLinkedList<string>& newSprite) {
+        Entity::setSprite(newSprite);
+        if (height == 1 || height == 2) {
+            health = 1; // Si el sprite es pequeño, la salud es 1
+        }
+        else {
+            health = 2; // Si el sprite es mediano, la salud es 2
+        }
+    }
+
+    MutantBird& operator=(const MutantBird& other) {
+        if (this != &other) {
+            Entity::operator=(other);
+            health = other.health;
+        }
+        return *this;
+    }
+
+    bool attack() override {
+        return isAttacking = true;
+    }
+
+    void reset() {
+        isAttacking = false;
+        patternIndex = 0;
+        x = 0;
+    }
+
+    bool isDead() const {
+        return health <= 0;
+    }
+
+    void damage() {
+        health -= 1;
+    }
+
+    int getHealth() const { return health; }
+    void setHealth(int v) { health = v; }
+};
