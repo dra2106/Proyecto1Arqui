@@ -98,12 +98,6 @@ public:
         return isAttacking = true;
     }
 
-    void reset() {
-        isAttacking = false;
-        patternIndex = 0;
-        x = 0;
-    }
-
     int gethealth() const { return health; }
     
     void damage() { this->health -= 1; }
@@ -111,6 +105,4 @@ public:
     bool isDead() const { return health <= 0; }
 
     void sethealth(int v) { health = v; }
-
-    
 };

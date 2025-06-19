@@ -17,10 +17,10 @@
 
 int main() {
     GameAdmin game;
-    bool continuar = true;
-    while (continuar) {
-        game.iniciarJuego();
-        continuar = game.deseaContinuar();
+    bool continueGame = true;
+    while (continueGame) {
+        game.startGame();
+        continueGame = game.wantsToContinue();
     }
     return 0;
 }

@@ -1,99 +1,189 @@
+
+
 #pragma once
+
 #include <string>
+
 #include "NcursesAdmin.h"
 #include "ScoreController.h"
+#include "Direction.h"
+#include "Spaceship.h"
+#include "Bullet.h"
+#include "EnemyController.h"
+#include "CollisionController.h"
+
 
 using std::string;
 
 class GameAdmin {
+private:
+    // Attributes
+
+    // Game entities
+    Spaceship spaceship;
+    EnemyController enemies;
+    vector<Bullet> playerBullets;
+
+    // Controllers
+    NcursesAdmin ncurses;
+    ScoreController scoreController;
+    CollisionController collisionController;
+
+    // Game state
+    string playerName;
+    int remainingLives;
+    int currentScore;
+    int highestScore;
+    int level;
+    bool gameOver;
+
 public:
-    GameAdmin() : ncurses(), scoreController("Files/Scores.txt", "Jugador") {
-        // Inicializa los atributos del juego
-        nombreJugador = "Jugador";
-        scoreActual = 0;
+    GameAdmin() 
+        : spaceship(0,0), 
+          ncurses(), 
+          scoreController("Files/Scores.txt", "Player") {
+        // Initialize game attributes
+        playerName = "Player";
+        currentScore = 0;
         highestScore = 0;
-        nivel = 1;
-        vidasRestantes = 3;
-        juegoTerminado = false;
+        level = 1;
+        remainingLives = 3;
+        gameOver = false;
     }
     ~GameAdmin(){
-        // Finaliza la pantalla ncurses
-        ncurses.finalizarPantalla();
+        // Finalize ncurses screen
+        ncurses.finalizeScreen();
     }
 
-    void iniciarJuego(){
-        // Inicializa la pantalla ncurses
-        ncurses.inicializarPantalla();
+    void startGame(){
+        // Initialize ncurses screen
+        ncurses.initializeScreen();
 
-        // Muestra la pantalla de inicio (Titulo del juego)
-        ncurses.mostrarPantalla(Pantalla::INICIO); // Espera cualquier tecla para continuar
+        // Show start screen (game title)
+        ncurses.showScreen(ScreenType::START); // Waits for any key to continue
 
-        // Muestra la pantalla de solicitud de nombre y lo obtiene
-        ncurses.mostrarPantalla(Pantalla::SOLICITUD_NOMBRE, nombreJugador);
-        nombreJugador = ncurses.solicitarInput("Ingrese su nombre: ");
+        // Show name request screen and get the name
+        ncurses.showScreen(ScreenType::NAME_REQUEST, playerName);
+        playerName = ncurses.requestInput("Enter your name: ");
 
-        // Bucle principal del juego
+        // Main game loop
         mainLoop();
         
-        // Al finalizar el juego, guarda el puntaje del jugador
-        scoreController.setPlayerName(nombreJugador);
-        scoreController.setPlayerScore(scoreActual);
+        // At the end of the game, save the player's score
+        scoreController.setPlayerName(playerName);
+        scoreController.setPlayerScore(currentScore);
         scoreController.saveGame();
         
-        // Carga los puntajes más altos desde el archivo
+        // Load the highest scores from the file
         scoreController.loadGame();
-        
         DLinkedList<KVPair<string, int>> highScoresList;
         scoreController.getScores(highScoresList);
         
-        // Al finalizar el juego, muestra la pantalla de Game Over
-        ncurses.mostrarPantalla(Pantalla::GAME_OVER, nombreJugador, scoreActual, highestScore, nivel, vidasRestantes);
+        // At the end of the game, show the Game Over screen
+        ncurses.showScreen(ScreenType::GAME_OVER, playerName, currentScore, highestScore, level, remainingLives);
 
-        // Muestra los puntajes más altos
-        ncurses.mostrarPantalla(Pantalla::HIGHSCORES, highScoresList);
+        // Show the highest scores
+        ncurses.showScreen(ScreenType::HIGHSCORES, highScoresList);
     }
 
-    bool deseaContinuar() {
-        ncurses.limpiarPantalla();
-        char respuesta = ncurses.solicitarInput("¿Desea continuar jugando? (s/n): ")[0];
+    bool wantsToContinue() {
+        ncurses.clearScreen();
+        char answer = ncurses.requestInput("Do you want to continue playing? (y/n): ")[0];
         
-        if (respuesta == 's' || respuesta == 'S')
-            return true; // Continúa el juego
+        if (answer == 'y' || answer == 'Y')
+            return true; // Continue the game
         else
-            return false; // Cierra el juego
+            return false; // Exit the game
     }
-    
+
 private:
     void mainLoop(){
-        while (!juegoTerminado) {
-            ncurses.limpiarPantalla();
-            ncurses.mostrarPantalla(Pantalla::JUEGO, nombreJugador, scoreActual, highestScore, nivel, vidasRestantes);
+        while (!gameOver) {
+            ncurses.clearScreen();
+            ncurses.showScreen(ScreenType::GAME, playerName, currentScore, highestScore, level, remainingLives);
 
-            procesarInputs();
-            updateEstado();
-            redraw();
-            revisarColisiones();
-            revisarFinJuego();
+            processInput();
+            updateState();
 
-            juegoTerminado = (vidasRestantes <= 0);
+            refresh();
+            
+            checkCollisions();
+            checkGameOver();
         }
     }
 
-    void procesarInputs(){
-        // Procesa la entrada del usuario
+    void processInput() {
+        
+        chtype input = ncurses.getInput();
+
+        switch (input) {
+            case KEY_UP:            
+                //spaceship.activateShield();    
+                spaceship.setDirection(STAND);    
+                break;
+            case KEY_LEFT:
+                spaceship.setDirection(LEFT);
+                break;
+            case KEY_RIGHT:
+                spaceship.setDirection(RIGHT);
+                break;
+            case ' ':
+                spaceship.setDirection(STAND);    
+                if (playerBullets.size() < 5) {    
+                    playerBullets.emplace_back(spaceship.getY() - 1, spaceship.getX());
+                    for (Bullet& b : playerBullets) {
+                        b.setDirection(UP);   
+                    }
+                }
+                break;
+            default:
+                spaceship.setDirection(STAND);
+                break;
+        }
     }
-    void updateEstado();
-    void redraw();
-    void revisarColisiones();
-    void revisarFinJuego();
 
-    NcursesAdmin ncurses;
-    ScoreController scoreController;
+    void checkCollisions() {
 
-    string nombreJugador;
-    int scoreActual;
-    int highestScore;
-    int nivel;
-    int vidasRestantes;
-    bool juegoTerminado;
+        // Check for collisions between player bullets and enemies
+        std::vector<Enemy> enemyList(enemies.getEnemies().begin(), enemies.getEnemies().end());
+        if (collisionController.checkCollisionsEnemy(playerBullets, enemyList)) {
+            // If a bullet hits an enemy, increase the score
+            currentScore += 10; // Example score increment
+            
+            // Remove the bullet from the player's bullets list
+            // PENDIENTE
+        }
+
+        // Check for collisions between player and enemies their bullets
+        if (enemies.checkPlayerCollisions(spaceship)) {
+            remainingLives--;
+            if (remainingLives <= 0)
+                gameOver = true;
+        }
+    }
+
+    void updateState() {
+        // Limpia la pantalla
+        ncurses.clearScreen();
+
+        // Mueve la nave y actualiza su posición
+        spaceship.move(ncurses.getScreenWidth(), ncurses.getScreenHeight());
+
+        // Check for collisions between player and enemies
+        checkCollisions();
+
+        // Update enemies
+        //Screen& screen = ncurses.getScreen();
+        //enemies.updateAll(screen);
+    }
+
+    void refresh() {
+        ncurses.refresh();
+    }
+
+    void checkGameOver() {
+        if (remainingLives <= 0)
+            gameOver = true;
+    }
+
 };
