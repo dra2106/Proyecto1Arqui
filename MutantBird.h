@@ -91,9 +91,8 @@ public:
             for (Bullet& b : bullets) {
                 b.setDirection(DOWN); // Las balas van hacia abajo
             }
-        } else {
-            reset();
         }
+        isAttacking = false;
     }
 
     void setSprite(const DLinkedList<string>& newSprite) {
@@ -106,10 +105,26 @@ public:
         }
     }
 
+    MutantBird(const MutantBird& other) 
+        : Enemy(other),
+          health(other.health),
+          animationIndex(other.animationIndex),
+          counter(other.counter),
+          animationSprites(other.animationSprites), // Copia los sprites
+          bullets(other.bullets)
+    {
+        updateSprite(); // Asegura que el sprite actual sea correcto
+    }
+
     MutantBird& operator=(const MutantBird& other) {
         if (this != &other) {
-            Entity::operator=(other);
+            Enemy::operator=(other);
             health = other.health;
+            animationIndex = other.animationIndex;
+            counter = other.counter;
+            animationSprites = other.animationSprites;
+            bullets = other.bullets;
+            updateSprite();
         }
         return *this;
     }

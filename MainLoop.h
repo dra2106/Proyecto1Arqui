@@ -49,8 +49,8 @@ public:
     {
         screen.initialize();
         // genera 5 enemigos para probar
-        for (int i = 0; i < 5; i++)
-            enemyCon.spawnMutant(screen.getWidth(), screen.getHeight());
+        for (int i = 0; i < 3; i++)
+            enemyCon.spawnMutant(screen.getHeight(), screen.getWidth());
 
         srand(time(0)); // Inicializa la semilla para números aleatorios
         int naveY = screen.getHeight() - 3;     // 2 bloques arriba del borde inferior

@@ -35,10 +35,8 @@ private:
     vector<MutantBird> mutants;
 	CollisionController collision;
 
-public: 
-    EnemyController() {
-        srand(time(0)); // genera la semilla para las posiciones
-    }
+public:
+    EnemyController() {}
 
     void spawnSmall(int maxY, int maxX) {
 		int y = rand() % (maxY / 3) + 1;        // se divide entre 3 para que no salga muy cerca del jugador
@@ -106,8 +104,10 @@ public:
 
         // Actualizar MutantBirds
         for (auto& enemy : mutants) {
-            if (timer % 30 == 0) enemy.update();
-            if (timer % 90 == 0) enemy.attack();
+            if (timer % 30 == 0) 
+                enemy.update();
+            if (timer % 90 == 0) 
+                enemy.attack();
             for (auto& bullet : enemy.getBullets()) {
                 bullet.move();
                 screen.add(bullet);
@@ -117,4 +117,3 @@ public:
         timer++; // aumenta el frame actual
 	}
 };
-
