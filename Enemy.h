@@ -32,7 +32,7 @@ protected:
 public:
     Enemy(int x = 0, int y = 0, const DLinkedList<string>& sprite = DLinkedList<string>())
         : Entity(x, y, sprite), patternIndex(0), isAttacking(false) {
-            srand(getX()); 
+            // srand(getX()); 
         }
 
     virtual ~Enemy() = default;

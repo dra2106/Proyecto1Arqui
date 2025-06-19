@@ -35,3 +35,5 @@ namespace EnemyPatterns {
         {{2,0}, {2,0}, {-1,1}, {-1,1}}
     };
 }
+
+// setPattern({{1,0}, {1,0}, {-1,0}, {0,1}, {0,1}, {0,1}}); patrón para mutants

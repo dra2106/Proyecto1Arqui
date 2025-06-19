@@ -17,6 +17,7 @@
 
 #include <vector>
 #include "DataStructures/DLinkedList.h"
+#include "EnemyPatterns.h"
 #include "Enemy.h"
 #include "Bullet.h"
 
@@ -76,7 +77,7 @@ public:
     {
         loadSprites();
         updateSprite();
-        setPattern({{1,0}, {1,0}, {-1,0}, {0,1}, {0,1}, {0,1}});
+        setRandomPattern(EnemyPatterns::SMALL_BIRD_PATTERNS);
     }
 
     void update() override {
@@ -129,6 +130,10 @@ public:
 
     void damage() {
         health -= 1;
+    }
+
+    vector<Bullet>& getBullets() {
+        return bullets;
     }
 
     int getHealth() const { return health; }
