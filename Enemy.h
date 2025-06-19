@@ -1,5 +1,3 @@
-// clase abstracta (idea)
-
 #pragma once
 
 #include "Entity.h"
@@ -18,7 +16,7 @@ protected:
 public:
     Enemy(int x = 0, int y = 0, const DLinkedList<string>& sprite = DLinkedList<string>())
         : Entity(x, y, sprite), patternIndex(0), isAttacking(false) {
-            srand(time(0)); // Inicializa la semilla para números aleatorios
+            srand(getX()); // Inicializa la semilla para números aleatorios
         }
 
     virtual ~Enemy() = default;
@@ -30,17 +28,16 @@ public:
       isAttacking(other.isAttacking),
       pattern(other.pattern) {}
 
-// Operador de asignación
-Enemy& operator=(const Enemy& other) {
-    if (this != &other) {
-        Entity::operator=(other);
-        patternIndex = other.patternIndex;
-        isAttacking = other.isAttacking;
-        pattern = other.pattern;
-        // No copiamos rng (generador aleatorio)
+    // Operador de asignación
+    Enemy& operator=(const Enemy& other) {
+        if (this != &other) {
+            Entity::operator=(other);
+            patternIndex = other.patternIndex;
+            isAttacking = other.isAttacking;
+            pattern = other.pattern;
+        }
+        return *this;
     }
-    return *this;
-}
 
     void setPattern(const vector<std::pair<int, int>>& patt) {
         pattern = patt;
@@ -76,6 +73,14 @@ Enemy& operator=(const Enemy& other) {
         patternIndex = 0;
         // Regresa a una posición original, por ejemplo:
         x = 0;
+    }
+
+    int getX()& {
+        return x;
+    }
+
+    int getY()& {
+        return y;
     }
 
     // Getters y setters comunes a todos los enemigos

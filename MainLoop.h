@@ -10,7 +10,7 @@
 #include "SmallBird.h"
 #include "Spaceship.h"
 #include "Bullet.h"
-
+#include "EnemyController.h"
 #include "CollisionController.h"
 
 using std::runtime_error;
@@ -22,9 +22,9 @@ private:
     bool gameOver;
     Spaceship spaceship;
     CollisionController collision;
+    EnemyController enemyCon;
     vector<Bullet> bullets;
     vector<SmallBird> smallBirds;
-    int timer = 0; // contador de frames para manejar las acciones de los enemigos
 
 public:
     MainLoop(int height, int width)
@@ -33,15 +33,9 @@ public:
         spaceship(0, 0) // valores temporales
     {
         screen.initialize();
+        for (int i = 0; i < 5; i++)
+            enemyCon.spawnEnemy(screen.getWidth(), screen.getHeight());
         srand(time(0)); // Inicializa la semilla para números aleatorios
-        int i = 0;
-        for (int i = 0; i < 4; i++) {
-            int birdY = rand() % (screen.getHeight() / 3) + 1; // altura aleatoria, evitando el borde superior
-            int birdX = rand() % (screen.getWidth() - 2) + 1; // posición horizontal aleatoria, evitando el borde izquierdo
-            smallBirds.push_back(SmallBird(birdY, birdX));
-        }
-        
-
         int naveY = screen.getHeight() - 3;     // 2 bloques arriba del borde inferior
         int naveX = screen.getWidth() / 2;      // centrada horizontalmente
         spaceship = Spaceship(naveY, naveX);    // ahora sí, la nave queda bien posicionada
@@ -87,24 +81,10 @@ public:
     void updateState() {
         screen.clear();         // limpia la pantalla para evitar residuos
         spaceship.move(screen.getWidth(), screen.getHeight()); // mueve la nave usando el ancho de la pantalla
+        if (enemyCon.checkPlayerCollisions(spaceship))
+            gameOver = true;
+        enemyCon.updateAll(screen);
         
-        for (SmallBird& enemyBird : smallBirds) {
-            if (collision.checkCollision(spaceship, enemyBird))
-                gameOver = true;
-            if (timer % 30 == 0) {
-                enemyBird.update();
-            }
-            if (timer % 90 == 0) { // cada 120 frames, el pájaro ataca
-                enemyBird.attack();
-                
-            }
-            for (Bullet& b : enemyBird.getBullets()) {
-                b.move();
-                screen.add(b);
-            }
-            screen.add(enemyBird);
-        }
-        timer++;
         // Mueve y dibuja las balas activas
         for (Bullet& b : bullets) {
             b.move();
