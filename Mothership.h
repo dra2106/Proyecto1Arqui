@@ -1,8 +1,24 @@
+/* 
+ * Nombre de Archivo: Mothership.h
+ *
+ * Descripcion:
+ * Este archivo define la clase Mothership, que representa la nave nodriza enemiga.
+ * Incluye la lógica para animar el sprite del marciano dentro de la nave, gestionar su salud,
+ * patrones de movimiento y detección de daño, así como la integración con el sistema de enemigos.
+ *
+ * Integrantes del Proyecto:
+ * David Rojas Arias
+ * Allan José Jimenez Rivera
+ * Juan Carlos Monsalve Perez
+ * Josué Santiago Hidalgo Sandoval
+ */
+
 #pragma once
+
+#include <vector>
 
 #include "Enemy.h"
 #include "Bullet.h"
-#include <vector>
 
 class Mothership : public Enemy {
 private:
@@ -29,7 +45,6 @@ private:
     { "  /_\\  ", " <o o> ", " .\\=/. " }
     };
 
-    // Función auxiliar para construir el sprite
     static DLinkedList<string> buildSprite() {
             DLinkedList<std::string> s;
             s.append("                 _______                 ");
@@ -62,7 +77,7 @@ private:
 public:
     Mothership(int y = 0,int x = 0)
         : Enemy(x, y, buildSprite()), health(10) {
-            setPattern({{0,1}, {0,0}, {0,1}, {0,0}, {0,-1}, {0,0}}); // Patrón de movimiento
+            setPattern({{0,1}, {0,0}, {0,1}, {0,0}, {0,-1}, {0,0}});
         }
 
     void update() override {
@@ -96,4 +111,6 @@ public:
     bool isDead() const { return health <= 0; }
 
     void sethealth(int v) { health = v; }
+
+    
 };

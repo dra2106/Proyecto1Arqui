@@ -1,5 +1,17 @@
-// los patrones son vectores de pares, y se almacenan en otro vector
-// se busca asignar un patrón al azar dentro del vector grande
+/* 
+ * Nombre de Archivo: EnemyPatterns.h
+ *
+ * Descripcion:
+ * Este archivo define patrones de movimiento predefinidos para los enemigos del juego,
+ * almacenados como vectores de pares de enteros. Los patrones pueden ser asignados aleatoriamente
+ * a los enemigos para variar su comportamiento y trayectorias en pantalla.
+ *
+ * Integrantes del Proyecto:
+ * David Rojas Arias
+ * Allan José Jimenez Rivera
+ * Juan Carlos Monsalve Perez
+ * Josué Santiago Hidalgo Sandoval
+ */
 
 #pragma once
 

@@ -1,3 +1,18 @@
+/* 
+ * Nombre de Archivo: Proyecto1Arqui.cpp
+ *
+ * Descripcion:
+ * Este archivo contiene la función principal del juego. Inicializa la pantalla,
+ * muestra la pantalla de inicio, ejecuta el ciclo principal del juego y, al finalizar,
+ * muestra los puntajes más altos (highscores) obtenidos desde el archivo correspondiente.
+ *
+ * Integrantes del Proyecto:
+ * David Rojas Arias
+ * Allan José Jimenez Rivera
+ * Juan Carlos Monsalve Perez
+ * Josué Santiago Hidalgo Sandoval
+ */
+
 #include <iostream>
 #include <string>
 #include <cstring>
@@ -75,7 +90,7 @@ int main() {
     endwin();
     cout << "Has perdido!!" << endl;
     // Mostrar highscores
-    ScoreController scoreController("scores.txt", "JUGADOR"); // Cambia el nombre si lo pides antes
+    ScoreController scoreController("Files/Scores.txt", "JUGADOR"); // Cambia el nombre si lo pides antes
     DLinkedList<KVPair<std::string, int>> scores;
     scoreController.getScores(scores);
 

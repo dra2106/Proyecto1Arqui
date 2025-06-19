@@ -1,10 +1,23 @@
+/* 
+ * Nombre de Archivo: CollisionController.h
+ *
+ * Descripcion:
+ * Este archivo define la clase CollisionController, que proporciona métodos estáticos
+ * para detectar colisiones entre entidades del juego, utilizando sus posiciones y dimensiones.
+ *
+ * Integrantes del Proyecto:
+ * David Rojas Arias
+ * Allan José Jimenez Rivera
+ * Juan Carlos Monsalve Perez
+ * Josué Santiago Hidalgo Sandoval
+ */
+
 #pragma once
 
-#include "Entity.h" // Asumimos que las entidades tienen getX(), getY(), getWidth(), getHeight()
+#include "Entity.h" 
 
 class CollisionController {
 public:
-    // Verifica si dos entidades están colisionando
     static bool checkCollision(const Entity& a, const Entity& b) {
         int ax1 = a.getX() - a.getWidth()  / 2;
         int ay1 = a.getY() - a.getHeight() / 2;

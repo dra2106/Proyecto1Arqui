@@ -1,12 +1,28 @@
+/* 
+ * Nombre de Archivo: MainLoop.h
+ *
+ * Descripcion:
+ * Este archivo define la clase MainLoop, que controla el ciclo principal del juego,
+ * gestionando la entrada del usuario, la actualización de entidades, el control de colisiones,
+ * y la lógica de avance de niveles y finalización del juego.
+ *
+ * Integrantes del Proyecto:
+ * David Rojas Arias
+ * Allan José Jimenez Rivera
+ * Juan Carlos Monsalve Perez
+ * Josué Santiago Hidalgo Sandoval
+ */
+
 #pragma once
 
 #include <vector>
+#include <time.h>
+
+#include "Screen.h"
+#include "CollisionController.h"
 #include "Enemy.h"
 #include "SmallBird.h"
 #include "Bullet.h"
-#include <time.h>
-#include "Screen.h"
-#include "CollisionController.h"
 
 using std::vector;
 
@@ -27,9 +43,8 @@ public:
         small.emplace_back(SmallBird(y, x));    // se añade a la lista de enemigos
 	}
 
-    // revisa las colisiones con la nave
 	bool checkPlayerCollisions(const Spaceship& spaceship){
-        // por cada enemido, si toca al jugador, pierde
+        // por cada enemigo, si toca al jugador, pierde
 		for (SmallBird& enemy: small) {
 			if (collision.checkCollision(spaceship, enemy))
 			    return true;

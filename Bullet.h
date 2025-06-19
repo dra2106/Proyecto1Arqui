@@ -1,3 +1,17 @@
+/* 
+ * Nombre de Archivo: Bullet.h
+ *
+ * Descripcion:
+ * Este archivo define la clase Bullet, que representa las balas disparadas por la nave o enemigos.
+ * Incluye la lógica para su movimiento y la inicialización de su sprite.
+ *
+ * Integrantes del Proyecto:
+ * David Rojas Arias
+ * Allan José Jimenez Rivera
+ * Juan Carlos Monsalve Perez
+ * Josué Santiago Hidalgo Sandoval
+ */
+
 #pragma once
 
 #include "Entity.h"

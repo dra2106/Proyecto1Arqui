@@ -1,34 +1,48 @@
+/* 
+ * Nombre de Archivo: Enemy.h
+ *
+ * Descripcion:
+ * Este archivo define la clase Enemy, que representa a los enemigos del juego.
+ * Incluye la lógica para patrones de movimiento, ataques y control de estado de los enemigos.
+ * Sirve como clase base para enemigos específicos con comportamientos personalizados.
+ *
+ * Integrantes del Proyecto:
+ * David Rojas Arias
+ * Allan José Jimenez Rivera
+ * Juan Carlos Monsalve Perez
+ * Josué Santiago Hidalgo Sandoval
+ */
+
 #pragma once
 
-#include "Entity.h"
 #include <vector>
 #include <time.h>
+
+#include "Entity.h"
 
 using std::vector;
 using std::pair;
 
 class Enemy : public Entity {
 protected:
-    int patternIndex;     // Índice del patrón actual de movimiento o ataque
-    bool isAttacking;     // Indica si el enemigo está actualmente atacando
+    int patternIndex;     
+    bool isAttacking;     
     vector<pair<int, int>> pattern;
 
 public:
     Enemy(int x = 0, int y = 0, const DLinkedList<string>& sprite = DLinkedList<string>())
         : Entity(x, y, sprite), patternIndex(0), isAttacking(false) {
-            srand(getX()); // Inicializa la semilla para números aleatorios, es en getX() porque así me dijo mi compa y funciona XD
+            srand(getX()); 
         }
 
     virtual ~Enemy() = default;
 
-    // Constructor de copia
     Enemy(const Enemy& other) 
     : Entity(other), 
       patternIndex(other.patternIndex),
       isAttacking(other.isAttacking),
       pattern(other.pattern) {}
 
-    // Operador de asignación
     Enemy& operator=(const Enemy& other) {
         if (this != &other) {
             Entity::operator=(other);
@@ -43,17 +57,15 @@ public:
         pattern = patt;
     }
 
-    // asigna un patrón dentro del vector de patrones
     void setRandomPattern(const vector<vector<pair<int, int>>>& patterns) {
         if (!patterns.empty()) {
-            int randomIndex = rand() % patterns.size();     // posición al azar dentro de patterns
+            int randomIndex = rand() % patterns.size();  
             pattern = patterns[randomIndex];
-            patternIndex = 0;                               // Reinicia el índice del patrón
+            patternIndex = 0;                          
         }
 
     }
 
-    // actualiza los patrones
     virtual void update() {
         if (!pattern.empty()) {
             auto [dx, dy] = pattern[patternIndex];
@@ -64,19 +76,16 @@ public:
         }
     }
 
-    // asigna que el enemigo está atacando
     virtual bool attack() {
         return isAttacking = true;
     }
 
-    // resetea el estado (no se usa por ahora)
     void reset() {
         isAttacking = false;
         patternIndex = 0;
         x = 0;
     }
 
-    // Getters y setters comunes a todos los enemigos
     int getX()& {
         return x;
     }

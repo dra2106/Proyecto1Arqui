@@ -1,3 +1,20 @@
+/* 
+ * Nombre de Archivo: MutantBird.h
+ *
+ * Descripcion:
+ * Este archivo define la clase MutantBird, que representa un enemigo especial con animaciones
+ * de sprite y patrones de movimiento únicos. Incluye la lógica para cambiar de sprite, disparar balas,
+ * gestionar su salud y controlar su comportamiento durante el juego.
+ *
+ * Integrantes del Proyecto:
+ * David Rojas Arias
+ * Allan José Jimenez Rivera
+ * Juan Carlos Monsalve Perez
+ * Josué Santiago Hidalgo Sandoval
+ */
+
+#pragma once
+
 #include <vector>
 #include "DataStructures/DLinkedList.h"
 #include "Enemy.h"

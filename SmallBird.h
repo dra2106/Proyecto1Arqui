@@ -1,3 +1,18 @@
+/* 
+ * Nombre de Archivo: SmallBird.h
+ *
+ * Descripcion:
+ * Este archivo define la clase SmallBird, que representa un enemigo pequeño en el juego.
+ * Incluye la lógica para su sprite, patrones de movimiento aleatorios, disparo de balas,
+ * gestión de salud y métodos de copia y asignación.
+ *
+ * Integrantes del Proyecto:
+ * David Rojas Arias
+ * Allan José Jimenez Rivera
+ * Juan Carlos Monsalve Perez
+ * Josué Santiago Hidalgo Sandoval
+ */
+
 #pragma once
 
 #include "Enemy.h"

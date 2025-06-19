@@ -1,3 +1,18 @@
+/* 
+ * Nombre de Archivo: Screen.h
+ *
+ * Descripcion:
+ * Este archivo define la clase Screen, encargada de administrar la ventana de juego,
+ * inicializar y limpiar la pantalla, manejar la entrada del usuario y dibujar entidades
+ * y sprites en pantalla utilizando la biblioteca ncurses.
+ *
+ * Integrantes del Proyecto:
+ * David Rojas Arias
+ * Allan José Jimenez Rivera
+ * Juan Carlos Monsalve Perez
+ * Josué Santiago Hidalgo Sandoval
+ */
+
 #pragma once
 
 #include <ncurses.h>

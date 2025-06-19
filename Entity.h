@@ -1,4 +1,20 @@
+/* 
+ * Nombre de Archivo: Window.h
+ *
+ * Descripcion:
+ * Este archivo define la clase Window, que administra la ventana principal del juego.
+ * Se encarga de inicializar la pantalla, mostrar la nave y gestionar el control de colisiones,
+ * sirviendo como interfaz principal para la visualización y control del juego.
+ *
+ * Integrantes del Proyecto:
+ * David Rojas Arias
+ * Allan José Jimenez Rivera
+ * Juan Carlos Monsalve Perez
+ * Josué Santiago Hidalgo Sandoval
+ */
+
 #pragma once
+
 #include <string>
 
 #include "DataStructures/DLinkedList.h"

@@ -1,3 +1,18 @@
+/* 
+ * Nombre de Archivo: Spaceship.h
+ *
+ * Descripcion:
+ * Este archivo define la clase Spaceship, que representa la nave controlada por el jugador.
+ * Incluye la lógica para el movimiento, la selección y actualización del sprite según la dirección,
+ * y la gestión de la posición dentro de los límites de la pantalla.
+ *
+ * Integrantes del Proyecto:
+ * David Rojas Arias
+ * Allan José Jimenez Rivera
+ * Juan Carlos Monsalve Perez
+ * Josué Santiago Hidalgo Sandoval
+ */
+
 #pragma once
 
 #include "Entity.h"
