@@ -33,8 +33,10 @@ public:
         spaceship(0, 0) // valores temporales
     {
         screen.initialize();
+        // genera 5 enemigos para probar
         for (int i = 0; i < 5; i++)
             enemyCon.spawnEnemy(screen.getWidth(), screen.getHeight());
+
         srand(time(0)); // Inicializa la semilla para números aleatorios
         int naveY = screen.getHeight() - 3;     // 2 bloques arriba del borde inferior
         int naveX = screen.getWidth() / 2;      // centrada horizontalmente
@@ -58,7 +60,7 @@ public:
             case KEY_RIGHT:
                 spaceship.setDirection(RIGHT);
                 break;
-            case ' ':                   // espacio es la tecla para disparar
+            case ' ': // espacio es la tecla para disparar
                 spaceship.setDirection(STAND);    
                 if (bullets.size() < 5) {       // límite de 5 balas en pantalla
                     bullets.emplace_back(spaceship.getY() - 1, spaceship.getX());
@@ -81,16 +83,18 @@ public:
     void updateState() {
         screen.clear();         // limpia la pantalla para evitar residuos
         spaceship.move(screen.getWidth(), screen.getHeight()); // mueve la nave usando el ancho de la pantalla
+        // si una nave choca con un enemigo, pierde
         if (enemyCon.checkPlayerCollisions(spaceship))
             gameOver = true;
-        enemyCon.updateAll(screen);
+
+        enemyCon.updateAll(screen); // actualiza todos los enemigos
         
         // Mueve y dibuja las balas activas
         for (Bullet& b : bullets) {
             b.move();
             screen.add(b);
         }
-        // Elimina balas que se salen de la pantalla (por arriba)
+        // Elimina balas que se salen de la pantalla por arriba
         bullets.erase(
             std::remove_if(bullets.begin(), bullets.end(),
                 [](const Bullet& b) { return b.getY() < 1; }),

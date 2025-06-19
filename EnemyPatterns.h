@@ -1,3 +1,6 @@
+// los patrones son vectores de pares, y se almacenan en otro vector
+// se busca asignar un patrón al azar dentro del vector grande
+
 #pragma once
 
 #include <vector>
@@ -19,6 +22,4 @@ namespace EnemyPatterns {
         // Patrón de avance rápido
         {{2,0}, {2,0}, {-1,1}, {-1,1}}
     };
-    
-    // Puedes añadir más patrones para otros tipos de enemigos
 }
