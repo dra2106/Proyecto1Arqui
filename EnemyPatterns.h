@@ -34,6 +34,17 @@ namespace EnemyPatterns {
         // Patrón de avance rápido
         {{2,0}, {2,0}, {-1,1}, {-1,1}}
     };
+
+    const vector<vector<pair<int, int>>> MUTANT_BIRD_PATTERNS = {
+        // derecha a izquierda
+        {{1, 0}, {1, 0}, {1, 0}, {0, -1}, {0, -1}, {0, -1}},
+
+        //zigzag
+        {{1,0}, {0,1}, {1,0}, {-1,0}, {0,1}, {-1,0}, {0,1}}, 
+        
+        // para abajo
+        {{0,2}, {0,2}, {3,2}}
+    };
 }
 
 // setPattern({{1,0}, {1,0}, {-1,0}, {0,1}, {0,1}, {0,1}}); patrón para mutants

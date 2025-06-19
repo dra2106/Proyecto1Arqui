@@ -77,7 +77,7 @@ public:
     {
         loadSprites();
         updateSprite();
-        setRandomPattern(EnemyPatterns::SMALL_BIRD_PATTERNS);
+        setRandomPattern(EnemyPatterns::MUTANT_BIRD_PATTERNS);
     }
 
     void update() override {
