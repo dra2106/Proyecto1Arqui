@@ -25,6 +25,8 @@ using std::vector;
 class SmallBird : public Enemy {
 private:
     int health;
+    int attackCooldown = 0;
+    const int BASE_COOLDOWN = 10; // 3 segundos base (60 FPS * 3)
     vector<Bullet> bullets;
 
     // Función auxiliar para construir el sprite
@@ -40,21 +42,21 @@ public:
     SmallBird(int y = 0,int x = 0)
         : Enemy(x, y, buildSprite()), health(0) {
             setRandomPattern(EnemyPatterns::SMALL_BIRD_PATTERNS); // Asigna un patrón de movimiento al azar
+            attackCooldown = rand() % BASE_COOLDOWN;
         }
 
     // Implementación del método update
     void update() override {
-        Enemy::update(); // Ejecuta el comportamiento base
-        
-        // Comportamiento específico cuando está atacando
-        if (isAttacking) {
-            bullets.emplace_back(getY() + 1, getX());
-            for (Bullet& b : bullets) {
-                b.setDirection(DOWN);   // Las balas van hacia abajo
-                b.move();               // Mueve la bala
+        if (attackCooldown > 0) {
+            attackCooldown--;
+        } else {
+            if (rand() % 60 == 0) {
+                attack();
+                attackCooldown = BASE_COOLDOWN + (rand() % 60);
+            } else if (rand() % 30 == 0) {
+                Enemy::update(); // Se mueve
             }
         }
-        isAttacking = false;
     }
 
     SmallBird(const SmallBird& other) 
@@ -74,15 +76,9 @@ public:
     }
 
     // Implementación del método attack
-    bool attack() override {
-        return isAttacking = true;
-    }
-
-    // puede eliminarse
-    void reset() {
-        isAttacking = false;
-        patternIndex = 0;
-        x = 0;
+    void attack() override {
+        bullets.emplace_back(getY() + 1, getX());
+        bullets.back().setDirection(DOWN);   // Las balas van hacia abajo
     }
 
     bool isDead() const {

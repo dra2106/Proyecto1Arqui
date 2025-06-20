@@ -49,7 +49,19 @@ public:
         spaceship(0, 0) // valores temporales
     {
         screen.initialize();
-        int naveY = screen.getHeight() - 3;     // 2 bloques arriba del borde inferior
+
+
+
+        // genera 5 enemigos para probar
+        // for (int i = 0; i < 3; i++)
+        //     enemyCon.spawnSmall(screen.getHeight(), screen.getWidth());
+        // for (int i = 0; i < 3; i++)
+        //     enemyCon.spawnMutant(screen.getHeight(), screen.getWidth());
+        // enemyCon.spawnMother(screen.getHeight(), screen.getWidth());
+
+
+
+        int naveY = screen.getHeight() - 4;     // 2 bloques arriba del borde inferior
         int naveX = screen.getWidth() / 2;      // centrada horizontalmente
         spaceship = Spaceship(naveY, naveX);    // ahora sí, la nave queda bien posicionada
         curs_set(0);                            // Oculta cursor
@@ -115,7 +127,7 @@ public:
                 if (bullets.size() < 5) {       // límite de 5 balas en pantalla
                     bullets.emplace_back(spaceship.getY() - 1, spaceship.getX());
                     for (Bullet& b : bullets) {
-                        b.setDirection(UP);     // todas las balas van hacia arriba
+                    bullets.back().setDirection(UP);     // todas las balas van hacia arriba
                     }
                 }
                 break;

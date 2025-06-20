@@ -23,7 +23,10 @@
 class Mothership : public Enemy {
 private:
     int health;
+    int attackCooldown = 0;
+    const int BASE_COOLDOWN = 10;
     int alienIndex = 0;
+    vector<Bullet> bullets;
     const std::vector<std::string> mothershipBase = {
     "                 _______                 ",
     "            T HHH{0}HHH T            ",
@@ -82,8 +85,25 @@ public:
 
     void update() override {
         alienIndex = (alienIndex + 1) % aliens.size();
-        setSprite(buildMothershipSprite(alienIndex));
-        Enemy::update();
+        if (attackCooldown > 0) {
+            attackCooldown--;
+        } else {
+            if (rand() % 20 == 0) {
+                attack();
+                attackCooldown = BASE_COOLDOWN + (rand() % 60);
+            } else if (rand() % 30 == 0) {
+                Enemy::update(); // Se mueve
+                setSprite(buildMothershipSprite(alienIndex));
+            }
+        }
+    }
+
+    Mothership(const Mothership& other) 
+    : Enemy(other),
+      health(other.health),
+      attackCooldown(other.attackCooldown),
+      alienIndex(other.alienIndex),
+      bullets(other.bullets) {
     }
 
     Mothership& operator=(const Mothership& other) {
@@ -94,11 +114,16 @@ public:
         return *this;
     }
 
-    bool attack() override {
-        return isAttacking = true;
+    void attack() override {
+        bullets.emplace_back(getY() + 5, getX());
+        bullets.back().setDirection(DOWN);   // Las balas van hacia abajo
     }
 
-    int gethealth() const { return health; }
+    vector<Bullet>& getBullets() {
+        return bullets;
+    }
+
+    int getHealth() const { return health; }
     
     void damage() { this->health -= 1; }
 
