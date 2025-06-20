@@ -11,7 +11,7 @@
 # Juan Carlos Monsalve Perez
 # Josué Santiago Hidalgo Sandoval
 
-all: Proyecto1Arqui
+all: ProyectoPhoenix
 
-Proyecto1Arqui: Proyecto1Arqui.cpp Screen.h MainLoop.h Entity.h Spaceship.h Bullet.h SmallBird.h Enemy.h EnemyPatterns.h Mothership.h EnemyController.h MutantBird.h NcursesAdmin.h Direction.h GameAdmin.h GameLoop.h 
-	g++ Proyecto1Arqui.cpp -lncurses -o Proyecto1Arqui
+ProyectoPhoenix: ProyectoPhoenix.cpp Screen.h MainLoop.h Entity.h Spaceship.h Bullet.h SmallBird.h Enemy.h EnemyPatterns.h Mothership.h EnemyController.h MutantBird.h GameAdmin.h
+	g++ ProyectoPhoenix.cpp -lncurses -o ProyectoPhoenix

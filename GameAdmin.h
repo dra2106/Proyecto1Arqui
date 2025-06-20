@@ -65,10 +65,10 @@ public:
 
         // Show name request screen and get the name
         ncurses.showScreen(ScreenType::NAME_REQUEST, playerName);
-        playerName = ncurses.requestInput("Enter your name: ");
+        playerName = ncurses.requestInput("Please, enter your name: ");
 
         // Main game loop
-        mainLoop();
+        // mainLoop();
         
         // At the end of the game, save the player's score
         scoreController.setPlayerName(playerName);
@@ -81,14 +81,29 @@ public:
         scoreController.getScores(highScoresList);
         
         // At the end of the game, show the Game Over screen
-        ncurses.showScreen(ScreenType::GAME_OVER, playerName, currentScore, highestScore, level, remainingLives);
+        ncurses.showScreen(ScreenType::GAME_OVER, playerName, currentScore, highestScore, level, 
+            remainingLives);
 
         // Show the highest scores
-        ncurses.showScreen(ScreenType::HIGHSCORES, highScoresList);
+        vector<string> highScoresVector;
+        for (highScoresList.goToStart(); !highScoresList.atEnd(); highScoresList.next()) {
+            KVPair<string, int> pair = highScoresList.getElement();
+            highScoresVector.push_back(pair.key + ": " + std::to_string(pair.value));
+        }
+        ncurses.showScreen(ScreenType::HIGHSCORES, 
+                           playerName, 
+                           currentScore,  
+                           highestScore, 
+                           level, 
+                           remainingLives, 
+                           highScoresVector);
+        
     }
 
     bool wantsToContinue() {
         ncurses.clearScreen();
+        ncurses.showScreen(ScreenType::CONTINUE_REQUEST, playerName, currentScore, highestScore, level, 
+            remainingLives);
         char answer = ncurses.requestInput("Do you want to continue playing? (y/n): ")[0];
         
         if (answer == 'y' || answer == 'Y')
@@ -101,7 +116,8 @@ private:
     void mainLoop(){
         while (!gameOver) {
             ncurses.clearScreen();
-            ncurses.showScreen(ScreenType::GAME, playerName, currentScore, highestScore, level, remainingLives);
+            ncurses.showScreen(ScreenType::GAME_OVER, playerName, currentScore, highestScore, level, 
+                remainingLives);
 
             processInput();
             updateState();
@@ -110,6 +126,8 @@ private:
             
             checkCollisions();
             checkGameOver();
+
+            napms(16);
         }
     }
 
@@ -164,7 +182,7 @@ private:
         spaceship.move(ncurses.getScreenWidth(), ncurses.getScreenHeight());
 
         // Check for collisions between player and enemies
-        checkCollisions();
+        //checkCollisions();
 
         // Update enemies
         // enemies.updateAll(ncurses.getScreen());

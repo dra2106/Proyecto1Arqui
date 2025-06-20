@@ -64,11 +64,6 @@ private:
     }
 
 public:
-    // Constructor por defecto
-    Screen() : height(0), width(0) {
-        construct(0, 0);
-    }
-
     Screen(int height = 0, int width = 0) {
         this->height = height;
         this->width = width;
@@ -110,8 +105,37 @@ public:
         return height;
     }
 
-    // refresca la ventana
     void refresh() {
         wrefresh(win);
+    }
+
+    void showStringAt(const std::string& text, int row, int col) {
+        if (row < 0 || row >= height)
+            throw std::out_of_range("Row is out of bounds");
+        if (col < 0 || col + text.size() > width)
+            throw std::out_of_range("Column is out of bounds");
+        if (text.empty())
+            throw std::invalid_argument("Text cannot be empty");
+
+        mvwprintw(win, row, col, "%s", text.c_str());
+        wrefresh(win);
+    }
+
+    void showCenteredString(const std::string& text) {
+        if (text.empty())
+            throw std::invalid_argument("Text cannot be empty");
+
+        int row = height / 2;
+        int col = (width - text.size()) / 2;
+        mvwprintw(win, row, col, "%s", text.c_str());
+        wrefresh(win);
+    }
+
+    std::string getStringInput(const std::string& prompt) {
+        char input[256]; // Buffer para la entrada
+        mvwprintw(win, height - 1, 0, "%s", prompt.c_str());
+        wrefresh(win);
+        wgetnstr(win, input, sizeof(input) - 1); // Lee la entrada del usuario
+        return std::string(input); // Devuelve la entrada como string
     }
 };
