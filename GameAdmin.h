@@ -50,12 +50,25 @@ public:
           ncurses(), 
           scoreController("Files/Scores.txt", "Player") {
         // Initialize game attributes
+        screenWidth = ncurses.getScreenWidth() / 3;
+        screenHeight = ncurses.getScreenHeight();
+        gameScreen = new Screen(screenHeight, screenWidth); // Allocate Screen
+        gameScreen->initialize();
         playerName = "Player";
         currentScore = 0;
         highestScore = 0;
         level = 1;
         remainingLives = 3;
         gameOver = false;
+
+        for (int i = 0; i < 5; i++)
+            enemies.spawnEnemy(gameScreen->getWidth(), gameScreen->getHeight());
+
+        srand(time(0)); // Inicializa la semilla para números aleatorios
+        int naveY = gameScreen->getHeight() - 3;     // 2 bloques arriba del borde inferior
+        int naveX = gameScreen->getWidth() / 2;      // centrada horizontalmente
+        spaceship = Spaceship(naveY, naveX);    // ahora sí, la nave queda bien posicionada
+        curs_set(0); 
     }
     ~GameAdmin(){
         // Finalize ncurses screen
@@ -77,8 +90,7 @@ public:
         highestScore = scoreController.getHighestScore().value;
 
         // Main game loop
-        ncurses.showScreen(ScreenType::GAME, playerName, currentScore, highestScore, level, 
-            remainingLives);
+        clear(); // Clear the screen
         mainLoop();
         
         // At the end of the game, save the player's score
@@ -144,8 +156,8 @@ private:
     }
 
     void processInput() {
-        
-        chtype input = ncurses.getInput();
+
+        chtype input = gameScreen->getInput();
 
         switch (input) {
             case KEY_UP:            

@@ -74,6 +74,7 @@ public:
     void initialize() {
         clear();
         refresh();
+        addBorder();
     }
 
     // crea la caja donde estará contenido el juego
