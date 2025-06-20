@@ -29,11 +29,10 @@ protected:
     DLinkedList<string> sprite; 
     bool isActive; 
     Direction direction;
-    int speed;
 
 public:
     Entity(int x = 0, int y = 0, const DLinkedList<string>& sprite = DLinkedList<string>())
-        : x(x), y(y), isActive(true), direction(Direction::STAND), speed(1) {
+        : x(x), y(y), isActive(true), direction(Direction::STAND) {
         setSprite(sprite);
         setPosition(x, y);
     }

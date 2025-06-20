@@ -17,6 +17,7 @@
 
 #include <vector>
 #include "DataStructures/DLinkedList.h"
+#include "EnemyPatterns.h"
 #include "Enemy.h"
 #include "Bullet.h"
 
@@ -76,12 +77,12 @@ public:
     {
         loadSprites();
         updateSprite();
-        setPattern({{1,0}, {1,0}, {-1,0}, {0,1}, {0,1}, {0,1}});
+        setRandomPattern(EnemyPatterns::MUTANT_BIRD_PATTERNS);
     }
 
     void update() override {
         counter = (counter + 1) % 4;
-        if (counter % 2 == 0)
+        if (counter % 4 == 0)
             animationIndex = (animationIndex + 1) % animationSprites.size();
         updateSprite();
         Enemy::update();
@@ -90,25 +91,40 @@ public:
             for (Bullet& b : bullets) {
                 b.setDirection(DOWN); // Las balas van hacia abajo
             }
-        } else {
-            reset();
         }
+        isAttacking = false;
     }
 
     void setSprite(const DLinkedList<string>& newSprite) {
         Entity::setSprite(newSprite);
-        if (height == 1 || height == 2) {
-            health = 1; // Si el sprite es pequeño, la salud es 1
+        if (height == 1 || height == 1) {
+            health = 0; // Si el sprite es pequeño, la salud es 0 (que en realidad es 1)
         }
         else {
             health = 2; // Si el sprite es mediano, la salud es 2
         }
     }
 
+    MutantBird(const MutantBird& other) 
+        : Enemy(other),
+          health(other.health),
+          animationIndex(other.animationIndex),
+          counter(other.counter),
+          animationSprites(other.animationSprites), // Copia los sprites
+          bullets(other.bullets)
+    {
+        updateSprite(); // Asegura que el sprite actual sea correcto
+    }
+
     MutantBird& operator=(const MutantBird& other) {
         if (this != &other) {
-            Entity::operator=(other);
+            Enemy::operator=(other);
             health = other.health;
+            animationIndex = other.animationIndex;
+            counter = other.counter;
+            animationSprites = other.animationSprites;
+            bullets = other.bullets;
+            updateSprite();
         }
         return *this;
     }
@@ -129,6 +145,10 @@ public:
 
     void damage() {
         health -= 1;
+    }
+
+    vector<Bullet>& getBullets() {
+        return bullets;
     }
 
     int getHealth() const { return health; }

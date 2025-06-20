@@ -23,6 +23,8 @@
 #include "CollisionController.h"
 #include "Enemy.h"
 #include "SmallBird.h"
+#include "MutantBird.h"
+#include "Mothership.h"
 #include "Bullet.h"
 
 using std::vector;
@@ -31,17 +33,22 @@ class EnemyController {
 private:
     int timer = 0; // contador de frames para el movimiento de los enemigos
 	vector<SmallBird> small;
+    vector<MutantBird> mutants;
 	CollisionController collision;
 
-public: 
-    EnemyController() {
-        srand(time(0)); // genera la semilla para las posiciones
-    }
+public:
+    EnemyController() {}
 
-    void spawnEnemy(int maxY, int maxX) {
+    void spawnSmall(int maxY, int maxX) {
 		int y = rand() % (maxY / 3) + 1;        // se divide entre 3 para que no salga muy cerca del jugador
         int x = rand() % (maxX - 2) + 1;
         small.emplace_back(SmallBird(y, x));    // se añade a la lista de enemigos
+	}
+
+    void spawnMutant(int maxY, int maxX) {
+		int y = rand() % (maxY / 3) + 1;        // se divide entre 3 para que no salga muy cerca del jugador
+        int x = rand() % (maxX - 10) + 5;
+        mutants.emplace_back(MutantBird(y, x));    // se añade a la lista de enemigos
 	}
 
 	bool checkPlayerCollisions(const Spaceship& spaceship){
@@ -62,8 +69,76 @@ public:
 			        return true;
             }
 		}
+        for (MutantBird& enemy: mutants) {
+			if (collision.checkCollision(spaceship, enemy))
+			    return true;
+            vector<Bullet> bullets = enemy.getBullets();
+            bullets.erase(
+                std::remove_if(bullets.begin(), bullets.end(),
+                    [](const Bullet& b) { return b.getY() > 50; }),
+                bullets.end()
+            );
+            // for (Bullet& bullet: bullets) {
+            //     if (collision.checkCollision(spaceship, bullet))
+			//         return true;
+            // }
+            for (int i = 0; i < bullets.size(); i++) {
+                if (collision.checkCollision(spaceship, bullets[i])){
+                    bullets.erase(bullets.begin() + i);
+                    return true;
+                }
+            }
+		}
 		return false;
 	}
+
+    void CheckCollisionsEnemies(vector<Bullet>& Bullets)
+    {
+        for (int j = 0; j < small.size(); )
+        {
+            bool erased = false;
+            for (int i = 0; i < Bullets.size(); )
+            {
+                if (collision.checkCollision(small[j], Bullets[i])) {
+                    if (small[j].getHealth() < 1) {
+                        small.erase(small.begin() + j); // Elimina el enemigo
+                        erased = true;
+                        break; // Salir del bucle de balas, ya que el enemigo fue eliminado
+                    }
+                    small[j].damage();
+                    Bullets.erase(Bullets.begin() + i); // Elimina la bala
+                } else {
+                    ++i;
+                }
+            }
+            if (!erased) {
+                ++j;
+            }
+            // Si se eliminó, no incrementamos j porque los elementos se han desplazado
+        }
+        for (int j = 0; j < mutants.size(); )
+        {
+            bool erased = false;
+            for (int i = 0; i < Bullets.size(); )
+            {
+                if (collision.checkCollision(mutants[j], Bullets[i])) {
+                    if (mutants[j].getHealth() < 1) {
+                        mutants.erase(mutants.begin() + j); // Elimina el enemigo
+                        erased = true;
+                        break; // Salir del bucle de balas, ya que el enemigo fue eliminado
+                    }
+                    mutants[j].damage();
+                    Bullets.erase(Bullets.begin() + i); // Elimina la bala
+                } else {
+                    ++i;
+                }
+            }
+            if (!erased) {
+                ++j;
+            }
+            // Si se eliminó, no incrementamos j porque los elementos se han desplazado
+        }
+    }
 
     // actualiza todos los enemigos en pantalla y sus balas
     // controla los patrones de ataque por medio de frames
@@ -81,7 +156,19 @@ public:
             }
             screen.add(enemyBird);      // actualiza enemigos
         }
+
+        // Actualizar MutantBirds
+        for (auto& enemy : mutants) {
+            if (timer % 30 == 0) 
+                enemy.update();
+            if (timer % 90 == 0) 
+                enemy.attack();
+            for (auto& bullet : enemy.getBullets()) {
+                bullet.move();
+                screen.add(bullet);
+            }
+            screen.add(enemy);
+        }
         timer++; // aumenta el frame actual
 	}
 };
-
