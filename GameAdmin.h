@@ -252,7 +252,7 @@ private:
 
     void resetGame() {
         // Reset game state
-        remainingLives = 100;
+        remainingLives = 1000000;
         currentScore = 0;
         gameOver = false;
 
@@ -288,7 +288,7 @@ private:
     void ConstruirNiveles(const int nivel) {
         if (nivel == 0) {
             gameScreen->initialize();
-            enemies.spawnSmall(gameScreen->getHeight(), gameScreen->getWidth(), nivel, gameScreen->getWidth() / 2);
+            enemies.spawnSmall(gameScreen->getHeight(), gameScreen->getWidth(), nivel + 1, gameScreen->getWidth() / 2);
 
             int naveY = gameScreen->getHeight() - 3;     // 2 bloques arriba del borde inferior
             int naveX = gameScreen->getWidth() / 2;      // centrada horizontalmente
@@ -296,14 +296,14 @@ private:
             curs_set(0); 
         } else if (nivel == 1) {
             gameScreen->initialize();
-            enemies.spawnSmall(gameScreen->getHeight(), gameScreen->getWidth(), nivel, gameScreen->getWidth() / 2);
+            enemies.spawnSmall(gameScreen->getHeight(), gameScreen->getWidth(), nivel + 1, gameScreen->getWidth() / 2);
             int naveY = gameScreen->getHeight() - 3;     // 2 bloques arriba del borde inferior
             int naveX = gameScreen->getWidth() / 2;      // centrada horizontalmente
             spaceship = Spaceship(naveY, naveX);    // ahora sí, la nave queda bien posicionada
             curs_set(0);
         } else if (nivel == 2) {
             gameScreen->initialize();
-            enemies.spawnMutant(gameScreen->getHeight(), gameScreen->getWidth(), nivel, gameScreen->getWidth() / 2);
+            enemies.spawnMutant(gameScreen->getHeight(), gameScreen->getWidth(), nivel + 1, gameScreen->getWidth() / 2);
 
             int naveY = gameScreen->getHeight() - 3;     // 2 bloques arriba del borde inferior
             int naveX = gameScreen->getWidth() / 2;      // centrada horizontalmente
@@ -312,16 +312,21 @@ private:
             
         } else if (nivel == 3) {
             gameScreen->initialize();
-            enemies.spawnMutant(gameScreen->getHeight(), gameScreen->getWidth(), nivel, gameScreen->getWidth() / 2);
+            enemies.spawnMutant(gameScreen->getHeight(), gameScreen->getWidth(), nivel + 1, gameScreen->getWidth() / 2);
             int naveY = gameScreen->getHeight() - 3;     // 2 bloques arriba del borde inferior
             int naveX = gameScreen->getWidth() / 2;      // centrada horizontalmente
             spaceship = Spaceship(naveY, naveX);    // ahora sí, la nave queda bien posicionada
             curs_set(0);
         } else if (nivel == 4) {
             gameScreen->initialize();
-            enemies.spawnMother(gameScreen->getHeight(), gameScreen->getWidth());
+            enemies.spawnSmall(gameScreen->getHeight(), gameScreen->getWidth(), 1, gameScreen->getWidth() / 2);
             int naveY = gameScreen->getHeight() - 3;     // 2 bloques arriba del borde inferior
             int naveX = gameScreen->getWidth() / 2;      // centrada horizontalmente
+            spaceship = Spaceship(naveY, naveX);    // ahora sí, la nave queda bien posicionada
+            
+            enemies.spawnMother(gameScreen->getHeight(), gameScreen->getWidth());
+            naveY = gameScreen->getHeight() - 3;     // 2 bloques arriba del borde inferior
+            naveX = gameScreen->getWidth() / 2;      // centrada horizontalmente
             spaceship = Spaceship(naveY, naveX);    // ahora sí, la nave queda bien posicionada
             curs_set(0);
         }
