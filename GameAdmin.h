@@ -129,8 +129,10 @@ public:
             remainingLives);
         char answer = ncurses.requestInput("Do you want to continue playing? (y/n): ")[0];
         
-        if (answer == 'y' || answer == 'Y')
+        if (answer == 'y' || answer == 'Y'){
+            resetGame();
             return true; // Continue the game
+        }
         else
             return false; // Exit the game
     }
@@ -152,6 +154,8 @@ private:
 
             // Check if the game is over
             checkGameOver();
+
+            napms(32); // Sleep for a short duration to control game speed
         }
     }
 
@@ -216,6 +220,24 @@ private:
         );
         
         gameScreen->add(spaceship);
+    }
+
+    void resetGame() {
+        // Reset game state
+        remainingLives = 3;
+        currentScore = 0;
+        level = 1;
+        gameOver = false;
+
+        // Clear the screen and reinitialize the spaceship
+        gameScreen->clear();
+        int naveY = gameScreen->getHeight() - 3;     // 2 bloques arriba del borde inferior
+        int naveX = gameScreen->getWidth() / 2;      // centrada horizontalmente
+        spaceship = Spaceship(naveY, naveX);    // ahora sí, la nave queda bien posicionada
+
+        // Clear player bullets and enemies
+        playerBullets.clear();
+        // enemies.clearEnemies(); // PENDIENTE
     }
 
     void refresh() {
