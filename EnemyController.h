@@ -77,13 +77,67 @@ public:
                     [](const Bullet& b) { return b.getY() > 50; }),
                 bullets.end()
             );
-            for (Bullet& bullet: bullets) {
-                if (collision.checkCollision(spaceship, bullet))
-			        return true;
+            // for (Bullet& bullet: bullets) {
+            //     if (collision.checkCollision(spaceship, bullet))
+			//         return true;
+            // }
+            for (int i = 0; i < bullets.size(); i++) {
+                if (collision.checkCollision(spaceship, bullets[i])){
+                    bullets.erase(bullets.begin() + i);
+                    return true;
+                }
             }
 		}
 		return false;
 	}
+
+    void CheckCollisionsEnemies(vector<Bullet>& Bullets)
+    {
+        for (int j = 0; j < small.size(); )
+        {
+            bool erased = false;
+            for (int i = 0; i < Bullets.size(); )
+            {
+                if (collision.checkCollision(small[j], Bullets[i])) {
+                    if (small[j].getHealth() < 1) {
+                        small.erase(small.begin() + j); // Elimina el enemigo
+                        erased = true;
+                        break; // Salir del bucle de balas, ya que el enemigo fue eliminado
+                    }
+                    small[j].damage();
+                    Bullets.erase(Bullets.begin() + i); // Elimina la bala
+                } else {
+                    ++i;
+                }
+            }
+            if (!erased) {
+                ++j;
+            }
+            // Si se eliminó, no incrementamos j porque los elementos se han desplazado
+        }
+        for (int j = 0; j < mutants.size(); )
+        {
+            bool erased = false;
+            for (int i = 0; i < Bullets.size(); )
+            {
+                if (collision.checkCollision(mutants[j], Bullets[i])) {
+                    if (mutants[j].getHealth() < 1) {
+                        mutants.erase(mutants.begin() + j); // Elimina el enemigo
+                        erased = true;
+                        break; // Salir del bucle de balas, ya que el enemigo fue eliminado
+                    }
+                    mutants[j].damage();
+                    Bullets.erase(Bullets.begin() + i); // Elimina la bala
+                } else {
+                    ++i;
+                }
+            }
+            if (!erased) {
+                ++j;
+            }
+            // Si se eliminó, no incrementamos j porque los elementos se han desplazado
+        }
+    }
 
     // actualiza todos los enemigos en pantalla y sus balas
     // controla los patrones de ataque por medio de frames

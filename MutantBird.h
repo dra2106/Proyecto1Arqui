@@ -98,7 +98,7 @@ public:
     void setSprite(const DLinkedList<string>& newSprite) {
         Entity::setSprite(newSprite);
         if (height == 1 || height == 2) {
-            health = 1; // Si el sprite es pequeño, la salud es 1
+            health = 0; // Si el sprite es pequeño, la salud es 0 (que en realidad es 1)
         }
         else {
             health = 2; // Si el sprite es mediano, la salud es 2

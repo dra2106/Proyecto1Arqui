@@ -40,6 +40,7 @@ private:
     EnemyController enemyCon;
     vector<Bullet> bullets;
     vector<SmallBird> smallBirds;
+    int vidas = 9;
 
 public:
     MainLoop(int height, int width)
@@ -49,10 +50,12 @@ public:
     {
         screen.initialize();
         // genera 5 enemigos para probar
+        // for (int i = 0; i < 3; i++)
+        //     enemyCon.spawnSmall(screen.getHeight(), screen.getWidth());
         for (int i = 0; i < 3; i++)
             enemyCon.spawnMutant(screen.getHeight(), screen.getWidth());
 
-        srand(time(0)); // Inicializa la semilla para números aleatorios
+        //srand(time(0)); // Inicializa la semilla para números aleatorios
         int naveY = screen.getHeight() - 3;     // 2 bloques arriba del borde inferior
         int naveX = screen.getWidth() / 2;      // centrada horizontalmente
         spaceship = Spaceship(naveY, naveX);    // ahora sí, la nave queda bien posicionada
@@ -88,20 +91,21 @@ public:
                 spaceship.setDirection(STAND);
                 break;
         }
-        // idea para eliminar aves cuando se les dispara
-        // for (Bullet& b : bullets){
-        //     if (collision.checkCollision(b, enemyBird))
-        //         gameOver = true;
-        // }
     }
 
     void updateState() {
         screen.clear();         // limpia la pantalla para evitar residuos
         spaceship.move(screen.getWidth(), screen.getHeight()); // mueve la nave usando el ancho de la pantalla
         // si una nave choca con un enemigo, pierde
-        if (enemyCon.checkPlayerCollisions(spaceship))
-            gameOver = true;
 
+        if (enemyCon.checkPlayerCollisions(spaceship)){
+            vidas--; // si hay colisión, se resta una vida
+            if (vidas < 1) {
+                gameOver = true;
+            }
+        }
+
+        enemyCon.CheckCollisionsEnemies(bullets);
         enemyCon.updateAll(screen); // actualiza todos los enemigos
         
         // Mueve y dibuja las balas activas

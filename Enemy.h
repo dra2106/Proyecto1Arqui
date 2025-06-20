@@ -31,9 +31,7 @@ protected:
 
 public:
     Enemy(int x = 0, int y = 0, const DLinkedList<string>& sprite = DLinkedList<string>())
-        : Entity(x, y, sprite), patternIndex(0), isAttacking(false) {
-            // srand(getX()); 
-        }
+        : Entity(x, y, sprite), patternIndex(0), isAttacking(false) {}
 
     virtual ~Enemy() = default;
 
@@ -61,7 +59,7 @@ public:
         if (!patterns.empty()) {
             int randomIndex = rand() % patterns.size();  
             pattern = patterns[randomIndex];
-            patternIndex = 0;                          
+            patternIndex = 0;
         }
 
     }
