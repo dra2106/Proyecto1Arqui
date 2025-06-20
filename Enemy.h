@@ -74,15 +74,7 @@ public:
         }
     }
 
-    virtual bool attack() {
-        return isAttacking = true;
-    }
-
-    void reset() {
-        isAttacking = false;
-        patternIndex = 0;
-        x = 0;
-    }
+    virtual void attack() {}
 
     int getX()& {
         return x;

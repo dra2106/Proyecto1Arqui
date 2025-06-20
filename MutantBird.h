@@ -26,7 +26,10 @@ private:
     int health;
     int animationIndex = 0;
     int counter = 0;
-
+    int attackCooldown = 0;
+    const int BASE_COOLDOWN = 10; // 3 segundos base (60 FPS * 3)
+    int animationDelay = 60; // Cambia de sprite cada 10 frames
+    int animationCounter = 0;
     std::vector<DLinkedList<std::string>> animationSprites;
     std::vector<Bullet> bullets;
 
@@ -78,21 +81,26 @@ public:
         loadSprites();
         updateSprite();
         setRandomPattern(EnemyPatterns::MUTANT_BIRD_PATTERNS);
+        attackCooldown = rand() % BASE_COOLDOWN;
     }
 
     void update() override {
-        counter = (counter + 1) % 4;
-        if (counter % 4 == 0)
+        animationCounter++;
+        if (animationCounter >= animationDelay) {
+            animationCounter = 0;
             animationIndex = (animationIndex + 1) % animationSprites.size();
-        updateSprite();
-        Enemy::update();
-        if (isAttacking) {
-            bullets.emplace_back(getY() + 1, getX());
-            for (Bullet& b : bullets) {
-                b.setDirection(DOWN); // Las balas van hacia abajo
+            updateSprite();
+        }
+        if (attackCooldown > 0) {
+            attackCooldown--;
+        } else {
+            if (rand() % 60 == 0) {
+                attack();
+                attackCooldown = BASE_COOLDOWN + (rand() % 60);
+            } else if (rand() % 30 == 0) {
+                Enemy::update(); // Se mueve
             }
         }
-        isAttacking = false;
     }
 
     void setSprite(const DLinkedList<string>& newSprite) {
@@ -129,15 +137,11 @@ public:
         return *this;
     }
 
-    bool attack() override {
-        return isAttacking = true;
-    }
-
-    void reset() {
-        isAttacking = false;
-        patternIndex = 0;
-        x = 0;
-    }
+    void attack() override {
+        bullets.emplace_back(getY() + 1, getX());
+        bullets.back().setDirection(DOWN); // Las balas van hacia abajo
+        
+    }   
 
     bool isDead() const {
         return health <= 0;

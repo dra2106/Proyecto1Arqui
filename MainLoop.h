@@ -49,13 +49,18 @@ public:
         spaceship(0, 0) // valores temporales
     {
         screen.initialize();
+
+
+
         // genera 5 enemigos para probar
         // for (int i = 0; i < 3; i++)
         //     enemyCon.spawnSmall(screen.getHeight(), screen.getWidth());
-        for (int i = 0; i < 3; i++)
-            enemyCon.spawnMutant(screen.getHeight(), screen.getWidth());
+        // for (int i = 0; i < 3; i++)
+        //     enemyCon.spawnMutant(screen.getHeight(), screen.getWidth());
+        // enemyCon.spawnMother(screen.getHeight(), screen.getWidth());
 
-        //srand(time(0)); // Inicializa la semilla para números aleatorios
+
+
         int naveY = screen.getHeight() - 4;     // 2 bloques arriba del borde inferior
         int naveX = screen.getWidth() / 2;      // centrada horizontalmente
         spaceship = Spaceship(naveY, naveX);    // ahora sí, la nave queda bien posicionada
@@ -84,7 +89,7 @@ public:
                 if (bullets.size() < 5) {       // límite de 5 balas en pantalla
                     bullets.emplace_back(spaceship.getY() - 1, spaceship.getX());
                     for (Bullet& b : bullets) {
-                        b.setDirection(UP);     // todas las balas van hacia arriba
+                    bullets.back().setDirection(UP);     // todas las balas van hacia arriba
                     }
                 }
                 break;
