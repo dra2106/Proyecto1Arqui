@@ -121,17 +121,21 @@ public:
                 screen->showStringAt(label2, row1, startCol + label1.size() + space);
                 screen->showStringAt(label3, row1, startCol + label1.size() + space + label2.size() + space);
 
-                // Segunda fila (alineada a la derecha)
+                // Segunda fila (alineados a la derecha, uno a la izquierda del otro, margen de 4)
                 int row2 = row1 + 2;
-                std::string label4 = "Lives: " + std::to_string(lives);
-                std::string label5 = "Press Q to quit";
+                int spaceRight = 15;
+                int rightMargin = 4; // margen derecho
 
-                // Calcula la posición para pegar los labels al borde derecho
-                int rightCol4 = screenWidth - label4.size() - label5.size() - space - 2; // 2 para margen derecho
-                int rightCol5 = screenWidth - label5.size() - 2;
+                std::string label4 = "Highest Score: " + std::to_string(highestScore);
+                std::string label5 = "Lives: " + std::to_string(lives);
+                std::string label6 = "Press Q to quit";
 
-                screen->showStringAt(label4, row2, rightCol4);
-                screen->showStringAt(label5, row2, rightCol5);
+                int totalWidth = label4.size() + spaceRight + label5.size() + spaceRight + label6.size();
+                int startColRight = screenWidth - totalWidth - rightMargin;
+
+                screen->showStringAt(label4, row2, startColRight);
+                screen->showStringAt(label5, row2, startColRight + label4.size() + spaceRight);
+                screen->showStringAt(label6, row2, startColRight + label4.size() + spaceRight + label5.size() + spaceRight);
                 break;
             }
 
