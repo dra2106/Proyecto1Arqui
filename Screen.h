@@ -25,25 +25,6 @@ private:
     WINDOW* win;
     int height, width;
 
-    void construct(int height, int width) {
-        int xMax, yMax;
-        getmaxyx(stdscr, yMax, xMax); // obtiene el tamaño total del terminal
-
-        // Si height o width son 0, usa el tamaño completo del terminal
-        if (height == 0 || width == 0) {
-            height = yMax;
-            width = xMax;
-        }
-        // Calcula coordenadas para centrar la ventana
-        int startY = (yMax - height) / 2;
-        int startX = (xMax - width) / 2;
-
-        // Crea la ventana centrada
-        win = newwin(height, width - 2, startY, startX);
-        keypad(win, true); // habilita teclas especiales
-        nodelay(win, TRUE); // <-- clave para que el juego corra solo
-    }
-
     // añade un caracter en las coordenadas dadas
     void addAt(int y, int x, DLinkedList<string> sprite) {
         int offsetY = sprite.getSize() / 2;
@@ -68,6 +49,25 @@ public:
         this->height = height;
         this->width = width;
         construct(height, width);
+    }
+
+    void construct(int height, int width) {
+        int xMax, yMax;
+        getmaxyx(stdscr, yMax, xMax); // obtiene el tamaño total del terminal
+
+        // Si height o width son 0, usa el tamaño completo del terminal
+        if (height == 0 || width == 0) {
+            height = yMax;
+            width = xMax;
+        }
+        // Calcula coordenadas para centrar la ventana
+        int startY = (yMax - height) / 2;
+        int startX = (xMax - width) / 2;
+
+        // Crea la ventana centrada
+        win = newwin(height, width - 2, startY, startX);
+        keypad(win, true); // habilita teclas especiales
+        nodelay(win, TRUE); // <-- clave para que el juego corra solo
     }
 
     // inicializa la ventana

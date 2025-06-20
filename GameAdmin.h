@@ -20,6 +20,12 @@ class GameAdmin {
 private:
     // Attributes
 
+    // Game Screen
+    int screenWidth;
+    int screenHeight;
+    bool gameWindowInitialized = false; // Flag to check if the game window is initialized
+    Screen* gameScreen; // Pointer to the game screen
+
     // Game entities
     Spaceship spaceship;
     EnemyController enemies;
@@ -71,7 +77,9 @@ public:
         highestScore = scoreController.getHighestScore().value;
 
         // Main game loop
-        // mainLoop();
+        ncurses.showScreen(ScreenType::GAME, playerName, currentScore, highestScore, level, 
+            remainingLives);
+        mainLoop();
         
         // At the end of the game, save the player's score
         scoreController.setPlayerName(playerName);
@@ -118,19 +126,20 @@ public:
 private:
     void mainLoop(){
         while (!gameOver) {
-            ncurses.clearScreen();
-            ncurses.showScreen(ScreenType::GAME_OVER, playerName, currentScore, highestScore, level, 
-                remainingLives);
-
+            // Process user input
             processInput();
+
+            // Update game state
             updateState();
 
+            // Refresh the screen
             refresh();
-            
-            checkCollisions();
-            checkGameOver();
 
-            napms(16);
+            // Check for collisions
+            checkCollisions();
+
+            // Check if the game is over
+            checkGameOver();
         }
     }
 
@@ -148,6 +157,11 @@ private:
                 break;
             case KEY_RIGHT:
                 spaceship.setDirection(RIGHT);
+                break;
+            // Al presionar Q
+            case 'q':
+            case 'Q':
+                gameOver = true; // Termina el juego
                 break;
             case ' ':
                 spaceship.setDirection(STAND);    
@@ -179,16 +193,17 @@ private:
 
     void updateState() {
         // Limpia la pantalla
-        ncurses.clearScreen();
+        //ncurses.clearScreen();
 
         // Mueve la nave y actualiza su posición
         spaceship.move(ncurses.getScreenWidth(), ncurses.getScreenHeight());
 
         // Check for collisions between player and enemies
-        //checkCollisions();
+        checkCollisions();
 
         // Update enemies
         // enemies.updateAll(ncurses.getScreen());
+        ncurses.refresh();
     }
 
     void refresh() {
@@ -199,5 +214,4 @@ private:
         if (remainingLives <= 0)
             gameOver = true;
     }
-
 };

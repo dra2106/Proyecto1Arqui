@@ -10,6 +10,7 @@
 
 class NcursesAdmin {
 private:
+    bool gameWindowInitialized; // Flag to check if the screen is initialized
     int screenWidth;
     int screenHeight;
     Screen* screen; // Pointer to Screen
@@ -20,6 +21,7 @@ public:
         cbreak();
         noecho();
         keypad(stdscr, TRUE);
+        gameWindowInitialized = false;
         getmaxyx(stdscr, screenHeight, screenWidth);
         screen = new Screen(screenHeight, screenWidth); // Allocate Screen
     }
@@ -41,7 +43,6 @@ public:
 
     void clearScreen() {
         screen->clear();
-        screen->refresh();
     }
 
     void showCenteredString(const std::string& text, int row) {
@@ -65,10 +66,11 @@ public:
                     int lives = 0, 
                     const std::vector<std::string>& highscores = {})
     {
-        screen->clear();
-        screen->addBorder();
+        
         switch (type) {
             case ScreenType::START: {
+                screen->clear();
+                screen->addBorder();
                 const char* title[] = {
                     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",
                     "@@@@@@@@@@@@@@@@@@@=:::::%@@@@@@@%:%@@@@@@@%:::::-:%@@@@@@@@@@@@@@@@@",
@@ -105,6 +107,10 @@ public:
                 break;
             }
             case ScreenType::GAME: {
+                if (!gameWindowInitialized) {
+                    setScreenFormat(screenHeight, screenWidth / 3);
+                    gameWindowInitialized = true;
+                }
                 screen->addBorder();
 
                 // Primera fila (centrada arriba)
@@ -132,6 +138,7 @@ public:
                 screen->showStringAt(label4, row2, startCol2);
                 screen->showStringAt(label5, row2, startCol2 + label4.size() + space);
 
+                setScreenFormat(screenHeight, screenWidth * 3);
                 break;
             }
 
@@ -194,9 +201,21 @@ public:
 
     int getScreenHeight() { return screenHeight; }
 
+    void setScreenFormat(int height, int width) {
+        screen->clear();
+        screen->initialize();
+        screen->construct(height, width);
+    }
+
     void refresh() { screen->refresh(); }
 
     Screen getScreen() const {
         return *screen;
+    }
+
+    void setFalseGameWindowInitialized() {
+        gameWindowInitialized = false;
+        screen->clear();
+        setScreenFormat(screenHeight, screenWidth * 3);
     }
 };
