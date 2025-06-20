@@ -144,7 +144,6 @@ public:
                     screen->showStringAt(highscore, row, (screenWidth - highscore.size()) / 2);
                     ++row;
                 }
-
                 getch(); // Wait for any key
                 break;
             }

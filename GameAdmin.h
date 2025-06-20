@@ -67,6 +67,9 @@ public:
         ncurses.showScreen(ScreenType::NAME_REQUEST, playerName);
         playerName = ncurses.requestInput("Please, enter your name: ");
 
+        // Set the player's name in the score controller
+        highestScore = scoreController.getHighestScore().value;
+
         // Main game loop
         // mainLoop();
         
