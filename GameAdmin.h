@@ -41,7 +41,7 @@ private:
     int remainingLives;
     int currentScore;
     int highestScore;
-    int level;
+    int level = 0; // Start at level 1
     bool gameOver;
 
 public:
@@ -57,7 +57,7 @@ public:
         playerName = "Player";
         currentScore = 0;
         highestScore = 0;
-        level = 1;
+        level = 0;
         remainingLives = 1000000; // Infinite lives for testing purposes
         gameOver = false;
 
@@ -66,15 +66,18 @@ public:
         int naveX = gameScreen->getWidth() / 2;      // centrada horizontalmente
         spaceship = Spaceship(naveY, naveX);    // ahora sí, la nave queda bien posicionada
         curs_set(0); 
-
-        ConstruirNiveles(1); // Initialize levels
     }
     ~GameAdmin(){
-        // Finalize ncurses screen
+        // Free allocated memory
+        delete gameScreen; // Free memory for the game screen
         ncurses.finalizeScreen();
     }
 
-    void startGame(){
+    void startGame(){      
+        
+        // Reset game state
+        resetGame();
+        
         // Initialize ncurses screen
         ncurses.initializeScreen();
 
@@ -85,8 +88,12 @@ public:
         ncurses.showScreen(ScreenType::NAME_REQUEST, playerName);
         playerName = ncurses.requestInput("Please, enter your name: ");
 
-        // Set the player's name in the score controller
-        highestScore = scoreController.getHighestScore().value;
+        // Load the highest scores from the file
+        scoreController.loadGame();
+        DLinkedList<KVPair<string, int>> highScoresList;
+        scoreController.getScores(highScoresList);
+        highScoresList.goToStart();
+        highestScore = highScoresList.getElement().value; // Get the highest score from the list
 
         // Main game loop
         clear(); // Clear the screen
@@ -101,7 +108,7 @@ public:
         
         // Load the highest scores from the file
         scoreController.loadGame();
-        DLinkedList<KVPair<string, int>> highScoresList;
+        highScoresList.clear();
         scoreController.getScores(highScoresList);
         
         // At the end of the game, show the Game Over screen
@@ -141,6 +148,8 @@ public:
 private:
     void mainLoop(){
         while (!gameOver) {
+            // Clear the screen
+            ncurses.clearScreen();
             // Show the game screen with current state
             ncurses.showScreen(ScreenType::GAME, playerName, currentScore, highestScore, level, 
             remainingLives);
@@ -160,7 +169,17 @@ private:
             // Check if the game is over
             checkGameOver();
 
+            // If the spaceship eliminates all enemies, build the next level
+            checkLevelCompletion();
+
             napms(32); // Sleep for a short duration to control game speed
+        }
+    }
+
+    void checkLevelCompletion() {
+        if (enemies.getEnemyCounter() == 0) {
+            level += 1; // Increment the level
+            ConstruirNiveles(level);
         }
     }
 
@@ -213,10 +232,6 @@ private:
         // Update and draw player bullets
         spaceship.update();
         spaceship.move(gameScreen->getWidth(), gameScreen->getHeight());
-
-        // If the spaceship eliminates all enemies, build the next level
-        if (enemies.getEnemyCounter() == 0)
-            ConstruirNiveles(++level);
         
         enemies.updateAll(*gameScreen);
 
@@ -237,10 +252,14 @@ private:
 
     void resetGame() {
         // Reset game state
-        remainingLives = 3;
+        remainingLives = 100;
         currentScore = 0;
-        level = 1;
         gameOver = false;
+
+        enemies.clearEnemies();
+        ConstruirNiveles(level);
+
+        level = 0; // Reset level to 0
 
         // Clear the screen and reinitialize the spaceship
         gameScreen->clear();
@@ -250,7 +269,6 @@ private:
 
         // Clear player bullets and enemies
         playerBullets.clear();
-        //enemies.clearEnemies(); // PENDIENTE
     }
 
     void refresh() {
@@ -267,23 +285,23 @@ private:
         gameScreen->addBorder();
     }
 
-    void ConstruirNiveles(int nivel) {
-        if (nivel == 1) {
+    void ConstruirNiveles(const int nivel) {
+        if (nivel == 0) {
             gameScreen->initialize();
-            enemies.spawnSmall(gameScreen->getHeight(), gameScreen->getWidth(), 3, gameScreen->getWidth() / 2);
+            enemies.spawnSmall(gameScreen->getHeight(), gameScreen->getWidth(), nivel, gameScreen->getWidth() / 2);
 
             int naveY = gameScreen->getHeight() - 3;     // 2 bloques arriba del borde inferior
             int naveX = gameScreen->getWidth() / 2;      // centrada horizontalmente
             spaceship = Spaceship(naveY, naveX);    // ahora sí, la nave queda bien posicionada
             curs_set(0); 
-        } else if (nivel == 2) {
+        } else if (nivel == 1) {
             gameScreen->initialize();
             enemies.spawnSmall(gameScreen->getHeight(), gameScreen->getWidth(), nivel, gameScreen->getWidth() / 2);
             int naveY = gameScreen->getHeight() - 3;     // 2 bloques arriba del borde inferior
             int naveX = gameScreen->getWidth() / 2;      // centrada horizontalmente
             spaceship = Spaceship(naveY, naveX);    // ahora sí, la nave queda bien posicionada
             curs_set(0);
-        } else if (nivel == 3) {
+        } else if (nivel == 2) {
             gameScreen->initialize();
             enemies.spawnMutant(gameScreen->getHeight(), gameScreen->getWidth(), nivel, gameScreen->getWidth() / 2);
 
@@ -292,14 +310,14 @@ private:
             spaceship = Spaceship(naveY, naveX);    // ahora sí, la nave queda bien posicionada
             curs_set(0);
             
-        } else if (nivel == 4) {
+        } else if (nivel == 3) {
             gameScreen->initialize();
             enemies.spawnMutant(gameScreen->getHeight(), gameScreen->getWidth(), nivel, gameScreen->getWidth() / 2);
             int naveY = gameScreen->getHeight() - 3;     // 2 bloques arriba del borde inferior
             int naveX = gameScreen->getWidth() / 2;      // centrada horizontalmente
             spaceship = Spaceship(naveY, naveX);    // ahora sí, la nave queda bien posicionada
             curs_set(0);
-        } else if (nivel == 5) {
+        } else if (nivel == 4) {
             gameScreen->initialize();
             enemies.spawnMother(gameScreen->getHeight(), gameScreen->getWidth());
             int naveY = gameScreen->getHeight() - 3;     // 2 bloques arriba del borde inferior

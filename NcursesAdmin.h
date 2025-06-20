@@ -62,7 +62,7 @@ public:
                     const std::string& name = "", 
                     int score = 0, 
                     int highestScore = 0, 
-                    int level = 0, 
+                    int level = 1, 
                     int lives = 0, 
                     const std::vector<std::string>& highscores = {})
     {

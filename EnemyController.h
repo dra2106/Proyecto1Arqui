@@ -339,6 +339,12 @@ public:
 	}
 
     int getEnemyCounter() const {
-        return small.size() + mutants.size();
+        return (small.size() + mutants.size() + mother.size());
+    }
+
+    void clearEnemies() {
+        small.clear();
+        mutants.clear();
+        mother.clear();
     }
 };
