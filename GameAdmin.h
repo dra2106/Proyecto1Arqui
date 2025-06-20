@@ -203,7 +203,8 @@ private:
         if (!spaceship.isShieldActive())
             if (enemies.checkPlayerCollisions(spaceship))
                 remainingLives--; // si hay colisión, se resta una vida
-        enemies.CheckCollisionsEnemies(playerBullets);
+        int enemyCountEliminated = enemies.CheckCollisionsEnemies(playerBullets);
+        currentScore += enemyCountEliminated * 100; // Incrementa la puntuación por cada enemigo eliminado
     }
 
     void updateState() {

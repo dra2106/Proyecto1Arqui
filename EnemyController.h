@@ -204,8 +204,9 @@ public:
 		return false;
 	}
 
-    void CheckCollisionsEnemies(vector<Bullet>& Bullets)
+    int CheckCollisionsEnemies(vector<Bullet>& Bullets)
     {
+        int enemyCountEliminated = 0;
         for (int j = 0; j < small.size(); )
         {
             bool erased = false;
@@ -215,7 +216,8 @@ public:
                     if (small[j].getHealth() < 1) {
                         small.erase(small.begin() + j); // Elimina el enemigo
                         erased = true;
-                        break; // Salir del bucle de balas, ya que el enemigo fue eliminado
+                        enemyCountEliminated++; // Incrementa el contador de enemigos eliminados
+                        break;
                     }
                     small[j].damage();
                     Bullets.erase(Bullets.begin() + i); // Elimina la bala
@@ -237,6 +239,7 @@ public:
                     if (mutants[j].getHealth() < 1) {
                         mutants.erase(mutants.begin() + j); // Elimina el enemigo
                         erased = true;
+                        enemyCountEliminated++; // Incrementa el contador de enemigos eliminados
                         break; // Salir del bucle de balas, ya que el enemigo fue eliminado
                     }
                     mutants[j].damage();
@@ -250,6 +253,8 @@ public:
             }
             // Si se eliminó, no incrementamos j porque los elementos se han desplazado
         }
+
+        return enemyCountEliminated; // Retorna el número de enemigos eliminados
     }
 
     // actualiza todos los enemigos en pantalla y sus balas
