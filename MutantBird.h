@@ -82,7 +82,7 @@ public:
 
     void update() override {
         counter = (counter + 1) % 4;
-        if (counter % 2 == 0)
+        if (counter % 4 == 0)
             animationIndex = (animationIndex + 1) % animationSprites.size();
         updateSprite();
         Enemy::update();
@@ -97,7 +97,7 @@ public:
 
     void setSprite(const DLinkedList<string>& newSprite) {
         Entity::setSprite(newSprite);
-        if (height == 1 || height == 2) {
+        if (height == 1 || height == 1) {
             health = 0; // Si el sprite es pequeño, la salud es 0 (que en realidad es 1)
         }
         else {
