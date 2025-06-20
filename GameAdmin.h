@@ -3,6 +3,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include "NcursesAdmin.h"
 #include "ScoreController.h"
@@ -11,7 +12,7 @@
 #include "Bullet.h"
 #include "EnemyController.h"
 #include "CollisionController.h"
-
+#include "ScreenType.h"
 
 using std::string;
 

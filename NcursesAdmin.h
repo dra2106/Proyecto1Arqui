@@ -6,15 +6,7 @@
 #include "Screen.h"
 #include "DataStructures/DLinkedList.h"
 #include "DataStructures/KVPair.h"
-
-enum class ScreenType {
-    START,
-    NAME_REQUEST,
-    GAME,
-    HIGHSCORES,
-    GAME_OVER,
-    CONTINUE_REQUEST
-};
+#include "ScreenType.h"
 
 class NcursesAdmin {
 private:
