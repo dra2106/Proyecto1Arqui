@@ -283,4 +283,8 @@ public:
         }
         timer++; // aumenta el frame actual
 	}
+
+    int getEnemyCounter() const {
+        return small.size() + mutants.size();
+    }
 };

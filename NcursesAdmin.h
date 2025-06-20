@@ -107,38 +107,31 @@ public:
                 break;
             }
             case ScreenType::GAME: {
-                if (!gameWindowInitialized) {
-                    setScreenFormat(screenHeight, screenWidth / 3);
-                    gameWindowInitialized = true;
-                }
-                screen->addBorder();
-
-                // Primera fila (centrada arriba)
+                // Primera fila (alineada a la izquierda)
                 int row1 = 2;
+                int startCol = 2; // Columna inicial a la izquierda
+
                 std::string label1 = "Name: " + name;
                 std::string label2 = "Score: " + std::to_string(score);
                 std::string label3 = "Level: " + std::to_string(level);
 
-                // Calcula el ancho total de las 3 etiquetas y los espacios entre ellas
                 int space = 6;
-                int totalWidth = label1.size() + label2.size() + label3.size() + 2 * space;
-                int startCol = (screenWidth - totalWidth) / 2;
 
                 screen->showStringAt(label1, row1, startCol);
                 screen->showStringAt(label2, row1, startCol + label1.size() + space);
                 screen->showStringAt(label3, row1, startCol + label1.size() + space + label2.size() + space);
 
-                // Segunda fila (debajo, centrada)
+                // Segunda fila (alineada a la derecha)
                 int row2 = row1 + 2;
                 std::string label4 = "Lives: " + std::to_string(lives);
                 std::string label5 = "Press Q to quit";
-                int totalWidth2 = label4.size() + space + label5.size();
-                int startCol2 = (screenWidth - totalWidth2) / 2;
 
-                screen->showStringAt(label4, row2, startCol2);
-                screen->showStringAt(label5, row2, startCol2 + label4.size() + space);
+                // Calcula la posición para pegar los labels al borde derecho
+                int rightCol4 = screenWidth - label4.size() - label5.size() - space - 2; // 2 para margen derecho
+                int rightCol5 = screenWidth - label5.size() - 2;
 
-                setScreenFormat(screenHeight, screenWidth * 3);
+                screen->showStringAt(label4, row2, rightCol4);
+                screen->showStringAt(label5, row2, rightCol5);
                 break;
             }
 
