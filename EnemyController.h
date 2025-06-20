@@ -16,6 +16,7 @@
 #pragma once
 
 #include <vector>
+#include <algorithm>
 #include <time.h>
 #include <algorithm>
 
@@ -39,17 +40,128 @@ private:
 public:
     EnemyController() {}
 
-    void spawnSmall(int maxY, int maxX) {
-		int y = rand() % (maxY / 3) + 1;        // se divide entre 3 para que no salga muy cerca del jugador
-        int x = rand() % (maxX - 2) + 1;
-        small.emplace_back(SmallBird(y, x));    // se añade a la lista de enemigos
-	}
+    void spawnSmall(int maxY, int maxX, int nivel, int tamanoP) {
+        int y = 20;        
+        int x = tamanoP-20;      // centrada horizontalmente
+        int y1 = y;
+        int x1 = x+32;
+        if (nivel == 1){
+            for (int i = 0; i <5; i++){
+                y -= 1; 
+                x -= 3;
+                small.emplace_back(SmallBird(y, x));      
+            }
+            y -= 5;
+            small.emplace_back(SmallBird(y, x));
+            for (int i = 0; i <6; i++){
+                y -= 1; 
+                x += 3;
+                small.emplace_back(SmallBird(y, x));   
+            }
+            for (int i = 0; i <5; i++){
+                y1 -= 1; 
+                x1 += 3;
+                small.emplace_back(SmallBird(y1, x1));    
+            }
+            y1 -= 5;
+            small.emplace_back(SmallBird(y1, x1));
+            for (int i = 0; i <6; i++){
+                y1 -= 1; 
+                x1 -= 3;
+                small.emplace_back(SmallBird(y1, x1));     
+            }
+        }
+        y = 20;        
+        x = tamanoP-10;      // centrada horizontalmente
+        y1 = 20;
+        x1 = tamanoP+5;
 
+        if (nivel == 2){
+            small.emplace_back(SmallBird(y, x));
+            
+            y += 6;
+
+            for (int i = 0; i <4; i++){
+                y -= 3; 
+                x -= 4;
+                small.emplace_back(SmallBird(y, x));  
+            }
+            for (int i = 0; i <3; i++){
+                y += 3; 
+                x -= 4;
+                small.emplace_back(SmallBird(y, x));  
+            }
+            //2222222222222
+            small.emplace_back(SmallBird(y1, x1));
+            
+            y1 += 6;
+
+            for (int i = 0; i <4; i++){
+                y1 -= 3; 
+                x1 += 4;
+                small.emplace_back(SmallBird(y1, x1));  
+            }
+            for (int i = 0; i <3; i++){
+                y1 += 3; 
+                x1 += 4;
+                small.emplace_back(SmallBird(y1, x1));  
+            }
+        }
+	
+    }
+
+    void spawnMutant(int maxY, int maxX, int nivel, int tamanoP) {
+        int y = 20;        
+        int x = tamanoP;      // centrada horizontalmente
+        int y1 = y;
+        int x1 = x+32;
+        if (nivel == 3){
+            for (int i = 0; i <5; i++){
+                y += 4; 
+                x -= 4;
+                mutants.emplace_back(MutantBird(y, x));    
+            }
+        }
+        y = 20;        
+        x = tamanoP-20;      // centrada horizontalmente
+        y1 = 10;
+        x1 = tamanoP+5;
+        if (nivel == 4){
+            for (int i = 0; i <5; i++){
+                y -= 1; 
+                x -= 3;
+                mutants.emplace_back(MutantBird(y, x));    
+            }
+            y -= 5;
+            mutants.emplace_back(MutantBird(y, x));
+            for (int i = 0; i <6; i++){
+                y -= 1; 
+                x += 3;
+                mutants.emplace_back(MutantBird(y, x));   
+            }
+            ///////////////////////////////////////////////////////
+            for (int i = 0; i <5; i++){
+                y1 -= 1; 
+                x1 += 3;
+                mutants.emplace_back(MutantBird(y1, x1));    
+            }
+            y1 -= 5;
+            mutants.emplace_back(MutantBird(y1, x1));
+            for (int i = 0; i <6; i++){
+                y1 -= 1; 
+                x1 -= 3;
+                mutants.emplace_back(MutantBird(y1, x1));     
+            }
+        }
+        
+	
+    }
+    /*
     void spawnMutant(int maxY, int maxX) {
 		int y = rand() % (maxY / 3) + 1;        // se divide entre 3 para que no salga muy cerca del jugador
         int x = rand() % (maxX - 10) + 5;
         mutants.emplace_back(MutantBird(y, x));    // se añade a la lista de enemigos
-	}
+	}*/
 
 	bool checkPlayerCollisions(const Spaceship& spaceship){
         // por cada enemigo, si toca al jugador, pierde

@@ -49,19 +49,50 @@ public:
         spaceship(0, 0) // valores temporales
     {
         screen.initialize();
-        // genera 5 enemigos para probar
-        // for (int i = 0; i < 3; i++)
-        //     enemyCon.spawnSmall(screen.getHeight(), screen.getWidth());
-        for (int i = 0; i < 3; i++)
-            enemyCon.spawnMutant(screen.getHeight(), screen.getWidth());
-
-        //srand(time(0)); // Inicializa la semilla para números aleatorios
-        int naveY = screen.getHeight() - 4;     // 2 bloques arriba del borde inferior
+        int naveY = screen.getHeight() - 3;     // 2 bloques arriba del borde inferior
         int naveX = screen.getWidth() / 2;      // centrada horizontalmente
         spaceship = Spaceship(naveY, naveX);    // ahora sí, la nave queda bien posicionada
         curs_set(0);                            // Oculta cursor
     }
+    void ConstruirNiveles(int nivel) {
+        if (nivel == 1) {
+            screen.initialize();
+            enemyCon.spawnSmall(screen.getHeight(), screen.getWidth(), 3, screen.getWidth() / 2);
 
+            int naveY = screen.getHeight() - 3;     // 2 bloques arriba del borde inferior
+            int naveX = screen.getWidth() / 2;      // centrada horizontalmente
+            spaceship = Spaceship(naveY, naveX);    // ahora sí, la nave queda bien posicionada
+            curs_set(0); 
+        } else if (nivel == 2) {
+            screen.initialize();
+            enemyCon.spawnSmall(screen.getHeight(), screen.getWidth(), nivel, screen.getWidth() / 2);
+            int naveY = screen.getHeight() - 3;     // 2 bloques arriba del borde inferior
+            int naveX = screen.getWidth() / 2;      // centrada horizontalmente
+            spaceship = Spaceship(naveY, naveX);    // ahora sí, la nave queda bien posicionada
+            curs_set(0);
+        } else if (nivel == 3) {
+            screen.initialize();
+            enemyCon.spawnMutant(screen.getHeight(), screen.getWidth(), nivel, screen.getWidth() / 2);
+            
+            int naveY = screen.getHeight() - 3;     // 2 bloques arriba del borde inferior
+            int naveX = screen.getWidth() / 2;      // centrada horizontalmente
+            spaceship = Spaceship(naveY, naveX);    // ahora sí, la nave queda bien posicionada
+            curs_set(0);
+            
+        } else if (nivel == 4) {
+            screen.initialize();
+            enemyCon.spawnMutant(screen.getHeight(), screen.getWidth(), nivel, screen.getWidth() / 2);
+            
+            int naveY = screen.getHeight() - 3;     // 2 bloques arriba del borde inferior
+            int naveX = screen.getWidth() / 2;      // centrada horizontalmente
+            spaceship = Spaceship(naveY, naveX);    // ahora sí, la nave queda bien posicionada
+            curs_set(0);
+        } else if (nivel == 5) {
+            
+        }
+
+
+    }
     // procesa el input del usuario
     void processInput() {
         chtype input = screen.getInput();
@@ -100,6 +131,14 @@ public:
         spaceship.move(screen.getWidth(), screen.getHeight()); // mueve la nave usando el ancho de la pantalla
         // si una nave choca con un enemigo, pierde
 
+        if (enemyCon.checkPlayerCollisions(spaceship)){
+            vidas--; // si hay colisión, se resta una vida
+            if (vidas < 1) {
+                gameOver = true;
+            }
+        }
+
+        enemyCon.CheckCollisionsEnemies(bullets);
         enemyCon.updateAll(screen); // actualiza todos los enemigos
         
         // Mueve y dibuja las balas activas
