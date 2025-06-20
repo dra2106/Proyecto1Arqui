@@ -100,16 +100,6 @@ public:
         spaceship.move(screen.getWidth(), screen.getHeight()); // mueve la nave usando el ancho de la pantalla
         // si una nave choca con un enemigo, pierde
 
-        if (!spaceship.isShieldActive()){
-            if (enemyCon.checkPlayerCollisions(spaceship)){
-                vidas--; // si hay colisión, se resta una vida
-                if (vidas < 1)
-                    gameOver = true;
-            }
-        }
-        
-
-        enemyCon.CheckCollisionsEnemies(bullets);
         enemyCon.updateAll(screen); // actualiza todos los enemigos
         
         // Mueve y dibuja las balas activas

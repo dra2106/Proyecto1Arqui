@@ -62,7 +62,7 @@ public:
         gameOver = false;
 
         for (int i = 0; i < 5; i++)
-            enemies.spawnEnemy(gameScreen->getWidth(), gameScreen->getHeight());
+            enemies.spawnMutant(gameScreen->getWidth(), gameScreen->getHeight());
 
         srand(time(0)); // Inicializa la semilla para números aleatorios
         int naveY = gameScreen->getHeight() - 3;     // 2 bloques arriba del borde inferior
@@ -191,31 +191,31 @@ private:
     }
 
     void checkCollisions() {
-
-        // Check for collisions between player bullets and enemies
-        // PENDIENTE
-
-        // Check for collisions between player and enemies their bullets
-        if (enemies.checkPlayerCollisions(spaceship)) {
-            remainingLives--;
-            if (remainingLives <= 0)
-                gameOver = true;
-        }
+        if (!spaceship.isShieldActive())
+            if (enemies.checkPlayerCollisions(spaceship))
+                remainingLives--; // si hay colisión, se resta una vida
+        enemies.CheckCollisionsEnemies(playerBullets);
     }
 
     void updateState() {
-        // Limpia la pantalla
-        //ncurses.clearScreen();
+        gameScreen->clear();
 
-        // Mueve la nave y actualiza su posición
-        spaceship.move(ncurses.getScreenWidth(), ncurses.getScreenHeight());
+        // Update and draw player bullets
+        spaceship.update();
+        spaceship.move(gameScreen->getWidth(), gameScreen->getHeight());
 
-        // Check for collisions between player and enemies
-        checkCollisions();
+        for (Bullet& b : playerBullets) {
+            b.move();
+            gameScreen->add(b);
+        }
 
-        // Update enemies
-        // enemies.updateAll(ncurses.getScreen());
-        ncurses.refresh();
+        playerBullets.erase(
+            std::remove_if(playerBullets.begin(), playerBullets.end(),
+                [](const Bullet& b) { return b.getY() < 1; }),
+            playerBullets.end()
+        );
+        
+        gameScreen->add(spaceship);
     }
 
     void refresh() {

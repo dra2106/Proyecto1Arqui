@@ -93,7 +93,7 @@ public:
     }
 
     // limpia la ventana y crea la caja
-    void clear() {
+    void clear()   {
         wclear(win);
         addBorder();
     }
