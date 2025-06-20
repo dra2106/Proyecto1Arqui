@@ -16,6 +16,9 @@
 
 #include "Entity.h" 
 
+using std::vector;
+using std::pair;
+
 class CollisionController {
 public:
     static bool checkCollision(const Entity& a, const Entity& b) {
@@ -30,17 +33,5 @@ public:
         int by2 = by1 + b.getHeight() - 1;
 
         return !(ax2 < bx1 || ax1 > bx2 || ay2 < by1 || ay1 > by2);
-    }
-
-    static bool checkCollisionsEnemy(vector<Bullet>& bullets, vector<Enemy>& enemies) {
-        for (Bullet& bullet : bullets) {
-            for (Enemy& enemy : enemies) {
-                if (checkCollision(bullet, enemy)) {
-                    bullet.setActive(false);
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 };

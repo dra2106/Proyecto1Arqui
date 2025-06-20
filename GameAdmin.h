@@ -145,14 +145,7 @@ private:
     void checkCollisions() {
 
         // Check for collisions between player bullets and enemies
-        std::vector<Enemy> enemyList(enemies.getEnemies().begin(), enemies.getEnemies().end());
-        if (collisionController.checkCollisionsEnemy(playerBullets, enemyList)) {
-            // If a bullet hits an enemy, increase the score
-            currentScore += 10; // Example score increment
-            
-            // Remove the bullet from the player's bullets list
-            // PENDIENTE
-        }
+        // PENDIENTE
 
         // Check for collisions between player and enemies their bullets
         if (enemies.checkPlayerCollisions(spaceship)) {
@@ -173,8 +166,7 @@ private:
         checkCollisions();
 
         // Update enemies
-        //Screen& screen = ncurses.getScreen();
-        //enemies.updateAll(screen);
+        // enemies.updateAll(ncurses.getScreen());
     }
 
     void refresh() {

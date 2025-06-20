@@ -13,5 +13,5 @@
 
 all: Proyecto1Arqui
 
-Proyecto1Arqui: Proyecto1Arqui.cpp Screen.h MainLoop.h Entity.h Spaceship.h Bullet.h SmallBird.h Enemy.h EnemyPatterns.h Mothership.h EnemyController.h MutantBird.h
-	g++ Proyecto1Arqui.cpp -lncurses -o Proyecto1Arqui
+Proyecto1Arqui: ProyectoPhoenix.cpp Screen.h Entity.h Spaceship.h Bullet.h SmallBird.h Enemy.h EnemyPatterns.h Mothership.h EnemyController.h MutantBird.h NcursesAdmin.h GameLoop.h GameAdmin.h
+	g++ ProyectoPhoenix.cpp -lncurses -o ProyectoPhoenix

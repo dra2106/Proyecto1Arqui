@@ -64,6 +64,11 @@ private:
     }
 
 public:
+    // Constructor por defecto
+    Screen() : height(0), width(0) {
+        construct(0, 0);
+    }
+
     Screen(int height = 0, int width = 0) {
         this->height = height;
         this->width = width;

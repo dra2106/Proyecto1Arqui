@@ -17,6 +17,7 @@
 
 #include <vector>
 #include <time.h>
+#include <algorithm>
 
 #include "Screen.h"
 #include "CollisionController.h"
