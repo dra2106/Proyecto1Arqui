@@ -139,7 +139,6 @@ public:
                 x += 3;
                 mutants.emplace_back(MutantBird(y, x));   
             }
-            ///////////////////////////////////////////////////////
             for (int i = 0; i <5; i++){
                 y1 -= 1; 
                 x1 += 3;
@@ -167,6 +166,8 @@ public:
 		int y = maxY / 3;        // se divide entre 3 para que no salga muy cerca del jugador
         int x = maxX - 30;
         mother.emplace_back(Mothership(y, x));    // se añade a la lista de enemigos
+
+        
 	}
 
 	bool checkPlayerCollisions(const Spaceship& spaceship){
@@ -176,11 +177,6 @@ public:
 			    return true;
             // propenso a cambio, elimina balas que hayan pasado cierta altura (actualmente se borran, pero el sprite sigue)
             vector<Bullet> bullets = enemy.getBullets();
-            bullets.erase(
-                std::remove_if(bullets.begin(), bullets.end(),
-                    [](const Bullet& b) { return b.getY() > 50; }),
-                bullets.end()
-            );
             // colisión de la nave con las balas
             for (int i = 0; i < bullets.size(); i++) {
                 if (collision.checkCollision(spaceship, bullets[i])){
@@ -188,43 +184,49 @@ public:
                     return true;
                 }
             }
-            // for (Bullet& bullet: bullets) {
-            //     if (collision.checkCollision(spaceship, bullet))
-			//         return true;
-            // }
-		}
-        for (MutantBird& enemy: mutants) {
-			if (collision.checkCollision(spaceship, enemy))
-			    return true;
-            vector<Bullet> bullets = enemy.getBullets();
+
             bullets.erase(
                 std::remove_if(bullets.begin(), bullets.end(),
                     [](const Bullet& b) { return b.getY() > 50; }),
                 bullets.end()
             );
+		}
+        for (MutantBird& enemy: mutants) {
+			if (collision.checkCollision(spaceship, enemy))
+			    return true;
+            vector<Bullet> bullets = enemy.getBullets();
+
             for (int i = 0; i < bullets.size(); i++) {
                 if (collision.checkCollision(spaceship, bullets[i])){
                     bullets.erase(bullets.begin() + i);
                     return true;
                 }
             }
+
+            bullets.erase(
+                std::remove_if(bullets.begin(), bullets.end(),
+                    [](const Bullet& b) { return b.getY() > 50; }),
+                bullets.end()
+            );
 		}
 
         for (Mothership& enemy: mother) {
 			if (collision.checkCollision(spaceship, enemy))
 			    return true;
             vector<Bullet> bullets = enemy.getBullets();
-            bullets.erase(
-                std::remove_if(bullets.begin(), bullets.end(),
-                    [](const Bullet& b) { return b.getY() > 50; }),
-                bullets.end()
-            );
+
             for (int i = 0; i < bullets.size(); i++) {
                 if (collision.checkCollision(spaceship, bullets[i])){
                     bullets.erase(bullets.begin() + i);
                     return true;
                 }
             }
+
+            bullets.erase(
+                std::remove_if(bullets.begin(), bullets.end(),
+                    [](const Bullet& b) { return b.getY() > 50; }),
+                bullets.end()
+            );
 		}
 		return false;
 	}

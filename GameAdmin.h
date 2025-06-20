@@ -58,7 +58,7 @@ public:
         currentScore = 0;
         highestScore = 0;
         level = 1;
-        remainingLives = 9;
+        remainingLives = 1000000; // Infinite lives for testing purposes
         gameOver = false;
 
         srand(time(0)); // Inicializa la semilla para números aleatorios
@@ -202,7 +202,7 @@ private:
     void checkCollisions() {
         if (!spaceship.isShieldActive())
             if (enemies.checkPlayerCollisions(spaceship))
-                remainingLives--; // si hay colisión, se resta una vida
+                remainingLives--;
         int enemyCountEliminated = enemies.CheckCollisionsEnemies(playerBullets);
         currentScore += enemyCountEliminated * 100; // Incrementa la puntuación por cada enemigo eliminado
     }
@@ -250,7 +250,7 @@ private:
 
         // Clear player bullets and enemies
         playerBullets.clear();
-        // enemies.clearEnemies(); // PENDIENTE
+        //enemies.clearEnemies(); // PENDIENTE
     }
 
     void refresh() {
@@ -300,6 +300,12 @@ private:
             spaceship = Spaceship(naveY, naveX);    // ahora sí, la nave queda bien posicionada
             curs_set(0);
         } else if (nivel == 5) {
+            gameScreen->initialize();
+            enemies.spawnMother(gameScreen->getHeight(), gameScreen->getWidth());
+            int naveY = gameScreen->getHeight() - 3;     // 2 bloques arriba del borde inferior
+            int naveX = gameScreen->getWidth() / 2;      // centrada horizontalmente
+            spaceship = Spaceship(naveY, naveX);    // ahora sí, la nave queda bien posicionada
+            curs_set(0);
         }
     }
 };
