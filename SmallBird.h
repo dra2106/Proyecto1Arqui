@@ -30,15 +30,15 @@ private:
     // Función auxiliar para construir el sprite
     static DLinkedList<string> buildSprite() {
         DLinkedList<string> s;
-        s.append(" | | ");
-        s.append("  H  ");
-        s.append(" | | ");
+        s.append(" . .");
+        s.append("/\\V/\\");
+        s.append(" - -");
         return s;
     }
 
 public:
     SmallBird(int y = 0,int x = 0)
-        : Enemy(x, y, buildSprite()), health(1) {
+        : Enemy(x, y, buildSprite()), health(0) {
             setRandomPattern(EnemyPatterns::SMALL_BIRD_PATTERNS); // Asigna un patrón de movimiento al azar
         }
 
@@ -85,10 +85,18 @@ public:
         x = 0;
     }
 
+    bool isDead() const {
+        return health <= 0;
+    }
+
+    void damage() {
+        health -= 1;
+    }
+
     vector<Bullet>& getBullets() {
         return bullets;
     }
 
-    int gethealth() const { return health; }
-    void sethealth(int v) { health = v; }
+    int getHealth() const { return health; }
+    void setHealth(int v) { health = v; }
 };

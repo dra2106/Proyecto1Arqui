@@ -80,6 +80,7 @@ int main() {
     clear();
 
     MainLoop game(rows - 2, cols/3 - 4);
+    game.ConstruirNiveles(1); // Construye el primer nivel
     while (!game.isOver()) {
         game.processInput();
         game.updateState();
