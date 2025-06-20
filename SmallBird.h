@@ -30,9 +30,9 @@ private:
     // Función auxiliar para construir el sprite
     static DLinkedList<string> buildSprite() {
         DLinkedList<string> s;
-        s.append(" | | ");
-        s.append("  H  ");
-        s.append(" | | ");
+        s.append(" . .");
+        s.append("/\\V/\\");
+        s.append(" - -");
         return s;
     }
 

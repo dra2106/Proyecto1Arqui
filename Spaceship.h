@@ -21,25 +21,45 @@
 class Spaceship : public Entity {
 private:
     Direction currentDirection;
+    int shieldFrames = 0;
+    int SHIELD_DURATION = 60;     // 2 segundos activo
+    int SHIELD_COOLDOWN = 300;    // 10 segundos de cooldown
 
     void loadSprite() {
         DLinkedList<string> sprite;
+        string shieldIndicator;
+        
+        // imprime un indicador de que el escudo está activo
+        if (shieldFrames > 0) {
+            sprite.append(" ___ ");
+            sprite.append("/   \\");
+
+        } else if (shieldFrames < 0) {
+            int cooldown = -shieldFrames / 30;
+            shieldIndicator = "(" + std::to_string(cooldown) + ")"; // Tiempo de cooldown
+
+        } else {
+            shieldIndicator = "[!]"; // Escudo listo
+        }
         switch (currentDirection) {
             case LEFT:
                 sprite.append("(\\A/|");
                 sprite.append("(!H!|");
                 sprite.append("(/V\\|");
+                sprite.append(" " + shieldIndicator);
                 break;
             case RIGHT:
                 sprite.append("|\\A/)");
                 sprite.append("|!H!)");
                 sprite.append("|/V\\)");
+                sprite.append(" " + shieldIndicator);
                 break;
             case STAND:
             default:
                 sprite.append("|\\A/|");
                 sprite.append("|!H!|");
                 sprite.append("|/V\\|");
+                sprite.append(" " + shieldIndicator);
                 break;
         }
         setSprite(sprite);
@@ -56,7 +76,35 @@ public:
         loadSprite(); // Actualiza el sprite al cambiar la dirección
     }
 
-    Direction getDirection() const { return currentDirection; }
+    void activateShield() {
+        if (shieldFrames == 0) { // Solo activar si está listo
+            shieldFrames = SHIELD_DURATION;
+            loadSprite();
+        }
+    }
+
+    void update() {
+        if (shieldFrames > 0) { // si se activa el escudo, reduce los frames
+            shieldFrames--;
+            if (shieldFrames == 0) {
+                shieldFrames = -SHIELD_COOLDOWN; // Iniciar cooldown
+                loadSprite();
+            }
+        } else if (shieldFrames < 0) { // si está en cooldown, aumenta los frames
+            shieldFrames++;
+            if (shieldFrames == 0) {
+                loadSprite(); // Escudo listo otra vez
+            }
+        }
+    }
+
+    bool isShieldActive() { 
+        return shieldFrames > 0;
+    }
+
+    Direction getDirection() { 
+        return currentDirection;
+    }
 
     void move(int screenWidth, int screenHeight) {
         const int margenX = 1;
