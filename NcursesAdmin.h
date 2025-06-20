@@ -151,13 +151,13 @@ public:
             case ScreenType::GAME_OVER: {
                 screen->clear();
                 screen->addBorder();
-                screen->showCenteredString("Game Over");
-                screen->showCenteredString("Name: " + name);
-                screen->showCenteredString("Score: " + std::to_string(score));
-                screen->showCenteredString("Highest Score: " + std::to_string(highestScore));
-                screen->showCenteredString("Level: " + std::to_string(level));
-                screen->showCenteredString("Lives Remaining: " + std::to_string(lives));
-                screen->showCenteredString("Press any key to continue...");
+                screen->showStringAt("Game Over", 1, (screenWidth - std::string("Game Over").size()) / 2);
+                screen->showStringAt("Name: " + name, 3, (screenWidth - ("Name: " + name).size()) / 2);
+                screen->showStringAt("Score: " + std::to_string(score), 4, (screenWidth - std::string("Score: " + std::to_string(score)).size()) / 2);
+                screen->showStringAt("Highest Score: " + std::to_string(highestScore), 5, (screenWidth - std::string("Highest Score: " + std::to_string(highestScore)).size()) / 2);
+                screen->showStringAt("Level: " + std::to_string(level), 6, (screenWidth - std::string("Level: " + std::to_string(level)).size()) / 2);
+                screen->showStringAt("Lives Remaining: " + std::to_string(lives), 7, (screenWidth - std::string("Lives Remaining: " + std::to_string(lives)).size()) / 2);
+                screen->showStringAt("Press any key to continue...", 8, (screenWidth - std::string("Press any key to continue...").size()) / 2);
                 getch(); // Wait for any key
                 break;
             }
