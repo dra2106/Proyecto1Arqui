@@ -1,5 +1,3 @@
-
-
 #pragma once
 
 #include <string>
@@ -49,16 +47,16 @@ public:
         : spaceship(0,0), 
           ncurses(), 
           scoreController("Files/Scores.txt", "Player") {
-        // Initialize game attributes
+        // Inicializar atributos
         screenWidth = ncurses.getScreenWidth() / 3;
         screenHeight = ncurses.getScreenHeight();
-        gameScreen = new Screen(screenHeight, screenWidth); // Allocate Screen
+        gameScreen = new Screen(screenHeight, screenWidth);
         gameScreen->initialize();
         playerName = "Player";
         currentScore = 0;
         highestScore = 0;
         level = 0;
-        remainingLives = 1000000; // Infinite lives for testing purposes
+        remainingLives = 12; 
         gameOver = false;
 
         srand(time(0)); // Inicializa la semilla para números aleatorios
@@ -68,8 +66,7 @@ public:
         curs_set(0); 
     }
     ~GameAdmin(){
-        // Free allocated memory
-        delete gameScreen; // Free memory for the game screen
+        delete gameScreen;
         ncurses.finalizeScreen();
     }
 
@@ -205,7 +202,7 @@ private:
                 break;
             case ' ':
                 spaceship.setDirection(STAND);    
-                if (playerBullets.size() < 5) {    
+                if (playerBullets.size() < 7) {    
                     playerBullets.emplace_back(spaceship.getY() - 1, spaceship.getX());
                     for (Bullet& b : playerBullets) {
                         b.setDirection(UP);   
@@ -252,7 +249,7 @@ private:
 
     void resetGame() {
         // Reset game state
-        remainingLives = 1000000;
+        remainingLives = 12;
         currentScore = 0;
         gameOver = false;
 

@@ -24,7 +24,7 @@ class Mothership : public Enemy {
 private:
     int health;
     int attackCooldown = 0;
-    const int BASE_COOLDOWN = 10;
+    const int BASE_COOLDOWN = 30;
     int alienIndex = 0;
     vector<Bullet> bullets;
     const std::vector<std::string> mothershipBase = {
@@ -79,7 +79,7 @@ private:
 
 public:
     Mothership(int y = 0,int x = 0)
-        : Enemy(x, y, buildSprite()), health(10) {
+        : Enemy(x, y, buildSprite()), health(30) {
             setPattern({{0,1}, {0,0}, {0,1}, {0,0}, {0,-1}, {0,0}});
         }
 

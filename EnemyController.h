@@ -113,7 +113,7 @@ public:
     void spawnMutant(int maxY, int maxX, int nivel, int tamanoP) {
         int y = 20;        
         int x = tamanoP;      // centrada horizontalmente
-        int y1 = y;
+        int y1 = 5;
         int x1 = x+32;
         if (nivel == 3){
             for (int i = 0; i <5; i++){
@@ -124,30 +124,30 @@ public:
         }
         y = 20;        
         x = tamanoP-20;      // centrada horizontalmente
-        y1 = 10;
+        y1 = 5;
         x1 = tamanoP+5;
         if (nivel == 4){
             for (int i = 0; i <5; i++){
-                y -= 1; 
+                y += 1; 
                 x -= 3;
                 mutants.emplace_back(MutantBird(y, x));    
             }
             y -= 5;
             mutants.emplace_back(MutantBird(y, x));
             for (int i = 0; i <6; i++){
-                y -= 1; 
+                y += 1; 
                 x += 3;
                 mutants.emplace_back(MutantBird(y, x));   
             }
             for (int i = 0; i <5; i++){
-                y1 -= 1; 
+                y1 += 1; 
                 x1 += 3;
                 mutants.emplace_back(MutantBird(y1, x1));    
             }
             y1 -= 5;
             mutants.emplace_back(MutantBird(y1, x1));
             for (int i = 0; i <6; i++){
-                y1 -= 1; 
+                y1 += 1; 
                 x1 -= 3;
                 mutants.emplace_back(MutantBird(y1, x1));     
             }
@@ -155,16 +155,10 @@ public:
         
 	
     }
-    /*
-    void spawnMutant(int maxY, int maxX) {
-		int y = rand() % (maxY / 3) + 1;        // se divide entre 3 para que no salga muy cerca del jugador
-        int x = rand() % (maxX - 10) + 5;
-        mutants.emplace_back(MutantBird(y, x));    // se añade a la lista de enemigos
-	}*/
 
     void spawnMother(int maxY, int maxX) {
 		int y = maxY / 3;        // se divide entre 3 para que no salga muy cerca del jugador
-        int x = maxX - 30;
+        int x = maxX - 50;
         mother.emplace_back(Mothership(y, x));    // se añade a la lista de enemigos
 
         

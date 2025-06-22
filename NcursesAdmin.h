@@ -37,7 +37,7 @@ public:
 
     void finalizeScreen(){
         screen->clear();
-        screen->refresh();
+        // screen->refresh();
         endwin(); // End ncurses mode
     }
 
@@ -48,12 +48,12 @@ public:
     void showCenteredString(const std::string& text, int row) {
         int col = (screenWidth - text.size()) / 2;
         mvwprintw(stdscr, row, col, "%s", text.c_str());
-        refresh();
+        // refresh();
     }
 
     void showStringAt(int y, int x, const std::string& text) {
         mvwprintw(stdscr, y, x, "%s", text.c_str());
-        refresh();
+        // refresh();
     }
 
     void setScreenFormat();
@@ -174,7 +174,7 @@ public:
             default:
                 break;
         }
-        screen->refresh();
+        // screen->refresh();
     }
 
     std::string requestInput(const std::string& message) {

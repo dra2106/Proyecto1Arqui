@@ -27,7 +27,7 @@ private:
     int animationIndex = 0;
     int counter = 0;
     int attackCooldown = 0;
-    const int BASE_COOLDOWN = 10; // 3 segundos base (60 FPS * 3)
+    const int BASE_COOLDOWN = 90; // 3 segundos base (60 FPS * 3)
     int animationDelay = 60; // Cambia de sprite cada 10 frames
     int animationCounter = 0;
     std::vector<DLinkedList<std::string>> animationSprites;
