@@ -51,7 +51,6 @@ public:
         screenWidth = ncurses.getScreenWidth() / 3;
         screenHeight = ncurses.getScreenHeight();
         gameScreen = new Screen(screenHeight, screenWidth);
-        gameScreen->initialize();
         playerName = "Player";
         currentScore = 0;
         highestScore = 0;
@@ -93,7 +92,7 @@ public:
         highestScore = highScoresList.getElement().value; // Get the highest score from the list
 
         // Main game loop
-        clear(); // Clear the screen
+        //clear(); // Clear the screen
         gameScreen->addBorder();
         
         mainLoop();
@@ -146,7 +145,7 @@ private:
     void mainLoop(){
         while (!gameOver) {
             // Clear the screen
-            ncurses.clearScreen();
+            //ncurses.clearScreen();
             // Show the game screen with current state
             ncurses.showScreen(ScreenType::GAME, playerName, currentScore, highestScore, level, 
             remainingLives);
@@ -158,7 +157,7 @@ private:
             updateState();
 
             // Refresh the screen
-            refresh();
+            //refresh();
 
             // Check for collisions
             checkCollisions();
@@ -278,7 +277,7 @@ private:
     }
 
     void clear() {
-        gameScreen->clear();
+        //gameScreen->clear();
         gameScreen->addBorder();
     }
 

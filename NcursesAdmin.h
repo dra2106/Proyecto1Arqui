@@ -69,7 +69,7 @@ public:
         
         switch (type) {
             case ScreenType::START: {
-                screen->clear();
+                //screen->clear();
                 screen->addBorder();
                 const char* title[] = {
                     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",
@@ -103,7 +103,7 @@ public:
                 break;
             }
             case ScreenType::NAME_REQUEST: {
-                screen->clear();
+                //screen->clear();
                 break;
             }
             case ScreenType::GAME: {
@@ -140,7 +140,7 @@ public:
             }
 
             case ScreenType::HIGHSCORES: {
-                screen->clear();
+                //screen->clear();
                 screen->addBorder();
                 screen->showStringAt("High Scores", 1, (screenWidth - std::string("High Scores").size()) / 2);
                 int row = 3;
@@ -153,7 +153,7 @@ public:
             }
 
             case ScreenType::GAME_OVER: {
-                screen->clear();
+                //screen->clear();
                 screen->addBorder();
                 screen->showStringAt("Game Over", 1, (screenWidth - std::string("Game Over").size()) / 2);
                 screen->showStringAt("Name: " + name, 3, (screenWidth - ("Name: " + name).size()) / 2);
@@ -167,7 +167,7 @@ public:
             }
 
             case ScreenType::CONTINUE_REQUEST: {
-                screen->clear();
+                //screen->clear();
                 break;
             }
 
@@ -199,7 +199,7 @@ public:
     int getScreenHeight() { return screenHeight; }
 
     void setScreenFormat(int height, int width) {
-        screen->clear();
+        //screen->clear();
         screen->initialize();
         screen->construct(height, width);
     }
@@ -212,7 +212,7 @@ public:
 
     void setFalseGameWindowInitialized() {
         gameWindowInitialized = false;
-        screen->clear();
+        //screen->clear();
         setScreenFormat(screenHeight, screenWidth * 3);
     }
 };
