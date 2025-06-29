@@ -15,23 +15,17 @@
 #pragma once
 
 #include "Entity.h" 
+#include "Collision_arm.h"
 
 using std::vector;
 using std::pair;
 
 class CollisionController {
 public:
-    static bool checkCollision(const Entity& a, const Entity& b) {
-        int ax1 = a.getX() - a.getWidth()  / 2;
-        int ay1 = a.getY() - a.getHeight() / 2;
-        int ax2 = ax1 + a.getWidth()  - 1;
-        int ay2 = ay1 + a.getHeight() - 1;
-
-        int bx1 = b.getX() - b.getWidth()  / 2;
-        int by1 = b.getY() - b.getHeight() / 2;
-        int bx2 = bx1 + b.getWidth()  - 1;
-        int by2 = by1 + b.getHeight() - 1;
-
-        return !(ax2 < bx1 || ax1 > bx2 || ay2 < by1 || ay1 > by2);
+    bool checkCollision(const Entity& a, const Entity& b) {
+        return check_collision_arm(
+            a.getY(), a.getX(), a.getHeight(), a.getWidth(),  // ¡Y antes que X!
+            b.getY(), b.getX(), b.getHeight(), b.getWidth()   // ¡Y antes que X!
+        );
     }
 };

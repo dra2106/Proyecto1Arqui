@@ -69,7 +69,7 @@ public:
         
         switch (type) {
             case ScreenType::START: {
-                //screen->clear();
+                screen->clear();
                 screen->addBorder();
                 const char* title[] = {
                     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",
@@ -103,7 +103,7 @@ public:
                 break;
             }
             case ScreenType::NAME_REQUEST: {
-                //screen->clear();
+                screen->clear();
                 break;
             }
             case ScreenType::GAME: {
@@ -112,8 +112,8 @@ public:
                 int startCol = 2; // Columna inicial a la izquierda
 
                 std::string label1 = "Name: " + name;
-                std::string label2 = "Score: " + std::to_string(score);
-                std::string label3 = "Level: " + std::to_string(level);
+                std::string label2 = "  Score: " + std::to_string(score);
+                std::string label3 = "  Level: " + std::to_string(level);
 
                 int space = 6;
 
@@ -126,8 +126,8 @@ public:
                 int spaceRight = 15;
                 int rightMargin = 4; // margen derecho
 
-                std::string label4 = "Highest Score: " + std::to_string(highestScore);
-                std::string label5 = "Lives: " + std::to_string(lives);
+                std::string label4 = "  Highest Score: " + std::to_string(highestScore);
+                std::string label5 = "  Lives: " + std::to_string(lives);
                 std::string label6 = "Press Q to quit";
 
                 int totalWidth = label4.size() + spaceRight + label5.size() + spaceRight + label6.size();
@@ -140,7 +140,7 @@ public:
             }
 
             case ScreenType::HIGHSCORES: {
-                //screen->clear();
+                screen->clear();
                 screen->addBorder();
                 screen->showStringAt("High Scores", 1, (screenWidth - std::string("High Scores").size()) / 2);
                 int row = 3;
@@ -153,7 +153,7 @@ public:
             }
 
             case ScreenType::GAME_OVER: {
-                //screen->clear();
+                screen->clear();
                 screen->addBorder();
                 screen->showStringAt("Game Over", 1, (screenWidth - std::string("Game Over").size()) / 2);
                 screen->showStringAt("Name: " + name, 3, (screenWidth - ("Name: " + name).size()) / 2);
@@ -167,7 +167,7 @@ public:
             }
 
             case ScreenType::CONTINUE_REQUEST: {
-                //screen->clear();
+                screen->clear();
                 break;
             }
 
@@ -212,7 +212,7 @@ public:
 
     void setFalseGameWindowInitialized() {
         gameWindowInitialized = false;
-        //screen->clear();
+        screen->clear();
         setScreenFormat(screenHeight, screenWidth * 3);
     }
 };
