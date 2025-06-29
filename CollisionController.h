@@ -24,8 +24,8 @@ class CollisionController {
 public:
     bool checkCollision(const Entity& a, const Entity& b) {
         return check_collision_arm(
-            a.getY(), a.getX(), a.getHeight(), a.getWidth(),  // ¡Y antes que X!
-            b.getY(), b.getX(), b.getHeight(), b.getWidth()   // ¡Y antes que X!
+            a.getY(), a.getX(), a.getHeight(), a.getWidth(),
+            b.getY(), b.getX(), b.getHeight(), b.getWidth()
         );
     }
 };

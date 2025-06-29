@@ -6,4 +6,4 @@ extern "C" {
                             int y2, int x2, int h2, int w2);
 }
 
-#endif // COLLISION_ARM_H
+#endif
