@@ -11,6 +11,7 @@
 #include "EnemyController.h"
 #include "CollisionController.h"
 #include "ScreenType.h"
+#include "Profiler.h"
 
 using std::string;
 
@@ -41,6 +42,9 @@ private:
     int highestScore;
     int level = 0; // Start at level 1
     bool gameOver;
+
+    // TEST
+    Profiler profiler;
 
 public:
     GameAdmin() 
@@ -145,31 +149,20 @@ public:
 private:
     void mainLoop(){
         while (!gameOver) {
-            // Clear the screen
-            ncurses.clearScreen();
-            // Show the game screen with current state
-            ncurses.showScreen(ScreenType::GAME, playerName, currentScore, highestScore, level, 
-            remainingLives);
+            profiler.startFrame(); // INICIO MEDICIÓN
 
-            // Process user input
+            ScreenType pantalla = ScreenType::GAME_TEST; 
+            ncurses.showScreen(pantalla, playerName, currentScore, highestScore, level, remainingLives, {}, &profiler);
+
             processInput();
-
-            // Update game state
             updateState();
-
-            // Refresh the screen
-            refresh();
-
-            // Check for collisions
             checkCollisions();
-
-            // Check if the game is over
             checkGameOver();
-
-            // If the spaceship eliminates all enemies, build the next level
             checkLevelCompletion();
 
-            napms(32); // Sleep for a short duration to control game speed
+            profiler.endFrame(); // FIN MEDICIÓN
+
+            napms(32);
         }
     }
 
