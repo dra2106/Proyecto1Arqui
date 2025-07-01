@@ -169,7 +169,7 @@ private:
 
             profiler.endFrame(); // FIN MEDICIÓN
 
-            napms(32);
+            napms(50);
         }
     }
 
