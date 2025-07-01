@@ -170,6 +170,7 @@ private:
 
             napms(50);
         }
+        profiler.saveToFile("METRICAS.txt", "Versión Avanzada");
     }
 
     void mainLoop(){
@@ -187,11 +188,12 @@ private:
 
             napms(32);
         }
+        profiler.saveToFile("METRICAS.txt", "Versión Normal");
     }
 
     void checkLevelCompletion() {
         if (enemies.getEnemyCounter() == 0) {
-            level += 1; // Increment the level
+            level = (level + 1) % 5; // Increment the level
             ConstruirNiveles(level);
         }
     }
