@@ -7,5 +7,6 @@ enum class ScreenType {
     GAME,
     HIGHSCORES,
     GAME_OVER,
-    CONTINUE_REQUEST
+    CONTINUE_REQUEST,
+    GAME_TEST // For testing purposes, can be used to show game metrics
 };

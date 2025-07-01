@@ -7,6 +7,7 @@
 #include "DataStructures/DLinkedList.h"
 #include "DataStructures/KVPair.h"
 #include "ScreenType.h"
+#include "Profiler.h"
 
 class NcursesAdmin {
 private:
@@ -64,7 +65,8 @@ public:
                     int highestScore = 0, 
                     int level = 1, 
                     int lives = 0, 
-                    const std::vector<std::string>& highscores = {})
+                    const std::vector<std::string>& highscores = {},
+                    const Profiler* profiler = nullptr)
     {
         
         switch (type) {
@@ -106,10 +108,12 @@ public:
                 screen->clear();
                 break;
             }
-            case ScreenType::GAME: {
-                // Primera fila (alineada a la izquierda)
+            case ScreenType::GAME:
+            case ScreenType::GAME_TEST: {
+                screen->clear();
+
                 int row1 = 2;
-                int startCol = 2; // Columna inicial a la izquierda
+                int startCol = 2;
 
                 std::string label1 = "Name: " + name;
                 std::string label2 = "  Score: " + std::to_string(score);
@@ -124,7 +128,7 @@ public:
                 // Segunda fila (alineados a la derecha, uno a la izquierda del otro, margen de 4)
                 int row2 = row1 + 2;
                 int spaceRight = 15;
-                int rightMargin = 4; // margen derecho
+                int rightMargin = 4;
 
                 std::string label4 = "  Highest Score: " + std::to_string(highestScore);
                 std::string label5 = "  Lives: " + std::to_string(lives);
@@ -136,6 +140,29 @@ public:
                 screen->showStringAt(label4, row2, startColRight);
                 screen->showStringAt(label5, row2, startColRight + label4.size() + spaceRight);
                 screen->showStringAt(label6, row2, startColRight + label4.size() + spaceRight + label5.size() + spaceRight);
+
+                // Si es la pantalla de métricas, muestra las métricas del profiler
+                if (type == ScreenType::GAME_TEST && profiler != nullptr) {
+                    // Mostrar métricas en la parte inferior de la pantalla
+                    int metricsHeight = 15; // Altura de la ventana de métricas
+                    int metricsStartRow = screenHeight - metricsHeight - 2; // Cerca del fondo de la pantalla
+                    int metricsStartCol = 2; // Alineado a la izquierda con margen
+                    
+                    // Asegurar que no salga de la pantalla
+                    if (metricsStartRow < row2 + 5) {
+                        metricsStartRow = row2 + 5; // Mínimo 5 filas debajo de los labels
+                    }
+                    
+                    // Crear una ventana para las métricas
+                    WINDOW* metricsWin = newwin(metricsHeight, 65, metricsStartRow, metricsStartCol);
+                    if (metricsWin != nullptr) {
+                        wborder(metricsWin, '|', '|', '-', '-', '+', '+', '+', '+');
+                        mvwprintw(metricsWin, 0, 2, " AMDAHL PERFORMANCE METRICS ");
+                        profiler->drawSummary(metricsWin, 1, 1);
+                        wrefresh(metricsWin);
+                        delwin(metricsWin);
+                    }
+                }
                 break;
             }
 
@@ -170,11 +197,11 @@ public:
                 screen->clear();
                 break;
             }
-
+            
             default:
                 break;
         }
-        // screen->refresh();
+        screen->refresh();
     }
 
     std::string requestInput(const std::string& message) {

@@ -11,6 +11,7 @@
 #include "EnemyController.h"
 #include "CollisionController.h"
 #include "ScreenType.h"
+#include "Profiler.h"
 
 using std::string;
 
@@ -42,6 +43,9 @@ private:
     int level = 0; // Start at level 1
     bool gameOver;
 
+    // TEST
+    Profiler profiler;
+
 public:
     GameAdmin() 
         : spaceship(0,0), 
@@ -55,7 +59,7 @@ public:
         currentScore = 0;
         highestScore = 0;
         level = 0;
-        remainingLives = 12; 
+        remainingLives = 24; 
         gameOver = false;
 
         srand(time(0)); // Inicializa la semilla para números aleatorios
@@ -95,7 +99,7 @@ public:
         //clear(); // Clear the screen
         gameScreen->addBorder();
         
-        mainLoop();
+        mainLoopTest();
         
         // At the end of the game, save the player's score
         scoreController.setPlayerName(playerName);
@@ -142,33 +146,46 @@ public:
     }
 
 private:
+    void mainLoopTest(){
+        while (!gameOver) {
+            profiler.startFrame(); // INICIO MEDICIÓN
+
+            profiler.startSection("rendering");
+            ScreenType pantalla = ScreenType::GAME_TEST; 
+            ncurses.showScreen(pantalla, playerName, currentScore, highestScore, level, remainingLives, {}, &profiler);
+            updateState();
+            profiler.endSection("rendering");
+
+            profiler.startSection("input");
+            processInput();
+            profiler.endSection("input");
+
+            profiler.startSection("game_logic");
+            checkCollisions();
+            checkGameOver();
+            checkLevelCompletion();
+            profiler.endSection("game_logic");
+
+            profiler.endFrame(); // FIN MEDICIÓN
+
+            napms(50);
+        }
+    }
+
     void mainLoop(){
         while (!gameOver) {
-            // Clear the screen
-            //ncurses.clearScreen();
-            // Show the game screen with current state
-            ncurses.showScreen(ScreenType::GAME, playerName, currentScore, highestScore, level, 
-            remainingLives);
 
-            // Process user input
-            processInput();
-
-            // Update game state
+            ScreenType pantalla = ScreenType::GAME; 
+            ncurses.showScreen(pantalla, playerName, currentScore, highestScore, level, remainingLives, {}, &profiler);
             updateState();
 
-            // Refresh the screen
-            //refresh();
+            processInput();
 
-            // Check for collisions
             checkCollisions();
-
-            // Check if the game is over
             checkGameOver();
-
-            // If the spaceship eliminates all enemies, build the next level
             checkLevelCompletion();
 
-            napms(32); // Sleep for a short duration to control game speed
+            napms(32);
         }
     }
 
