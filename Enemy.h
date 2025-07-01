@@ -66,7 +66,10 @@ public:
 
     virtual void update() {
         if (!pattern.empty()) {
-            auto [dx, dy] = pattern[patternIndex];
+            // Compatible con C++11/14 - reemplazar structured binding
+            auto movement = pattern[patternIndex];
+            int dx = movement.first;
+            int dy = movement.second;
             x += dx;
             y += dy;
 

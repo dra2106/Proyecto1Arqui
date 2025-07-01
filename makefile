@@ -14,4 +14,4 @@
 all: ProyectoPhoenix
 
 ProyectoPhoenix: ProyectoPhoenix.cpp Screen.h Entity.h Spaceship.h Bullet.h SmallBird.h Enemy.h EnemyPatterns.h Mothership.h EnemyController.h MutantBird.h GameAdmin.h NcursesAdmin.h Profiler.h
-	g++ ProyectoPhoenix.cpp -lncurses -o ProyectoPhoenix
+	g++ -std=c++17 ProyectoPhoenix.cpp -lncurses -o ProyectoPhoenix

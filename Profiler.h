@@ -10,7 +10,7 @@
 
 class Profiler {
 private:
-    using clock = std::chrono::high_resolution_clock;
+    using clock = std::chrono::steady_clock;
     clock::time_point startTime;
     
     // Métricas existentes
@@ -61,6 +61,7 @@ public:
         sectionStartTimes[sectionName] = clock::now();
     }
 
+    // Agregar más categorías específicas para identificar cuellos de botella
     void endSection(const std::string& sectionName) {
         if (sectionStartTimes.find(sectionName) != sectionStartTimes.end()) {
             auto endTime = clock::now();
@@ -71,15 +72,15 @@ public:
             sectionTotalTimes[sectionName] += timeMs;
             sectionCounts[sectionName]++;
             
-            // Categorizar para análisis de Amdahl
-            if (sectionName == "rendering" || sectionName == "graphics") {
+            // Categorización más detallada
+            if (sectionName == "rendering" || sectionName == "graphics" || sectionName == "draw") {
                 totalParallelTime += timeMs;
-            } else if (sectionName == "input" || sectionName == "file_io") {
+            } else if (sectionName == "input" || sectionName == "file_io" || sectionName == "ncurses_refresh") {
                 totalIOTime += timeMs;
                 totalSequentialTime += timeMs;
-            } else if (sectionName == "game_logic" || sectionName == "collision") {
+            } else if (sectionName == "game_logic" || sectionName == "collision" || sectionName == "state_update") {
                 totalLogicTime += timeMs;
-                totalSequentialTime += timeMs;  // Asumimos que es secuencial
+                totalSequentialTime += timeMs;
             }
         }
     }

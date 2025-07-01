@@ -60,7 +60,7 @@ public:
         currentScore = 0;
         highestScore = 0;
         level = 0;
-        remainingLives = 12; 
+        remainingLives = 24; 
         gameOver = false;
 
         srand(time(0)); // Inicializa la semilla para números aleatorios
