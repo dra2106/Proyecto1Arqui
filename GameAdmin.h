@@ -100,7 +100,7 @@ public:
         clear(); // Clear the screen
         gameScreen->addBorder();
         
-        mainLoop();
+        mainLoopTest();
         
         // At the end of the game, save the player's score
         scoreController.setPlayerName(playerName);
@@ -147,20 +147,44 @@ public:
     }
 
 private:
-    void mainLoop(){
+    void mainLoopTest(){
         while (!gameOver) {
             profiler.startFrame(); // INICIO MEDICIÓN
 
+            profiler.startSection("rendering");
             ScreenType pantalla = ScreenType::GAME_TEST; 
             ncurses.showScreen(pantalla, playerName, currentScore, highestScore, level, remainingLives, {}, &profiler);
-
-            processInput();
             updateState();
+            profiler.endSection("rendering");
+
+            profiler.startSection("input");
+            processInput();
+            profiler.endSection("input");
+
+            profiler.startSection("game_logic");
             checkCollisions();
             checkGameOver();
             checkLevelCompletion();
+            profiler.endSection("game_logic");
 
             profiler.endFrame(); // FIN MEDICIÓN
+
+            napms(32);
+        }
+    }
+
+    void mainLoop(){
+        while (!gameOver) {
+
+            ScreenType pantalla = ScreenType::GAME; 
+            ncurses.showScreen(pantalla, playerName, currentScore, highestScore, level, remainingLives, {}, &profiler);
+            updateState();
+
+            processInput();
+
+            checkCollisions();
+            checkGameOver();
+            checkLevelCompletion();
 
             napms(32);
         }

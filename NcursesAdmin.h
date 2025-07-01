@@ -143,15 +143,21 @@ public:
 
                 // Si es la pantalla de métricas, muestra las métricas del profiler
                 if (type == ScreenType::GAME_TEST && profiler != nullptr) {
-                    // Mostrar métricas justo debajo de los labels del juego
-                    int metricsStartRow = row2 + 2; // Debajo de la segunda fila de labels
+                    // Mostrar métricas en la parte inferior de la pantalla
+                    int metricsHeight = 15; // Altura de la ventana de métricas
+                    int metricsStartRow = screenHeight - metricsHeight - 2; // Cerca del fondo de la pantalla
                     int metricsStartCol = 2; // Alineado a la izquierda con margen
                     
-                    // Crear una pequeña ventana para las métricas
-                    WINDOW* metricsWin = newwin(5, 60, metricsStartRow, metricsStartCol);
+                    // Asegurar que no salga de la pantalla
+                    if (metricsStartRow < row2 + 5) {
+                        metricsStartRow = row2 + 5; // Mínimo 5 filas debajo de los labels
+                    }
+                    
+                    // Crear una ventana para las métricas
+                    WINDOW* metricsWin = newwin(metricsHeight, 65, metricsStartRow, metricsStartCol);
                     if (metricsWin != nullptr) {
                         wborder(metricsWin, '|', '|', '-', '-', '+', '+', '+', '+');
-                        mvwprintw(metricsWin, 0, 2, " PERFORMANCE METRICS ");
+                        mvwprintw(metricsWin, 0, 2, " AMDAHL PERFORMANCE METRICS ");
                         profiler->drawSummary(metricsWin, 1, 1);
                         wrefresh(metricsWin);
                         delwin(metricsWin);
