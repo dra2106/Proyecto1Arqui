@@ -1,0 +1,57 @@
+===============================================
+    REPORTE CIENTÍFICO DE ANÁLISIS AMDAHL    
+===============================================
+Proyecto: ProyectoPhoenix - Juego C++ ncurses
+Análisis: Análisis Científico ProyectoPhoenix
+Fecha: 2025-07-01 22:32:27
+
+1. MÉTRICAS GENERALES DE RENDIMIENTO
+------------------------------------
+Frames procesados: 204
+FPS promedio: 1109.553 (Min: 761.035, Max: 1390.821)
+Tiempo promedio por frame: 0.924 ms
+
+2. ANÁLISIS POR MÓDULOS (LEY DE AMDAHL)
+--------------------------------------
+Tiempo total de ejecución medido: 188.373 ms
+Fracción secuencial: 45.513%
+Fracción paralelizable: 54.487%
+
+TIEMPOS POR MÓDULO (análisis detallado):
+  • collision: 0.009 ms/frame (0.931% del total)
+  • game_logic: 0.000 ms/frame (0.000% del total)
+  • input: 0.418 ms/frame (45.513% del total)
+  • rendering: 0.492 ms/frame (53.556% del total)
+
+3. JUSTIFICACIÓN CIENTÍFICA PARA OPTIMIZACIÓN
+---------------------------------------------
+MÓDULO CRÍTICO IDENTIFICADO: rendering
+Tiempo total consumido: 100.886 ms
+Impacto en rendimiento: 53.556%
+
+APLICACIÓN DE LA LEY DE AMDAHL:
+Según Amdahl: Speedup = 1 / (f + (1-f)/n)
+Donde f = fracción secuencial, n = número de procesadores
+
+4. PREDICCIONES DE SPEEDUP TEÓRICO
+-----------------------------------
+Con 1 núcleo(s): 1.000x speedup teórico
+Con 2 núcleo(s): 1.374x speedup teórico
+Con 4 núcleo(s): 1.691x speedup teórico
+Con 8 núcleo(s): 1.911x speedup teórico
+Con 16 núcleo(s): 2.044x speedup teórico
+
+5. RECOMENDACIONES BASADAS EN EVIDENCIA
+---------------------------------------
+1. PRIORIDAD ALTA: Optimizar el módulo 'rendering'
+   Razón: Representa el mayor cuello de botella identificado
+   Impacto esperado: Reducción significativa en tiempo de frame
+
+3. JUSTIFICACIÓN MATEMÁTICA:
+   Si optimizamos el 53.556% más crítico del código,
+   el speedup máximo teórico sería significativo según Amdahl.
+
+===============================================
+Fin del reporte científico
+===============================================
+

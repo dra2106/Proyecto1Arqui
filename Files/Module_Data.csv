@@ -1,0 +1,5 @@
+Timestamp,Module,AvgTimeMs,TotalTimeMs,Percentage,CallCount
+2025-07-01 22:32:27,collision,0.0086,1.7530,0.93,204
+2025-07-01 22:32:27,game_logic,0.0000,0.0000,0.00,204
+2025-07-01 22:32:27,input,0.4182,85.7340,45.51,205
+2025-07-01 22:32:27,rendering,0.4921,100.8860,53.56,205

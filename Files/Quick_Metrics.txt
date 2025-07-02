@@ -1,0 +1,21 @@
++- AMDAHL PERFORMANCE METRICS ---------------
+|=== ANálisis AMDAHL ===
+|Frames: 204 | FPS: 1109.6
+|Frame Time: 0.92 ms
+|
+|--- FRACCIONAMIENTO ---
+|Secuencial: 45.5%
+|Paralelizable: 54.5%
+|
+|--- SPEEDUP TEÓRICO ---
+|2 cores: 1.37x
+|4 cores: 1.69x
+|8 cores: 1.91x
+|
+|--- MÓDULOS CRÍTICOS ---
+|rendering: 0.492 ms/frame (53.6%)
+|input: 0.418 ms/frame (45.5%)
+|collision: 0.009 ms/frame (0.9%)
+|game_logic: 0.000 ms/frame (0.0%)
++---------------------------------------------
+
